@@ -5,8 +5,7 @@ import java.util.Set;
 
 import exceptions.NumeroInvalido;
 import exceptions.StringInvalida;
-
-
+import util.Verificacao;
 
 public class Medicamento implements Comparable<Medicamento> {
 
@@ -16,12 +15,13 @@ public class Medicamento implements Comparable<Medicamento> {
 	private Set<CategoriasEnum> categorias;
 	private TipoMedicamentoIF tipo;
 
-	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo) throws StringInvalida, NumeroInvalido {
+	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
+			throws StringInvalida, NumeroInvalido {
 
-		validaString(nome, "nome do medicamento");
-		validaNumero(preco, "preco do medicamento");
-		validaNumero(quantidade, "quantidade de medicamento");
-		validaString(tipo, "tipo do medicamento");
+		Verificacao.validaString(nome, "nome do medicamento");
+		Verificacao.validaNumero(preco, "preco do medicamento");
+		Verificacao.validaNumero(quantidade, "quantidade de medicamento");
+		Verificacao.validaString(tipo, "tipo do medicamento");
 
 		selecionaTipo(tipo);
 		this.nome = nome;
@@ -31,7 +31,7 @@ public class Medicamento implements Comparable<Medicamento> {
 
 		for (String categoria : categorias) {
 
-			validaString(categoria, "categoria do medicamento");
+			Verificacao.validaString(categoria, "categoria do medicamento");
 			this.categorias.add(CategoriasEnum.valueOf(categoria));
 		}
 
@@ -46,26 +46,6 @@ public class Medicamento implements Comparable<Medicamento> {
 		}
 	}
 
-	private void validaNumero(double preco, String parametro) throws NumeroInvalido {
-		if (preco < 0) {
-			String motivo = "eh menor que zero";
-			throw new NumeroInvalido(parametro, motivo);
-		}
-	}
-
-	private void validaString(String nome, String parametro) throws StringInvalida {
-
-		if (nome.equals(null)) {
-			String motivo = "igual a null";
-			throw new StringInvalida(parametro, motivo);
-
-		} else if (nome.trim().equals("")) {
-			String motivo = "vazio";
-			throw new StringInvalida(parametro, motivo);
-
-		}
-	}
-
 	@Override
 	public int compareTo(Medicamento outroMedicamento) {
 
@@ -74,31 +54,39 @@ public class Medicamento implements Comparable<Medicamento> {
 
 		} else if (this.preco == outroMedicamento.getPreco()) {
 			return 0;
-		
+
 		} else {
 			return -1;
 		}
 	}
 
-	public String toString(){
-		
+	public String toString() {
+
 		String string = "";
-		
+
 		return string;
 	}
 
-	public String getNome(){
+	public String getNome() {
 		return this.nome;
 	}
-	
+
 	public double getPreco() {
 		return this.preco;
 	}
 
-	public Set<CategoriasEnum> getCategorias(){
+	public Set<CategoriasEnum> getCategorias() {
 		return this.categorias;
 	}
-	
+
+	public int getQuantidade() {
+		return quantidade;
+	}
+
+	public void setQuantidade(int quantidade) {
+		this.quantidade = quantidade;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,7 +118,4 @@ public class Medicamento implements Comparable<Medicamento> {
 		return true;
 	}
 
-	
-	
-	
 }
