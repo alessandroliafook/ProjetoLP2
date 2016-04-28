@@ -1,6 +1,6 @@
 package exceptions;
 
-public class StringInvalida extends RuntimeException {
+public class StringInvalida extends Exception {
 
 	/**
 	 * 

@@ -1,6 +1,6 @@
 package exceptions;
 
-public class ObjetoInvalido extends RuntimeException {
+public class ObjetoInvalido extends Exception {
 
 	/**
 	 * 

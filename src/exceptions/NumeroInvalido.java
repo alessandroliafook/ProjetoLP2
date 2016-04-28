@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NumeroInvalido extends RuntimeException{
+public class NumeroInvalido extends Exception{
 
 	
 	/**
