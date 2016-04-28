@@ -6,6 +6,8 @@ import java.util.Set;
 import exceptions.NumeroInvalido;
 import exceptions.StringInvalida;
 
+
+
 public class Medicamento implements Comparable<Medicamento> {
 
 	private String nome;
@@ -37,7 +39,7 @@ public class Medicamento implements Comparable<Medicamento> {
 
 	private void selecionaTipo(String tipo) {
 		switch (tipo) {
-		case "referência":
+		case "referencia":
 			this.tipo = new MedicamentoReferencia();
 		case "generico":
 			this.tipo = new MedicamentoGenerico();
