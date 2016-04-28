@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import util.Verificacao;
 
 import exceptions.StringInvalida;
 import pessoal.Funcionario;
@@ -43,6 +44,9 @@ public class ComiteGestor {
 	 *             caso a chave seja invalida
 	 */
 	public String liberaSistema(String chave) throws Exception {
+		
+		Verificacao.validaString("chave", chave);
+		
 		if (!this.primeiroAcesso) {
 			if (chave.equals(CHAVE)) {
 				String matricula = geraMatricula("diretor");
@@ -73,6 +77,8 @@ public class ComiteGestor {
 	 */
 	private String geraMatricula(String cargo) throws StringInvalida {
 
+		Verificacao.validaString("cargo", cargo);
+
 		String prefixo = "";
 		String matricula = "";
 		LocalDate data = LocalDate.now();
@@ -101,13 +107,16 @@ public class ComiteGestor {
 	 * 
 	 * @param matricula
 	 *            especifica a matricula a ser cadastrada
-	 * @param chave
+	 * @param senha
 	 *            especifica a senha correspondente
 	 * @throws StringInvalida
 	 *             caso algum dos parametros seja invalido
 	 */
-	public void addMatricula(String matricula, String chave) throws StringInvalida {
-		matriculas.put(matricula, chave);
+	public void addMatricula(String matricula, String senha) throws StringInvalida {
+
+		Verificacao.validaString("matricula", matricula);
+		Verificacao.validaString("senha", senha);
+		matriculas.put(matricula, senha);
 	}
 
 	/**
@@ -120,12 +129,16 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	private boolean realizaLogin(String matricula, String senha) {
+	private boolean realizaLogin(String matricula, String senha) throws StringInvalida {
+
+		Verificacao.validaString("matricula", matricula);
+		Verificacao.validaString("senha", senha);
+
 		if (existeMatricula(matricula, senha)) {
 			funcLogado = getFuncionario(matricula);
 			return true;
 		}
-		
+
 		return false;
 	}
 
