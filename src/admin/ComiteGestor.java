@@ -185,7 +185,7 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	public boolean realizaLogin(String matricula, String senha) throws StringInvalida, ObjetoNaoEncontrado {
+	public boolean realizaLogin(String matricula, String senha) throws StringInvalidaException, ObjetoNaoEncontrado {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -207,7 +207,7 @@ public class ComiteGestor {
 	 * @throws StringInvalida
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
-			throws StringInvalida, DateTimeParseException {
+			throws StringInvalidaException, DateTimeParseException {
 
 		Verificacao.validaString(nome, "nome");
 		Verificacao.validaString(cargo, "cargo");
