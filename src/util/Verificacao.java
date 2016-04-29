@@ -1,6 +1,7 @@
 package util;
 
 import exceptions.NumeroInvalido;
+import exceptions.ObjetoInvalido;
 import exceptions.StringInvalida;
 
 public class Verificacao {
@@ -31,8 +32,8 @@ public class Verificacao {
 	 * @param parametro
 	 *            - Nome do parametro que esta sendo verificado.
 	 * @throws StringInvalida
-	 *             - Lanca excecao de String Invalida acaso a String seja igual
-	 *             a null ou vazia, personalizando a mensagem para cada caso.
+	 *             - Lanca excecao de String Invalida caso a String seja igual a
+	 *             null ou vazia, personalizando a mensagem para cada caso.
 	 */
 	public static void validaString(String string, String parametro) throws StringInvalida {
 
@@ -45,6 +46,26 @@ public class Verificacao {
 			throw new StringInvalida(parametro, motivo);
 
 		}
+	}
+
+	/**
+	 * Metodo que verifica se o Objeto eh igual a null.
+	 * 
+	 * @param obj
+	 *            - Objeto a ser verificado.
+	 * @param parametro
+	 *            - Nome do parametro que esta sendo verificado.
+	 * @throws ObjetoInvalido
+	 *             - Lanca excecao de ObjetoInvalido caso o objeto seja igual a
+	 *             null
+	 */
+	public static void validaObjeto(Object obj, String parametro) throws ObjetoInvalido {
+
+		if (obj == null) {
+			String motivo = "igual a null";
+			throw new ObjetoInvalido(parametro, motivo);
+		}
+
 	}
 
 }

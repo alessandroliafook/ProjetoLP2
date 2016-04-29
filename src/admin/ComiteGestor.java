@@ -20,15 +20,17 @@ public class ComiteGestor {
 	private FactoryDeFuncionario facFuncionario;
 	private Set<Funcionario> corpoClinico;
 	private Set<Funcionario> corpoProfissional;
+	private Set<Funcionario> diretoresGerais;
 	private Map<String, String> matriculas;
 
 	public ComiteGestor() throws Exception {
 
 		this.primeiroAcesso = false;
+		this.corpoClinico = new Set<Funcionario>();
 		this.matriculas = new Map<String, String>();
-		this.corpoClinico = new TreeSet<Funcionario>();
+		this.diretoresGerais = new Set<Funcionario>();
+		this.corpoProfissional = new Set<Funcionario>();
 		this.facFuncionario = new FactoryDeFuncionario();
-		this.corpoProfissional = new TreeSet<Funcionario>();
 
 	}
 
@@ -51,7 +53,7 @@ public class ComiteGestor {
 			if (chave.equals(CHAVE)) {
 				String matricula = geraMatricula("diretor");
 				addMatricula(matricula, chave);
-				realizaLogin(matricula, chave);
+				diretoresGerais.add(new Funcionario(matricula, chave));
 				this.primeiroAcesso = true;
 				return matricula;
 
@@ -112,11 +114,15 @@ public class ComiteGestor {
 	 * @throws StringInvalida
 	 *             caso algum dos parametros seja invalido
 	 */
-	public void addMatricula(String matricula, String senha) throws StringInvalida {
+	private void addMatricula(String matricula, String senha) throws StringInvalida {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
 		matriculas.put(matricula, senha);
+	}
+	
+	private Funcionario getFuncionario(String matricula) {
+		for(Funcionario func : corpoClinico)
 	}
 
 	/**
@@ -129,12 +135,12 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	private boolean realizaLogin(String matricula, String senha) throws StringInvalida {
+	public boolean realizaLogin(String matricula, String senha) throws StringInvalida {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
 
-		if (existeMatricula(matricula, senha)) {
+		if (existeCadastro(matricula, senha)) {
 			funcLogado = getFuncionario(matricula);
 			return true;
 		}
