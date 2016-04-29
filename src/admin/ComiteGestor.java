@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
-
+import exceptions.ObjetoNaoEncontrado;
 import exceptions.StringInvalida;
 import pessoal.Funcionario;
 
@@ -46,9 +46,9 @@ public class ComiteGestor {
 	 *             caso a chave seja invalida
 	 */
 	public String liberaSistema(String chave) throws Exception {
-		
+
 		Verificacao.validaString("chave", chave);
-		
+
 		if (!this.primeiroAcesso) {
 			if (chave.equals(CHAVE)) {
 				String matricula = geraMatricula("diretor");
@@ -120,9 +120,36 @@ public class ComiteGestor {
 		Verificacao.validaString("senha", senha);
 		matriculas.put(matricula, senha);
 	}
-	
-	private Funcionario getFuncionario(String matricula) {
-		for(Funcionario func : corpoClinico)
+
+	/**
+	 * Metodo que busca um funcionario cadastrado pela matricula.
+	 * 
+	 * @param matricula
+	 *            - Matricula pela qual sera pesquisado o funcionario.
+	 * @throws ObjetoNaoEncontrado
+	 *             - Caso o funcionario nao possa ser encontrado.
+	 * @return - Retorna o funcionario que possuir a matricula especificada.
+	 */
+	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontrado {
+		for (Funcionario func : corpoClinico) {
+			if (func.getMatricula().equals(matricula)) {
+				return func;
+			}
+		}
+
+		for (Funcionario func : corpoProfissional) {
+			if (func.getMatricula().equals(matricula)) {
+				return func;
+			}
+		}
+
+		for (Funcionario func : diretoresGerais) {
+			if (func.getMatricula().equals(matricula)) {
+				return func;
+			}
+		}
+
+		throw new ObjetoNaoEncontrado("funcionario de matricula" + matricula);
 	}
 
 	/**
