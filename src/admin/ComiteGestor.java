@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
+import exceptions.NaoAutorizadoException;
 import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
@@ -189,7 +190,9 @@ public class ComiteGestor {
 	 *             - Caso a data de nascimento nao esteja no formato adequado
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
-			throws StringInvalidaException, DateTimeParseException {
+			throws StringInvalidaException, DateTimeParseException, NaoAutorizadoException {
+
+		Verificacao.validaAutorizacao(funcLogado.getMatricula(), "matricula");
 
 		Verificacao.validaString(nome, "nome");
 		Verificacao.validaString(cargo, "cargo");

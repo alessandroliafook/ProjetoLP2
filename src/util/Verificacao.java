@@ -1,5 +1,6 @@
 package util;
 
+import exceptions.NaoAutorizadoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.ObjetoInvalidoException;
 import exceptions.ObjetoNaoEncontradoException;
@@ -89,6 +90,14 @@ public class Verificacao {
 
 		throw new ObjetoNaoEncontradoException("categoria de medicamento informada");
 
+	}
+	
+	public static void validaAutorizacao(String matricula, String parametro)throws NaoAutorizadoException {
+		
+		if(matricula.charAt(0) != '1') {
+			throw new NaoAutorizadoException(parametro, "nao possui autorizacao");
+		}
+		
 	}
 
 }
