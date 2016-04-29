@@ -1,7 +1,6 @@
 package pessoal;
 
 import java.util.UUID;
-
 import util.Verificacao;
 
 public class Paciente extends Pessoa implements Comparable<Paciente> {

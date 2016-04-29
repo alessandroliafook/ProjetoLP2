@@ -12,10 +12,12 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 	 * @param nome - Nome do funcionario
 	 * @param dataNascimento - Data de nascimento no formato "dd-mm-aaaa"
 	 * @param matricula - Matricula gerada para o funcionario
+	 * @param senha - Senha gerada para o funcionario
 	 * @throws DateTimeParseException - Caso a data nao esteja no formato especificado
 	 * @throws StringInvalidaException - Caso quaisquer dos parametros sejam string vazias ou nulas
 	 */
-	public Funcionario(String nome, String dataNascimento, String matricula) throws Exception{
+	public Funcionario(String nome, String dataNascimento,
+			String matricula, String senha) throws Exception{
 		
 		super(nome, dataNascimento);
 		Verificacao.validaString(matricula, "matricula do funcionario");
@@ -24,7 +26,7 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 		setSenha(senha);
 		
 	}
-	
+
 	
 	public String getMatricula(){
 		return this.matricula;
@@ -38,21 +40,10 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 		this.matricula = matricula;
 	}
 	
-	private void setSenha(String matricula){
-		this.senha = geraSenha();
+	private void setSenha(String senha){
+		this.senha = senha;
 	}
 	
-	/**
-	 * Gera automaticamente uma senha formada pelos digitos
-	 * do ano de nascimento e os quatro primeiros dígitos da matricula. 
-	 * @return A senha gerada para o funcionario
-	 */
-	private String geraSenha(){
-		String senha = "";
-		senha = super.getData().getYear() + matricula.substring(0, 4);
-		return senha;
-	}
-
 
 	@Override
 	public int hashCode() {
