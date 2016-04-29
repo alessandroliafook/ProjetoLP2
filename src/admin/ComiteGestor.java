@@ -1,6 +1,8 @@
 package admin;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -12,25 +14,24 @@ import pessoal.Funcionario;
 
 public class ComiteGestor {
 
+	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
 	private int numeroMatriculas = 1;
+	private Funcionario diretorGeral;
 	private final String CHAVE = "c041ebf8";
-	private Funcionario funcLogado;
 
-	private FactoryDeFuncionario facFuncionario;
 	private Set<Funcionario> corpoClinico;
+	private Map<String, String> cadastros;
 	private Set<Funcionario> corpoProfissional;
-	private Set<Funcionario> diretoresGerais;
-	private Map<String, String> matriculas;
+	private FactoryDeFuncionario facFuncionario;
 
 	public ComiteGestor() throws Exception {
 
 		this.primeiroAcesso = false;
-		this.corpoClinico = new Set<Funcionario>();
-		this.matriculas = new Map<String, String>();
-		this.diretoresGerais = new Set<Funcionario>();
-		this.corpoProfissional = new Set<Funcionario>();
+		this.corpoClinico = new HashSet<Funcionario>();
+		this.cadastros = new HashMap<String, String>();
 		this.facFuncionario = new FactoryDeFuncionario();
+		this.corpoProfissional = new HashSet<Funcionario>();
 
 	}
 
@@ -52,8 +53,8 @@ public class ComiteGestor {
 		if (!this.primeiroAcesso) {
 			if (chave.equals(CHAVE)) {
 				String matricula = geraMatricula("diretor");
-				addMatricula(matricula, chave);
-				diretoresGerais.add(new Funcionario(matricula, chave));
+				realizaCadastro(matricula, chave);
+				diretorGeral = new Funcionario(matricula, chave);
 				this.primeiroAcesso = true;
 				return matricula;
 
@@ -99,7 +100,12 @@ public class ComiteGestor {
 		}
 
 		matricula = prefixo + String.valueOf(data.getYear()) + sufixo;
+		this.numeroMatriculas += 1;
 		return matricula;
+
+	}
+
+	private String geraSenha(String dataNascimento, String matricula) {
 
 	}
 
@@ -114,11 +120,11 @@ public class ComiteGestor {
 	 * @throws StringInvalida
 	 *             caso algum dos parametros seja invalido
 	 */
-	private void addMatricula(String matricula, String senha) throws StringInvalida {
+	private void realizaCadastro(String matricula, String senha) throws StringInvalida {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
-		matriculas.put(matricula, senha);
+		cadastros.put(matricula, senha);
 	}
 
 	/**
@@ -131,6 +137,10 @@ public class ComiteGestor {
 	 * @return - Retorna o funcionario que possuir a matricula especificada.
 	 */
 	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontrado {
+
+		if (this.diretorGeral.getMatricula().equals(matricula))
+			return this.diretorGeral;
+
 		for (Funcionario func : corpoClinico) {
 			if (func.getMatricula().equals(matricula)) {
 				return func;
@@ -143,13 +153,23 @@ public class ComiteGestor {
 			}
 		}
 
-		for (Funcionario func : diretoresGerais) {
-			if (func.getMatricula().equals(matricula)) {
-				return func;
-			}
-		}
+		throw new ObjetoNaoEncontrado("funcionario de matricula " + matricula);
+	}
 
-		throw new ObjetoNaoEncontrado("funcionario de matricula" + matricula);
+	/**
+	 * Metodo que verifica se existe um cadastro correspondente a matricula e
+	 * senha informadas.
+	 * 
+	 * @param matricula
+	 *            - Matricula a ser verificada
+	 * @param senha
+	 *            - Senha correspondente a matricula
+	 * @return - True caso haja, false do contrario
+	 */
+	public boolean existeCadastro(String matricula, String senha) {
+		if (cadastros.containsKey(matricula) && cadastros.get(matricula).equals(senha)) {
+			return true;
+		}
 	}
 
 	/**
@@ -162,7 +182,7 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	public boolean realizaLogin(String matricula, String senha) throws StringInvalida {
+	public boolean realizaLogin(String matricula, String senha) throws StringInvalida, ObjetoNaoEncontrado {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -173,6 +193,27 @@ public class ComiteGestor {
 		}
 
 		return false;
+	}
+
+	/**
+	 * 
+	 * @param nome
+	 * @param cargo
+	 * @param dataNascimento
+	 * @return
+	 * @throws StringInvalida
+	 */
+	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
+			throws StringInvalida, DateTimeParseException {
+
+		Verificacao.validaString(nome, "nome");
+		Verificacao.validaString(cargo, "cargo");
+		Verificacao.validaString(dataNascimento, "data de nascimento");
+
+		Funcionario func = facFuncionario.criaFuncionario(nome, cargo, dataNascimento);
+		func.setMatricula(geraMatricula(cargo));
+		func.setSenha(geraSenha(dataNascimento, func.getMatricula()));
+		realizaCadastro(func.getMatricula(), func.getSenha());
 	}
 
 }
