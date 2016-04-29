@@ -1,13 +1,29 @@
 package pessoal;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-public abstract class Pessoa implements Comparable<Pessoa>{
+import util.*;
+
+public abstract class Pessoa {
 
 	private String nome;
 	private LocalDate dataNascimento;
+	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd-MM-yyyy");
 	
-	public Pessoa(String nome, LocalDate dataNascimento){
+	/**
+	 * 
+	 * @param nome - Nome da pessoa
+	 * @param data - Data de nascimento no formato "dd-mm-aaaa"
+	 * @throws DateTimeParseException - Caso a data nao esteja no formato especificado
+	 * @throws StringInvalidaException - Caso nome ou data sejam string vazias ou nulas
+	 */
+	public Pessoa(String nome, String data) throws Exception{
+		
+		Verificacao.validaString(data, "data de nascimento");
+		Verificacao.validaString(nome, "nome da pessoa");
+		
+		setData(LocalDate.parse(data, FORMATO_DE_DATA));
 		setNome(nome);
 		setData(dataNascimento);
 	}
@@ -26,29 +42,5 @@ public abstract class Pessoa implements Comparable<Pessoa>{
 	
 	private void setData(LocalDate dataNascimento){
 		this.dataNascimento = dataNascimento;
-	}
-
-	@Override
-	public int compareTo(Pessoa outraPessoa) {
-		return this.nome.compareTo(outraPessoa.getNome());
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if(obj instanceof Pessoa){
-			Pessoa outro = (Paciente) obj;
-			return this.nome.equals(outro.getNome());
-		}
-		return false;
-	}
-	
-	
+	}	
 }

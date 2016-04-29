@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
 import exceptions.ObjetoNaoEncontrado;
-import exceptions.StringInvalida;
+import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
 
 public class ComiteGestor {
@@ -43,7 +43,7 @@ public class ComiteGestor {
 	 * @param chave
 	 *            string que libera o sistema
 	 * @return uma nova matricula com privilegios de um diretor geral
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso a chave seja invalida
 	 */
 	public String liberaSistema(String chave) throws Exception {
@@ -56,10 +56,12 @@ public class ComiteGestor {
 				realizaCadastro(matricula, chave);
 				diretorGeral = new Funcionario(matricula, chave);
 				this.primeiroAcesso = true;
+				
+				
 				return matricula;
 
 			} else {
-				throw new StringInvalida("chave", "eh invalida");
+				throw new StringInvalidaException("chave", "eh invalida");
 			}
 
 		} else {
@@ -73,12 +75,12 @@ public class ComiteGestor {
 	 * 
 	 * @param cargo
 	 *            especifica o cargo ao qual a matricula correspondera
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso o parametro seja invalido, a criacao da matricula nao
 	 *             sera possivel. Sendo assim uma excecao sera lancada.
 	 * @return a nova matricula
 	 */
-	private String geraMatricula(String cargo) throws StringInvalida {
+	private String geraMatricula(String cargo) throws StringInvalidaException {
 
 		Verificacao.validaString("cargo", cargo);
 
@@ -117,10 +119,11 @@ public class ComiteGestor {
 	 *            especifica a matricula a ser cadastrada
 	 * @param senha
 	 *            especifica a senha correspondente
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso algum dos parametros seja invalido
 	 */
-	private void realizaCadastro(String matricula, String senha) throws StringInvalida {
+
+	private void addMatricula(String matricula, String senha) throws StringInvalidaException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -210,9 +213,10 @@ public class ComiteGestor {
 		Verificacao.validaString(cargo, "cargo");
 		Verificacao.validaString(dataNascimento, "data de nascimento");
 
-		Funcionario func = facFuncionario.criaFuncionario(nome, cargo, dataNascimento);
-		func.setMatricula(geraMatricula(cargo));
-		func.setSenha(geraSenha(dataNascimento, func.getMatricula()));
+		String matricula = geraMatricula(cargo);
+		String senha = geraSenha(dataNascimento, matricula);
+
+		Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, matricula, senha);
 		realizaCadastro(func.getMatricula(), func.getSenha());
 	}
 

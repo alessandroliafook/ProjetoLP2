@@ -1,10 +1,12 @@
 package departamentos;
 
+import java.awt.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-import exceptions.NumeroInvalido;
-import exceptions.StringInvalida;
+import exceptions.NumeroInvalidoException;
+import exceptions.StringInvalidaException;
 import factory.FactoryDeMedicamentos;
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
@@ -32,7 +34,7 @@ public class Farmacia {
 	}
 
 	public void cadastraMedicamento(String tipo, int quantidade, double preco, String nome, Set<String> categorias)
-			throws StringInvalida, NumeroInvalido {
+			throws StringInvalidaException, NumeroInvalidoException {
 
 		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
 
@@ -62,7 +64,7 @@ public class Farmacia {
 	}
 
 	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeFornecida)
-			throws NumeroInvalido, StringInvalida {
+			throws NumeroInvalidoException, StringInvalidaException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -77,25 +79,26 @@ public class Farmacia {
 					return medicamento;
 				}
 
-				throw new NumeroInvalido("quantidade de medicamento solicitada",
+				throw new NumeroInvalidoException("quantidade de medicamento solicitada",
 						"existe apenas" + medicamento.getQuantidade() + "no estoque");
 			}
 
 		}
 
-		throw new StringInvalida("medicamento solicitado", "nao existe no estoque");
+		throw new StringInvalidaException("medicamento solicitado", "nao existe no estoque");
 
 	}
 
-	public String consultaPorCategoria(String categoria) {
+	public ArrayList<String> consultaPorCategoria(String categoria) {
 
+		ArrayList<String> listaDeMedicamentos = new ArrayList<String>();
+		
 		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
-		String listaDeMedicamentos = "";
-
-		for (Medicamento medicamento : estoqueDeMedicamentos) {
+		
+		 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
-				listaDeMedicamentos = listaDeMedicamentos + medicamento.toString() + "\n";
+				listaDeMedicamentos.add(medicamento.getNome());
 			}
 
 		}
@@ -104,7 +107,7 @@ public class Farmacia {
 
 	}
 
-	public String consultaPorNome(String nomeDoRemedio) throws StringInvalida {
+	public String consultaPorNome(String nomeDoRemedio) throws StringInvalidaException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -114,7 +117,7 @@ public class Farmacia {
 
 		}
 
-		throw new StringInvalida("nome do remedio", "nao cadastrado no sistema");
+		throw new StringInvalidaException("nome do remedio", "nao cadastrado no sistema");
 
 	}
 

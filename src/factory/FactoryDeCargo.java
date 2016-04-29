@@ -4,7 +4,7 @@ import cargos.CargoIF;
 import cargos.DiretorGeral;
 import cargos.Medico;
 import cargos.TecnicoAdministrativo;
-import exceptions.StringInvalida;
+import exceptions.StringInvalidaException;
 
 public class FactoryDeCargo {
 
@@ -26,7 +26,7 @@ public class FactoryDeCargo {
 			return new TecnicoAdministrativo();
 			
 		default:
-			throw new StringInvalida();
+			throw new StringInvalidaException();
 		}
 		
 	}

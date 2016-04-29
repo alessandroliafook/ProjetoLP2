@@ -1,8 +1,8 @@
 package util;
 
-import exceptions.NumeroInvalido;
-import exceptions.ObjetoInvalido;
-import exceptions.StringInvalida;
+import exceptions.NumeroInvalidoException;
+import exceptions.ObjetoInvalidoException;
+import exceptions.StringInvalidaException;
 
 public class Verificacao {
 
@@ -13,14 +13,14 @@ public class Verificacao {
 	 *            - Numero real a ser verificado.
 	 * @param parametro
 	 *            - Nome do parametro que esta sendo verificado.
-	 * @throws NumeroInvalido
+	 * @throws NumeroInvalidoException
 	 *             - Lanca excecao de Numero Invalido acaso o numero seja menor
 	 *             que zero.
 	 */
-	public static void validaNumero(double numero, String parametro) throws NumeroInvalido {
+	public static void validaNumero(double numero, String parametro) throws NumeroInvalidoException {
 		if (numero < 0) {
 			String motivo = "eh menor que zero";
-			throw new NumeroInvalido(parametro, motivo);
+			throw new NumeroInvalidoException(parametro, motivo);
 		}
 	}
 
@@ -31,19 +31,19 @@ public class Verificacao {
 	 *            - String a ser verificada.
 	 * @param parametro
 	 *            - Nome do parametro que esta sendo verificado.
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             - Lanca excecao de String Invalida caso a String seja igual a
 	 *             null ou vazia, personalizando a mensagem para cada caso.
 	 */
-	public static void validaString(String string, String parametro) throws StringInvalida {
+	public static void validaString(String string, String parametro) throws StringInvalidaException {
 
 		if (string.equals(null)) {
 			String motivo = "igual a null";
-			throw new StringInvalida(parametro, motivo);
+			throw new StringInvalidaException(parametro, motivo);
 
 		} else if (string.trim().equals("")) {
 			String motivo = "vazio";
-			throw new StringInvalida(parametro, motivo);
+			throw new StringInvalidaException(parametro, motivo);
 
 		}
 	}
@@ -55,15 +55,15 @@ public class Verificacao {
 	 *            - Objeto a ser verificado.
 	 * @param parametro
 	 *            - Nome do parametro que esta sendo verificado.
-	 * @throws ObjetoInvalido
+	 * @throws ObjetoInvalidoException
 	 *             - Lanca excecao de ObjetoInvalido caso o objeto seja igual a
 	 *             null
 	 */
-	public static void validaObjeto(Object obj, String parametro) throws ObjetoInvalido {
+	public static void validaObjeto(Object obj, String parametro) throws ObjetoInvalidoException {
 
 		if (obj == null) {
 			String motivo = "igual a null";
-			throw new ObjetoInvalido(parametro, motivo);
+			throw new ObjetoInvalidoException(parametro, motivo);
 		}
 
 	}
