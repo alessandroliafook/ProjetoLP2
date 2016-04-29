@@ -19,13 +19,32 @@ public class Verificacao {
 	 *             - Lanca excecao de Numero Invalido acaso o numero seja menor
 	 *             que zero.
 	 */
-	public static void validaNumero(double numero, String parametro) throws NumeroInvalidoException {
+	public static void validaNumeroReal(double numero, String parametro) throws NumeroInvalidoException {
 		if (numero < 0) {
 			String motivo = "eh menor que zero";
 			throw new NumeroInvalidoException(parametro, motivo);
 		}
 	}
 
+	/**
+	 * Metodo que verifica se o numero inserido eh menor que zero.
+	 * 
+	 * @param numero
+	 *            - Numero inteiro a ser verificado.
+	 * @param parametro
+	 *            - Nome do parametro que esta sendo verificado.
+	 * @throws NumeroInvalidoException
+	 *             - Lanca excecao de Numero Invalido acaso o numero seja menor
+	 *             que zero.
+	 */
+	public static void validaNumeroInteiro(double numero, String parametro) throws NumeroInvalidoException {
+		if (numero < 0) {
+			String motivo = "eh menor que zero";
+			throw new NumeroInvalidoException(parametro, motivo);
+		}
+	}
+
+	
 	/**
 	 * Metodo que verifica se a String inserida eh igual a null ou vazia.
 	 * 

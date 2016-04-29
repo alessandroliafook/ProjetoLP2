@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
-import exceptions.ObjetoNaoEncontrado;
+import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
 
@@ -52,13 +52,10 @@ public class ComiteGestor {
 
 		if (!this.primeiroAcesso) {
 			if (chave.equals(CHAVE)) {
-				String matricula = geraMatricula("diretor");
-				realizaCadastro(matricula, chave);
-				diretorGeral = new Funcionario(matricula, chave);
+				primeiroCadastro("DEFAULT_NAME", "diretor", "00-00-0000", chave);
 				this.primeiroAcesso = true;
-				
-				
-				return matricula;
+
+				return diretorGeral.getMatricula();
 
 			} else {
 				throw new StringInvalidaException("chave", "eh invalida");
@@ -70,45 +67,23 @@ public class ComiteGestor {
 	}
 
 	/**
-	 * Metodo que gera uma nova matricula de acordo com o cargo, ano de
-	 * matricula e quantidade de matriculas
+	 * Metodo que realiza o cadastro do primeiro funcionario, sendo este o de um
+	 * diretor geral
 	 * 
+	 * @param nome
+	 *            Nome do diretor geral que devera ser atualizado posteriormente
 	 * @param cargo
-	 *            especifica o cargo ao qual a matricula correspondera
-	 * @throws StringInvalidaException
-	 *             caso o parametro seja invalido, a criacao da matricula nao
-	 *             sera possivel. Sendo assim uma excecao sera lancada.
-	 * @return a nova matricula
+	 *            Diretor geral
+	 * @param dataNascimento
+	 *            Data de nascimento do diretor geral que devera ser atualizada
+	 *            posteriormente
+	 * @param chave
+	 *            A senha do diretor geral sera igual a chave que libera o
+	 *            sistema
 	 */
-	private String geraMatricula(String cargo) throws StringInvalidaException {
-
-		Verificacao.validaString("cargo", cargo);
-
-		String prefixo = "";
-		String matricula = "";
-		LocalDate data = LocalDate.now();
-		String sufixo = String.format("%03d", this.numeroMatriculas);
-
-		switch (cargo) {
-		case "diretor":
-			prefixo = "1";
-			break;
-		case "medico":
-			prefixo = "2";
-			break;
-		case "tecnico admin":
-			prefixo = "3";
-			break;
-		}
-
-		matricula = prefixo + String.valueOf(data.getYear()) + sufixo;
-		this.numeroMatriculas += 1;
-		return matricula;
-
-	}
-
-	private String geraSenha(String dataNascimento, String matricula) {
-
+	private void primeiroCadastro(String nome, String cargo, String dataNascimento, String chave) {
+		cadastraFuncionario(nome, cargo, dataNascimento);
+		diretorGeral.setSenha(chave);
 	}
 
 	/**
@@ -123,7 +98,7 @@ public class ComiteGestor {
 	 *             caso algum dos parametros seja invalido
 	 */
 
-	private void addMatricula(String matricula, String senha) throws StringInvalidaException {
+	private void realizaCadastro(String matricula, String senha) throws StringInvalidaException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -139,7 +114,7 @@ public class ComiteGestor {
 	 *             - Caso o funcionario nao possa ser encontrado.
 	 * @return - Retorna o funcionario que possuir a matricula especificada.
 	 */
-	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontrado {
+	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontradoException {
 
 		if (this.diretorGeral.getMatricula().equals(matricula))
 			return this.diretorGeral;
@@ -156,7 +131,7 @@ public class ComiteGestor {
 			}
 		}
 
-		throw new ObjetoNaoEncontrado("funcionario de matricula " + matricula);
+		throw new ObjetoNaoEncontradoException("funcionario de matricula " + matricula);
 	}
 
 	/**
@@ -185,7 +160,8 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	public boolean realizaLogin(String matricula, String senha) throws StringInvalidaException, ObjetoNaoEncontrado {
+	public boolean realizaLogin(String matricula, String senha)
+			throws StringInvalidaException, ObjetoNaoEncontradoException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -199,12 +175,18 @@ public class ComiteGestor {
 	}
 
 	/**
+	 * Metodo que cadastra um novo funcionario no sistema
 	 * 
 	 * @param nome
+	 *            Nome do novo funcionario
 	 * @param cargo
+	 *            Cargo que ele ocupa
 	 * @param dataNascimento
-	 * @return
-	 * @throws StringInvalida
+	 *            Data de seu nascimento
+	 * @throws StringInvalidaException
+	 *             - Caso algum dos parametros seja invalidos
+	 * @throws DateTimeParseException
+	 *             - Caso a data de nascimento nao esteja no formato adequado
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
 			throws StringInvalidaException, DateTimeParseException {
@@ -213,11 +195,22 @@ public class ComiteGestor {
 		Verificacao.validaString(cargo, "cargo");
 		Verificacao.validaString(dataNascimento, "data de nascimento");
 
-		String matricula = geraMatricula(cargo);
-		String senha = geraSenha(dataNascimento, matricula);
-
-		Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, matricula, senha);
+		Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
 		realizaCadastro(func.getMatricula(), func.getSenha());
+
+		switch (cargo) {
+		case "diretor":
+			diretorGeral = func;
+			break;
+		case "medico":
+			corpoClinico.add(func);
+			break;
+		case "tecnico admin":
+			corpoProfissional.add(func);
+			break;
+		}
+
+		this.numeroMatriculas += 1;
 	}
 
 }
