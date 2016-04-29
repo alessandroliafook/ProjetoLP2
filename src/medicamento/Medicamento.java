@@ -3,8 +3,8 @@ package medicamento;
 import java.util.HashSet;
 import java.util.Set;
 
-import exceptions.NumeroInvalido;
-import exceptions.StringInvalida;
+import exceptions.NumeroInvalidoException;
+import exceptions.StringInvalidaException;
 import util.Verificacao;
 
 public class Medicamento implements Comparable<Medicamento> {
@@ -16,7 +16,7 @@ public class Medicamento implements Comparable<Medicamento> {
 	private TipoMedicamentoIF tipo;
 
 	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
-			throws StringInvalida, NumeroInvalido {
+			throws StringInvalidaException, NumeroInvalidoException {
 
 		Verificacao.validaString(nome, "nome do medicamento");
 		Verificacao.validaNumero(preco, "preco do medicamento");

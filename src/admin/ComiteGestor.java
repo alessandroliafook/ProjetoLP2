@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
 import exceptions.ObjetoNaoEncontrado;
-import exceptions.StringInvalida;
+import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
 
 public class ComiteGestor {
@@ -42,7 +42,7 @@ public class ComiteGestor {
 	 * @param chave
 	 *            string que libera o sistema
 	 * @return uma nova matricula com privilegios de um diretor geral
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso a chave seja invalida
 	 */
 	public String liberaSistema(String chave) throws Exception {
@@ -58,7 +58,7 @@ public class ComiteGestor {
 				return matricula;
 
 			} else {
-				throw new StringInvalida("chave", "eh invalida");
+				throw new StringInvalidaException("chave", "eh invalida");
 			}
 
 		} else {
@@ -72,12 +72,12 @@ public class ComiteGestor {
 	 * 
 	 * @param cargo
 	 *            especifica o cargo ao qual a matricula correspondera
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso o parametro seja invalido, a criacao da matricula nao
 	 *             sera possivel. Sendo assim uma excecao sera lancada.
 	 * @return a nova matricula
 	 */
-	private String geraMatricula(String cargo) throws StringInvalida {
+	private String geraMatricula(String cargo) throws StringInvalidaException {
 
 		Verificacao.validaString("cargo", cargo);
 
@@ -111,10 +111,10 @@ public class ComiteGestor {
 	 *            especifica a matricula a ser cadastrada
 	 * @param senha
 	 *            especifica a senha correspondente
-	 * @throws StringInvalida
+	 * @throws StringInvalidaException
 	 *             caso algum dos parametros seja invalido
 	 */
-	private void addMatricula(String matricula, String senha) throws StringInvalida {
+	private void addMatricula(String matricula, String senha) throws StringInvalidaException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -162,7 +162,7 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	public boolean realizaLogin(String matricula, String senha) throws StringInvalida {
+	public boolean realizaLogin(String matricula, String senha) throws StringInvalidaException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);

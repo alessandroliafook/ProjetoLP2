@@ -1,6 +1,6 @@
 package exceptions;
 
-public class NumeroInvalido extends Exception {
+public class ObjetoInvalidoException extends Exception {
 
 	/**
 	 * 
@@ -16,7 +16,8 @@ public class NumeroInvalido extends Exception {
 	 * @param motivo
 	 *            - indica qual o motivo que tornou o parametro invalido.
 	 */
-	public NumeroInvalido(String parametro, String motivo) {
+	public ObjetoInvalidoException(String parametro, String motivo) {
 		super("X " + parametro + " eh invalidx, pois eh " + motivo + ".");
 	}
+
 }
