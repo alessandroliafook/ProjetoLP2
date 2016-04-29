@@ -13,7 +13,9 @@ import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
 
-public class ComiteGestor {
+public final class ComiteGestor {
+
+	private static ComiteGestor instancia;
 
 	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
@@ -26,7 +28,7 @@ public class ComiteGestor {
 	private Set<Funcionario> corpoProfissional;
 	private FactoryDeFuncionario facFuncionario;
 
-	public ComiteGestor() throws Exception {
+	private ComiteGestor() {
 
 		this.primeiroAcesso = false;
 		this.corpoClinico = new HashSet<Funcionario>();
@@ -34,6 +36,21 @@ public class ComiteGestor {
 		this.facFuncionario = new FactoryDeFuncionario();
 		this.corpoProfissional = new HashSet<Funcionario>();
 
+	}
+
+	/**
+	 * Método que garante que havera apenas uma instancia dessa classe. Caso ja
+	 * tennha sido instanciada uma vez, retorna a instancia, do contrario
+	 * instancia e retorna.
+	 * 
+	 * @return A unica instancia da classe
+	 */
+	public static synchronized ComiteGestor getInstancia() {
+		if (instancia == null) {
+			instancia = new ComiteGestor();
+		}
+
+		return instancia;
 	}
 
 	/**
@@ -47,13 +64,13 @@ public class ComiteGestor {
 	 * @throws StringInvalidaException
 	 *             caso a chave seja invalida
 	 */
-	public String liberaSistema(String chave) throws Exception {
+	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 
-		Verificacao.validaString("chave", chave);
+		Verificacao.validaString(chave, "chave do sistema");
 
 		if (!this.primeiroAcesso) {
 			if (chave.equals(CHAVE)) {
-				primeiroCadastro("DEFAULT_NAME", "diretor", "00-00-0000", chave);
+				primeiroCadastro(nome, "diretor", dataNascimento, chave);
 				this.primeiroAcesso = true;
 
 				return diretorGeral.getMatricula();
@@ -102,7 +119,7 @@ public class ComiteGestor {
 	private void realizaCadastro(String matricula, String senha) throws StringInvalidaException {
 
 		Verificacao.validaString("matricula", matricula);
-		Verificacao.validaString("senha", senha);
+		Verificacao.validaString(senha, "senha do funcionario");
 		cadastros.put(matricula, senha);
 	}
 
@@ -164,8 +181,8 @@ public class ComiteGestor {
 	public boolean realizaLogin(String matricula, String senha)
 			throws StringInvalidaException, ObjetoNaoEncontradoException {
 
-		Verificacao.validaString("matricula", matricula);
-		Verificacao.validaString("senha", senha);
+		Verificacao.validaString(matricula, "matricula do funcionario");
+		Verificacao.validaString(senha, "senha do funcionario");
 
 		if (existeCadastro(matricula, senha)) {
 			funcLogado = getFuncionario(matricula);
