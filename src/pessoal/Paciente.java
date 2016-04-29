@@ -41,7 +41,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 		Verificacao.validaNumeroReal(peso, "peso do paciente");
 		Verificacao.validaString(sexo, "sexo do paciente");
 		Verificacao.validaString(genero, "genero do paciente");
-		Verificacao.validaObjeto(id, "id do paciente");
+		Verificacao.validaNumeroInteiro(id, "id do paciente");
 
 		setPeso(peso);
 		setTipoSanguineo(tipoSanguineo);
