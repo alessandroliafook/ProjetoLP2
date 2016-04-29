@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
-import exceptions.ObjetoNaoEncontrado;
+import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
 import pessoal.Funcionario;
 
@@ -114,7 +114,7 @@ public class ComiteGestor {
 	 *             - Caso o funcionario nao possa ser encontrado.
 	 * @return - Retorna o funcionario que possuir a matricula especificada.
 	 */
-	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontrado {
+	private Funcionario getFuncionario(String matricula) throws ObjetoNaoEncontradoException {
 
 		if (this.diretorGeral.getMatricula().equals(matricula))
 			return this.diretorGeral;
@@ -131,7 +131,7 @@ public class ComiteGestor {
 			}
 		}
 
-		throw new ObjetoNaoEncontrado("funcionario de matricula " + matricula);
+		throw new ObjetoNaoEncontradoException("funcionario de matricula " + matricula);
 	}
 
 	/**
@@ -160,7 +160,8 @@ public class ComiteGestor {
 	 *            especifica a senha correspondente
 	 * @return True se o login seja efetuado com sucesso, False caso contrario
 	 */
-	public boolean realizaLogin(String matricula, String senha) throws StringInvalidaException, ObjetoNaoEncontrado {
+	public boolean realizaLogin(String matricula, String senha)
+			throws StringInvalidaException, ObjetoNaoEncontradoException {
 
 		Verificacao.validaString("matricula", matricula);
 		Verificacao.validaString("senha", senha);
@@ -174,12 +175,18 @@ public class ComiteGestor {
 	}
 
 	/**
+	 * Metodo que cadastra um novo funcionario no sistema
 	 * 
 	 * @param nome
+	 *            Nome do novo funcionario
 	 * @param cargo
+	 *            Cargo que ele ocupa
 	 * @param dataNascimento
-	 * @return
-	 * @throws StringInvalida
+	 *            Data de seu nascimento
+	 * @throws StringInvalidaException
+	 *             - Caso algum dos parametros seja invalidos
+	 * @throws DateTimeParseException
+	 *             - Caso a data de nascimento nao esteja no formato adequado
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
 			throws StringInvalidaException, DateTimeParseException {
