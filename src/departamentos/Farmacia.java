@@ -111,7 +111,7 @@ public class Farmacia {
 			throws StringInvalidaException, NumeroInvalidoException {
 
 		Verificacao.validaString(nomeMedicamento, "nome do medicamento");
-		Verificacao.validaNumero(quantidadeASerEstocada, "quantidade de medicamento a ser estocada");
+		Verificacao.validaNumeroInteiro(quantidadeASerEstocada, "quantidade de medicamento a ser estocada");
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -127,24 +127,28 @@ public class Farmacia {
 	}
 
 	/**
+	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome,
+	 * reduzindo a quantidade pedida do total existente.
 	 * 
 	 * @param nomeMedicamento
+	 *            String contendo o nome do medicamento a ser entregue.
 	 * @param quantidadeFornecida
-	 * @return
+	 *            Inteiro referente a quantidade de medicamentos a serem
+	 *            fornecidas.
+	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
 	 * @throws NumeroInvalidoException
 	 * @throws StringInvalidaException
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeFornecida)
+	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada)
 			throws NumeroInvalidoException, StringInvalidaException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getNome().equals(nomeMedicamento)) {
 
-				if (medicamento.getQuantidade() > quantidadeFornecida) {
+				if (medicamento.getQuantidade() >= quantidadeSolicitada) {
 
-					int total = medicamento.getQuantidade() - quantidadeFornecida;
-
+					int total = medicamento.getQuantidade() - quantidadeSolicitada;
 					medicamento.setQuantidade(total);
 
 					return medicamento;
@@ -166,12 +170,12 @@ public class Farmacia {
 	 * 
 	 * @param categoria
 	 * @return
-	 * @throws ObjetoNaoEncontradoException 
+	 * @throws ObjetoNaoEncontradoException
 	 */
 	public ArrayList<String> consultaPorCategoria(String categoria) throws ObjetoNaoEncontradoException {
 
 		Verificacao.validaCategoria(categoria);
-		
+
 		ArrayList<String> listaDeMedicamentos = new ArrayList<String>();
 
 		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
@@ -188,6 +192,17 @@ public class Farmacia {
 
 	}
 
+	/**
+	 * Metodo que retorna as informacoes importantes do medicamento solicitado.
+	 * 
+	 * @param nomeDoRemedio
+	 *            String relacionada ao nome do medicamento que se pretende
+	 *            obter as informacoes.
+	 * @return String com as informacoes do medicamento solicitado.
+	 * @throws StringInvalidaException
+	 *             Lanca excecao acaso o nome informado seja igual a null ou
+	 *             vazio.
+	 */
 	public String consultaPorNome(String nomeDoRemedio) throws StringInvalidaException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
@@ -201,7 +216,5 @@ public class Farmacia {
 		throw new StringInvalidaException("nome do remedio", "nao cadastrado no sistema");
 
 	}
-
-
 
 }
