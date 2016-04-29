@@ -1,6 +1,6 @@
 package exceptions;
 
-public class ObjetoNaoEncontrado extends Exception {
+public class ObjetoNaoEncontradoException extends Exception {
 
 	/**
 	 * 
@@ -11,7 +11,7 @@ public class ObjetoNaoEncontrado extends Exception {
 	 * Lanca RuntimeException.
 	 * @param parametro - indica qual o parametro que nao pode ser encontorado.
 	 */
-	public ObjetoNaoEncontrado(String nomeDoObjeto) {
+	public ObjetoNaoEncontradoException(String nomeDoObjeto) {
 		super("X " + nomeDoObjeto + " nao pode ser encontrado");
 	}
 	
