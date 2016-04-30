@@ -77,14 +77,14 @@ public class Farmacia {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, Set<String> categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
 		Medicamento medicamento;
 
 		try {
 
-			medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
+			medicamento = farmaceutico.criaMedicamento(nome, tipo, preco, quantidade, categorias);
 
 		} catch (Exception e) {
 

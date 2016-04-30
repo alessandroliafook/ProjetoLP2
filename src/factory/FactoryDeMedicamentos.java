@@ -1,7 +1,5 @@
 package factory;
 
-import java.util.Set;
-
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
@@ -40,11 +38,11 @@ public class FactoryDeMedicamentos {
 	 *             Lanca excecao acaso seja inserido algum numero, seja real ou
 	 *             inteiro, menor que zero.
 	 */
-	public Medicamento criaMedicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
+	public Medicamento criaMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws NomeMedicamentoException, CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
 			TipoMedicamentoException {
 
-		Medicamento medicamento = new Medicamento(nome, preco, quantidade, categorias, tipo);
+		Medicamento medicamento = new Medicamento(nome, tipo, preco, quantidade, categorias);
 
 		return medicamento;
 	}
