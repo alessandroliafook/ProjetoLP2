@@ -92,26 +92,6 @@ public class Verificacao {
 
 	}
 
-	/**
-	 * Metodo que verifica se a categoria informada existe no sistema.
-	 * 
-	 * @param categoria
-	 *            String contendo o nome da categoria que se pretende verificar.
-	 * @throws ObjetoNaoEncontradoException
-	 *             Lanca excecao de Objeto nao encontrado acaso nao existe uma
-	 *             categoria com o nome verificado.
-	 */
-	public static void validaCategoria(String categoria) throws ObjetoNaoEncontradoException {
-
-		for (CategoriasEnum categoriaEnum : CategoriasEnum.values()) {
-			if (categoriaEnum.name().equalsIgnoreCase(categoria)) {
-				return;
-			}
-		}
-
-		throw new ObjetoNaoEncontradoException("categoria de medicamento informada");
-
-	}
 
 	/**
 	 * Metodo que verifica se um funcionario possui privilegios para realizar

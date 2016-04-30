@@ -4,16 +4,15 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import exceptions.CadastroMedicamentoException;
+import exceptions.ConsultaMedicamentoException;
 import exceptions.NumeroInvalidoException;
-import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
 
 import factory.FactoryDeMedicamentos;
 
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
-
-import util.Verificacao;
+import util.VerificaConsultaMedicamento;
 
 public class Farmacia {
 
@@ -117,8 +116,7 @@ public class Farmacia {
 	 *             Lanca excecao personalizada acaso a quantidade a ser estocada
 	 *             seja menor que zero.
 	 */
-	public void estocaMedicamento(String nomeMedicamento, int quantidadeASerEstocada)
-			throws CadastroMedicamentoException {
+	public void estocaMedicamento(String nomeMedicamento, int quantidadeASerEstocada) {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -176,19 +174,23 @@ public class Farmacia {
 	 * informada.
 	 * 
 	 * @param categoria
-	 * @return
-	 * @throws ObjetoNaoEncontradoException
+	 *            - String com o nome da categoria associada aos medicamentos
+	 *            que se pretende listar.
+	 * @return String com a lista de medicamentos que contenham a categoria
+	 *         pesquisada.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
+	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria) throws ObjetoNaoEncontradoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
-		Verificacao.validaCategoria(categoria);
+		VerificaConsultaMedicamento.validaCategoria(categoria);
 
 		int medicamentosEncontrados = 0;
 		StringBuilder listaDeMedicamentos = new StringBuilder();
 		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
-
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
 
@@ -200,10 +202,12 @@ public class Farmacia {
 
 		if (medicamentosEncontrados > 0) {
 			listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
+
+		} else {
+			throw new ConsultaMedicamentoException("Nao ha remedios cadastrados nessa categoria.");
 		}
 
 		return listaDeMedicamentos.toString();
-
 
 	}
 
@@ -218,7 +222,7 @@ public class Farmacia {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String getInfoMedicamento(String nomeDoRemedio) throws StringInvalidaException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -228,8 +232,24 @@ public class Farmacia {
 
 		}
 
-		throw new StringInvalidaException("nome do remedio", "nao cadastrado no sistema");
-
+		throw new ConsultaMedicamentoException("Medicamento nao cadastrado.");
+		
 	}
 
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException{
+		
+		
+		switch(ordenacao.toLowerCase()){
+			
+		case "preco":
+		
+		case "alfabetica":
+		
+		default:
+			throw new ConsultaMedicamentoException("Tipo de ordenacao invalida.");
+		
+		}
+		
+	}
+	
 }

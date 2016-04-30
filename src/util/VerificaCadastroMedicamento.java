@@ -2,7 +2,7 @@ package util;
 
 import exceptions.CadastroMedicamentoException;
 
-public class VerificaCadastro {
+public class VerificaCadastroMedicamento {
 
 	
 	/**

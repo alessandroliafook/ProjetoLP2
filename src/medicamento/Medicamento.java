@@ -9,7 +9,7 @@ import exceptions.StringInvalidaException;
 
 import factory.FactoryTipoMedicamento;
 
-import util.VerificaCadastro;
+import util.VerificaCadastroMedicamento;
 
 public class Medicamento implements Comparable<Medicamento> {
 
@@ -46,9 +46,9 @@ public class Medicamento implements Comparable<Medicamento> {
 	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
 			throws CadastroMedicamentoException {
 
-		VerificaCadastro.validaNomeMedicamento(nome);
-		VerificaCadastro.validaPrecoMedicamento(preco);
-		VerificaCadastro.validaQuantidadeMedicamento(quantidade);
+		VerificaCadastroMedicamento.validaNomeMedicamento(nome);
+		VerificaCadastroMedicamento.validaPrecoMedicamento(preco);
+		VerificaCadastroMedicamento.validaQuantidadeMedicamento(quantidade);
 
 		selecionaTipo(tipo);
 		this.nome = nome;
