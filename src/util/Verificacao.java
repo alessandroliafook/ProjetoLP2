@@ -133,8 +133,8 @@ public class Verificacao {
 	}
 
 	/**
-	 * Metodo que verifica se o novo nome para o qual se quer atualizar eh
-	 * valido.
+	 * Metodo que lanca excecao se o novo nome para o qual se quer atualizar eh
+	 * invalido.
 	 * 
 	 * @param novoNome
 	 *            - Nome a ser atualizado
@@ -143,23 +143,33 @@ public class Verificacao {
 	public static void validaNovoNome(String novoNome) throws NovoNomeInvalidoException, StringInvalidaException {
 
 		validaString(novoNome, "novo nome do funcionario");
-		
-		boolean contemApenasLetras = true;
-		boolean naoExcedeDezesseis = true;
+
+		if (!(isNovoNomeValido(novoNome))) {
+			throw new NovoNomeInvalidoException(novoNome, "nao eh compativel com o padrao esperado");
+		}
+	}
+	/**
+	 * Metodo que verifica se o novo nome para o qual se quer atualizar eh
+	 * valido.
+	 * 
+	 * @param novoNome
+	 *            - Nome a ser atualizado
+	 * @return - True caso seja valido, False do contrario.
+	 */
+	private static boolean isNovoNomeValido(String novoNome) {
+
+		boolean validadeNovoNome = true;
 
 		if (novoNome.length() < 1 || novoNome.length() > 16) {
-			naoExcedeDezesseis = false;
+			validadeNovoNome = false;
 		}
 
 		for (Character c : novoNome.toCharArray()) {
 			if (!Character.isAlphabetic(c)) {
-				contemApenasLetras = false;
+				validadeNovoNome = false;
 			}
 		}
 
-		if (!(contemApenasLetras && naoExcedeDezesseis)) {
-			throw new NovoNomeInvalidoException(novoNome, "nao eh compativel com o padrao esperado");
-		}
+		return validadeNovoNome;
 	}
-
 }
