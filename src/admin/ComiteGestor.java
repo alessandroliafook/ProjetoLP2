@@ -15,8 +15,10 @@ import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.DataInvalidaException;
 import exceptions.LoginException;
+import exceptions.LogoutException;
 import exceptions.MaisDeUmDiretorException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import pessoal.Funcionario;
 
@@ -164,7 +166,10 @@ public final class ComiteGestor {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso o atributo a ser recuperado seja a senha do funcionario
 	 */
-	public String getFuncionarioInfo(String matricula, String atributo) throws ConsultaFuncionarioException {
+	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
+
+		validaMatricula(matricula);
+
 		Funcionario func = getFuncionario(matricula);
 		String ret = "";
 
@@ -187,6 +192,39 @@ public final class ComiteGestor {
 	}
 
 	/**
+	 * Metodo que verifica se a matricula do funcionario esta seguindo o padrao
+	 * adotado
+	 * 
+	 * @param matricula
+	 *            Matricula a ser verificada
+	 * @throws ConsultaFuncionarioException
+	 *             Caso nao esteja seguiundo o padrao, lanca excecao
+	 */
+	public void validaMatricula(String matricula) throws ConsultaFuncionarioException {
+
+		boolean apenasNumeros = true;
+		boolean tamanhoCorreto = true;
+
+		for (Character c : matricula.toCharArray()) {
+			if (!Character.isDigit(c))
+				apenasNumeros = false;
+		}
+
+		if (matricula.length() != 8) {
+			tamanhoCorreto = false;
+		}
+		
+		if (!cadastros.containsKey(matricula)){
+			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
+		}
+
+		if (!(tamanhoCorreto && apenasNumeros)) {
+			throw new ConsultaFuncionarioException("A matricula nao segue o padrao.");
+		}
+		
+	}
+
+	/**
 	 * Metodo que verifica se existe um cadastro correspondente a matricula e
 	 * senha informadas.
 	 * 
@@ -202,8 +240,12 @@ public final class ComiteGestor {
 
 		String motivo = "";
 
+		if (funcLogado != null) {
+			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome();
+		}
+
 		// testa se a matricula esta cadastrada
-		if (!cadastros.containsKey(matricula)) {
+		else if (!cadastros.containsKey(matricula)) {
 			motivo = "Funcionario nao cadastrado.";
 			throw new LoginException(motivo);
 		}
@@ -220,15 +262,23 @@ public final class ComiteGestor {
 	 * que os cabem
 	 * 
 	 * @param matricula
-	 *            especifica a matricula do funcionario a ser logado
+	 *            Especifica a matricula do funcionario a ser logado
 	 * @param senha
-	 *            especifica a senha correspondente
+	 *            Especifica a senha correspondente
 	 * @throws LoginException
+	 *             Caso a matricula ou a senha estejam invalidos ou nao
+	 *             correspondam
 	 */
-	public void realizaLogin(String matricula, String senha) throws LoginException {
+	public void login(String matricula, String senha) throws LoginException {
 
 		validaLogin(matricula, senha);
 		funcLogado = getFuncionario(matricula);
+	}
+
+	public void logout() throws LogoutException {
+		if (funcLogado == null) {
+			throw new LogoutException("Nao ha um funcionario logado.");
+		}
 	}
 
 	/**
@@ -253,6 +303,7 @@ public final class ComiteGestor {
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 
+		validaPermissao();
 		validaDiretor(cargo);
 
 		try {
@@ -298,6 +349,13 @@ public final class ComiteGestor {
 			throw new MaisDeUmDiretorException();
 		}
 
+	}
+
+	private void validaPermissao() throws CadastroFuncionarioException {
+		if (!funcLogado.equals(diretorGeral)) {
+			throw new CadastroFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
+		}
 	}
 
 	/**
@@ -395,6 +453,12 @@ public final class ComiteGestor {
 	 */
 	private boolean autoAtualizacao(String matricula) {
 		return (matricula.equals(funcLogado.getMatricula()));
+	}
+
+	public void fechaSistema() throws SistemaException {
+		if (funcLogado != null) {
+			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome());
+		}
 	}
 
 }
