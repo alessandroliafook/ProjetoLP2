@@ -210,26 +210,27 @@ public final class ComiteGestor {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
-	 * @throws CadastroFuncionarioException
-	 *             - Caso nao seja possivel criar o funcionario
+	 * @throws StringInvalidaException
+	 *             - Caso alguns dos parametros seja invalido
+	 * @throws DateTimeParseException
+	 *             - Caso a data de nascimento nao esteja no formato adequado
 	 */
-	public void cadastraFuncionario(String nome, String cargo, String dataNascimento) throws CadastroFuncionarioException {
+	public void cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 
 		VerificaCadastroFuncionario.validaNomeFuncionario(nome);
 		VerificaCadastroFuncionario.validaDataFuncionario(dataNascimento);
 
-		Funcionario func = (Funcionario) facFuncionario.criaFuncionario(nome, dataNascimento, cargo,
-				this.numeroMatriculas);
+		Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
 		realizaCadastro(func.getMatricula(), func.getSenha());
 
 		switch (cargo) {
-		case "diretor":
+		case "Diretor Geral":
 			diretorGeral = func;
 			break;
-		case "medico":
+		case "Medico":
 			corpoClinico.add(func);
 			break;
-		case "tecnico admin":
+		case "Tecnico Administrativo":
 			corpoProfissional.add(func);
 			break;
 		}

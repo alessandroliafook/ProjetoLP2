@@ -27,7 +27,7 @@ public class FactoryDePessoa {
 	 * @throws StringInvalidaException
 	 *             - Caso quaisquer dos parametros sejam string vazias ou nulas
 	 */
-	public Pessoa criaFuncionario(String nome, String dataNascimento, String cargo, int quantidadeMatriculas)
+	public Funcionario criaFuncionario(String nome, String dataNascimento, String cargo, int quantidadeMatriculas)
 			throws Exception {
 
 		String matricula = geraMatricula(cargo, quantidadeMatriculas);
