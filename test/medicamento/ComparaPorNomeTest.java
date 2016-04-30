@@ -15,8 +15,10 @@ public class ComparaPorNomeTest {
 			Medicamento metamizol = new Medicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico");
 			Medicamento morfina = new Medicamento("Morfina", "referencia", 150, 600, "analgesico");
 
+			// teste construtor
 			ComparaPorNome comparador = new ComparaPorNome();
 			
+			// teste de comparacao
 			assertTrue(comparador.compare(valium, metamizol) > 0);
 			assertTrue(comparador.compare(metamizol, morfina) < 0);
 			assertTrue(comparador.compare(valium, valium) == 0);
