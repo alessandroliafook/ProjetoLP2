@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-import javax.swing.text.StyledEditorKit.ForegroundAction;
-
 import exceptions.*;
 
 public class VerificaPessoa {
@@ -51,4 +49,24 @@ public class VerificaPessoa {
 		
 		if(!isAceito) throw new TipoSanguineoInvalidoException();
 	}
+	
+	public static void validaCargo(String cargo) throws Exception{
+		if(cargo.trim().equals("")){
+			throw new CargoInvalidoException("Nome do cargo nao pode ser vazio.");
+		}
+		
+		String cargosValidos[] = {"Diretor geral", "Medico", "Tecnico Administrativo"};
+		boolean isValido = false;
+		
+		for(String cargoCorreto : cargosValidos){
+			if(cargo.equals(cargoCorreto)){
+				isValido = true;
+			}
+		}
+		
+		if(!isValido){
+			throw new CargoInvalidoException("Cargo invalido.");
+		}
+	}
+	
 }

@@ -6,6 +6,7 @@ import java.time.format.DateTimeParseException;
 import pessoal.Funcionario;
 import pessoal.Paciente;
 import pessoal.Pessoa;
+import util.VerificaPessoa;
 
 public class FactoryDePessoa {
 
@@ -14,21 +15,27 @@ public class FactoryDePessoa {
 	/**
 	 * 
 	 * @param nome
-	 *            - Nome do funcionario a ser criado
+	 *            Nome do funcionario a ser criado
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd/mm/aaaa"
+	 *            Data de nascimento no formato "dd/mm/aaaa"
 	 * @param cargo
-	 *            - Cargo do funcionarios
+	 *            Cargo do funcionario
 	 * @param quantidadeMatriculas
-	 *            - Numero de matriculas ja realizadas + 1
-	 * @return - Um objeto Funcionario com os atributos especificados
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
-	 * @throws StringInvalidaException
-	 *             - Caso quaisquer dos parametros sejam string vazias ou nulas
+	 *            Numero de matriculas ja realizadas + 1
+	 * @return Um objeto Funcionario com os atributos especificados
+	 * @throws DataInvalidaException
+	 *             Caso a data nao esteja no formato especificado
+	 * @throws NomeFuncionarioVazioException
+	 *             Caso o nome fornecido seja vazio
+	 * @throws CargoInvalidoException
+	 *             Caso o cargo seja vazio ou invalido
 	 */
 	public Funcionario criaFuncionario(String nome, String dataNascimento, String cargo, int quantidadeMatriculas)
 			throws Exception {
+
+		VerificaPessoa.validaNome(nome, false);
+		VerificaPessoa.validaData(dataNascimento);
+		VerificaPessoa.validaCargo(cargo);
 
 		String matricula = geraMatricula(cargo, quantidadeMatriculas);
 		String senha = geraSenha(dataNascimento, matricula);
@@ -39,31 +46,38 @@ public class FactoryDePessoa {
 	/**
 	 * 
 	 * @param nome
-	 *            - Nome do paciente
+	 *            Nome do paciente
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd/mm/aaaa"
+	 *            Data de nascimento no formato "dd/mm/aaaa"
 	 * @param peso
-	 *            - Peso do paciente
+	 *            Peso do paciente
 	 * @param tipoSanguineo
-	 *            - Tipo sanguineo do paciente
+	 *            Tipo sanguineo do paciente
 	 * @param sexo
-	 *            - Sexo do paciente(M/F)
+	 *            Sexo do paciente
 	 * @param genero
-	 *            - Genero do paciente
+	 *            Genero do paciente
 	 * @param numeroCadastros
-	 *            - Numero de pacientes ja cadastrados + 1
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
-	 * @throws StringInvalidaException
-	 *             - Caso quaisquer string fornecida seja vazia ou nula
-	 * @throws NumeroInvalidoException
-	 *             - Caso o peso do paciente seja negativo
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
+	 *            Numero de pacientes ja cadastrados + 1
+	 * @return Um objeto Paciente com os atributos especificados
+	 * @throws DataInvalidaException
+	 *             Caso a data nao esteja no formato especificado
+	 * @throws NomePacienteVazioException
+	 *             Caso o nome fornecido seja vazio
+	 * @throws PesoInvalidoException
+	 * 			   Caso o peso fornecido seja negativo
+	 * @throws TipoSanguineoInvalidoException
+	 * 			   Caso o tipo sanguineo informado seja vazio ou invalido     
+	 *             
 	 */
 	public Pessoa criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
 			String genero, int numeroCadastros) throws Exception {
 
+		VerificaPessoa.validaNome(nome, false);
+		VerificaPessoa.validaData(dataNascimento);
+		VerificaPessoa.validaPeso(peso);
+		VerificaPessoa.validaTipoSanguineo(tipoSanguineo);
+		
 		return new Paciente(nome, dataNascimento, peso, tipoSanguineo, sexo, genero, numeroCadastros);
 
 	}
@@ -81,15 +95,15 @@ public class FactoryDePessoa {
 		String novaMatricula = "";
 
 		switch (cargo.toLowerCase()) {
-		case "diretor":
+		case "Diretor Geral":
 			novaMatricula += "1";
 			break;
 
-		case "medico":
+		case "Medico":
 			novaMatricula += "2";
 			break;
 
-		case "tecnico admin":
+		case "Tecnico Administrativo":
 			novaMatricula += "3";
 			break;
 
