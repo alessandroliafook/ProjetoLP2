@@ -8,7 +8,9 @@ public class Prontuario implements Comparable<Prontuario> {
 	private Paciente paciente;
 	private List<Object> procedimentos; //Para uso futuro
 	
-	public Prontuario(){}
+	public Prontuario(Paciente paciente){
+		this.paciente = paciente;
+	}
 	
 	public Paciente getPaciente(){
 		return this.paciente;
@@ -18,4 +20,23 @@ public class Prontuario implements Comparable<Prontuario> {
 	public int compareTo(Prontuario outroProntuario) {
 		return this.paciente.compareTo(outroProntuario.getPaciente());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((paciente == null) ? 0 : paciente.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Prontuario){
+			Prontuario outroProntuario = (Prontuario) obj;
+			return this.paciente.equals(outroProntuario.getPaciente());
+		}
+		return false;
+	}
+	
+	
 }

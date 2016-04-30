@@ -5,7 +5,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import pessoal.Funcionario;
 import pessoal.Paciente;
-import pessoal.Pessoa;
 import util.VerificaPessoa;
 
 public class FactoryDePessoa {
@@ -70,7 +69,7 @@ public class FactoryDePessoa {
 	 * 			   Caso o tipo sanguineo informado seja vazio ou invalido     
 	 *             
 	 */
-	public Pessoa criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
+	public Paciente criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
 			String genero, int numeroCadastros) throws Exception {
 
 		VerificaPessoa.validaNome(nome, false);

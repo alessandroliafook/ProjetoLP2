@@ -1,7 +1,5 @@
 package pessoal;
 
-import cargos.DiretorGeral;
-import util.*;
 
 public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 
@@ -26,8 +24,6 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 	public Funcionario(String nome, String dataNascimento, String matricula, String senha) throws Exception {
 
 		super(nome, dataNascimento);
-		//VerificaPessoa.validaMatricula(matricula);
-		//VerficaPessoa.validaSenha(senha);
 		setMatricula(matricula);
 		setSenha(senha);
 

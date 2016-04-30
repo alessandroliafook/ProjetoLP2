@@ -33,6 +33,10 @@ public abstract class Pessoa {
 		setData(data);
 	}
 
+	public int getIdade(){
+		return LocalDate.now().getYear() - dataNascimento.getYear();
+	}
+	
 	public String getNome() {
 		return this.nome;
 	}
