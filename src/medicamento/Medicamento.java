@@ -9,7 +9,6 @@ import java.util.TreeSet;
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
-import exceptions.StringInvalidaException;
 import exceptions.TipoMedicamentoException;
 import factory.FactoryTipoMedicamento;
 
@@ -63,12 +62,13 @@ public class Medicamento implements Comparable<Medicamento> {
 		this.categorias = new TreeSet<CategoriasEnum>();
 		this.tipo = FactoryTipoMedicamento.selecionaTipo(tipo);
 		
-		List<String> listCategorias = new ArrayList<String>(Arrays.asList(categorias.split(" , ")));
+		List<String> listCategorias = new ArrayList<String>(Arrays.asList(categorias.split(",")));
 
-		for (String categoria : listCategorias) {
+		for (int i=0; i<listCategorias.size(); i++) {
 
 			try {
-
+				
+				String categoria = listCategorias.get(i).toUpperCase();
 				this.categorias.add(CategoriasEnum.valueOf(categoria));
 
 			} catch (IllegalArgumentException e) {

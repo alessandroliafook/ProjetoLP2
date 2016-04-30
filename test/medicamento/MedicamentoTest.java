@@ -13,6 +13,19 @@ public class MedicamentoTest {
 	@Test
 	public void test() {
 
+	
+		try {
+
+			// testando construtor
+			Medicamento valium = new Medicamento("Valium", "generico", 21.50, 45, "analgesico");
+	
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			fail("nao deve falhar");
+		}
+		
+		
+		
 		try {
 
 			// testando construtor
@@ -21,15 +34,15 @@ public class MedicamentoTest {
 
 			try {
 
-				CategoriasEnum analgesico = CategoriasEnum.valueOf("ANALGESICO");
-				CategoriasEnum antitermico = CategoriasEnum.valueOf("ANTITERMICO");
 
 				Set<CategoriasEnum> list1 = new TreeSet<CategoriasEnum>();
-				list1.add(analgesico);
+				list1.add(CategoriasEnum.ANALGESICO);
+				System.out.println(list1);
 
 				Set<CategoriasEnum> list2 = new TreeSet<CategoriasEnum>();
-				list2.add(antitermico);
-				list2.add(analgesico);
+				list2.add(CategoriasEnum.ANALGESICO);
+				list2.add(CategoriasEnum.ANTIMETICO);
+				System.out.println(list2);
 
 				assertEquals("Valium", valium.getNome());
 				assertEquals("generico", valium.getTipo());
@@ -44,15 +57,9 @@ public class MedicamentoTest {
 
 			}
 
-			Medicamento morfina = new Medicamento("Morfina", "referencia", 150, 600, "analgesico");
-			Medicamento medroxyprogesterona = new Medicamento("Medroxyprogesterona", "generico", 285.50, 600,
-					"hormonal");
-			Medicamento duraston = new Medicamento("Duraston", "generico", 112.50, 150, "hormonal");
-			Medicamento nimesulida = new Medicamento("Nimesulida", "referencia", 12.50, 150,
-					"antiinflamatorio,antitermico,analgesico");
-			Medicamento penicilina = new Medicamento("Penicilina", "referencia", 80.00, 150, "antibiotico");
 
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			fail("nao deve lancar excecao.");
 		}
 
