@@ -10,6 +10,9 @@ public class CategoriasEnumTest {
 	public void test() {
 
 	assertTrue(CategoriasEnum.ANALGESICO.equals(CategoriasEnum.valueOf("ANALGESICO")));
+
+	String string = CategoriasEnum.ANALGESICO.toString();
+	assertTrue(string.equals("analgesico"));
 	
 	}
 
