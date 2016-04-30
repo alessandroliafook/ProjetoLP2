@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-
-import javax.xml.soap.Text;
+import java.util.TreeSet;
 
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
@@ -17,13 +16,12 @@ import factory.FactoryDeMedicamentos;
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
 import medicamento.ComparaPorNome;
-import util.StringUtil;
 import util.VerificaConsultaMedicamento;
 
 public class Farmacia {
 
 	public static Farmacia INSTANCE;
-	List<Medicamento> estoqueDeMedicamentos;
+	Set<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 
 	/**
@@ -32,7 +30,7 @@ public class Farmacia {
 	 */
 	private Farmacia() {
 
-		this.estoqueDeMedicamentos = new ArrayList<Medicamento>();
+		this.estoqueDeMedicamentos = new TreeSet<Medicamento>();
 		farmaceutico = new FactoryDeMedicamentos();
 
 	}
@@ -196,27 +194,26 @@ public class Farmacia {
 		VerificaConsultaMedicamento.validaCategoria(categoria);
 
 		int medicamentosEncontrados = 0;
-		StringBuilder listaDeMedicamentos = new StringBuilder();
 		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
+		List<Medicamento> listaPorCategoria = new ArrayList<Medicamento>();
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
-
-				listaDeMedicamentos.append(medicamento.getNome()).append(",");
+				
+				listaPorCategoria.add(medicamento);
 				medicamentosEncontrados += 1;
 			}
 
 		}
 
 		if (medicamentosEncontrados > 0) {
-			listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
+			
+			return listaPorCategoria.toString();
 
 		} else {
 			throw new ConsultaMedicamentoException("Nao ha remedios cadastrados nessa categoria.");
 		}
-
-		return listaDeMedicamentos.toString();
 
 	}
 
@@ -236,7 +233,7 @@ public class Farmacia {
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getNome().equals(nomeDoRemedio)) {
-				return medicamento.toString();
+				return medicamento.informacoes();
 			}
 
 		}
@@ -247,51 +244,20 @@ public class Farmacia {
 
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
-		String listaDeMedicamentos;
-
+		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
+		
 		switch (ordenacao.toLowerCase()) {
 
 		case "preco":
-
-			for (Medicamento medicamento : estoqueDeMedicamentos) {
-
-				listaDeMedicamentos.append(medicamento.getNome()).append(",");
-
-			}
-
-			if (estoqueDeMedicamentos.size() > 0) {
-				listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
-
-			}
-
+			
+			Collections.sort(listaDeMedicamentos);
+			return listaDeMedicamentos.toString();
+			
 		case "alfabetica":
 
-			List<Medicamento> estoqueReordenado = new ArrayList<Medicamento>();
-
-			estoqueReordenado.addAll(this.estoqueDeMedicamentos);
 			ComparaPorNome comparador = new ComparaPorNome();
-
-			Collections.sort(estoqueReordenado, comparador);
-
-			List<String> lista = new ArrayList<String>();
-
-			for(Medicamento medicamento : estoqueReordenado){
-				lista.add(medicamento.getNome());
-			}
-			
-			listaDeMedicamentos = String.join("," , lista);
-					
-			
-			for (Medicamento medicamento : estoqueDeMedicamentos) {
-
-				listaDeMedicamentos.append(medicamento.getNome()).append(",");
-
-			}
-
-			if (estoqueDeMedicamentos.size() > 0) {
-				listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
-
-			}
+			Collections.sort(listaDeMedicamentos, comparador);
+			return listaDeMedicamentos.toString();
 
 		default:
 			throw new ConsultaMedicamentoException("Tipo de ordenacao invalida.");

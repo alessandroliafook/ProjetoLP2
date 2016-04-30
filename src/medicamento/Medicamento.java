@@ -102,7 +102,7 @@ public class Medicamento implements Comparable<Medicamento> {
 	 * Metodo que retorna uma String com as informacoes principais do
 	 * medicamento.
 	 */
-	public String toString() {
+	public String informacoes() {
 
 		String string = "Medicamento de Referencia: " + getNome() + " - Preco: R$ " + getPreco() + " - Disponivel: "
 				+ getQuantidade() + " - Categorias: ";
@@ -122,6 +122,13 @@ public class Medicamento implements Comparable<Medicamento> {
 		return builder.toString();
 	}
 
+	/**
+	 * Metodo que retorna o nome do objeto.
+	 */
+	public String toString(){
+		return getNome();
+	}
+	
 	/**
 	 * Metodo que informa o nome do medicamento.
 	 * 

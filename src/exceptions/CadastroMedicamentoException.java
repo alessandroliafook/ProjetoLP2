@@ -4,6 +4,11 @@ public class CadastroMedicamentoException extends Exception{
 
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8697099391305750827L;
+
+	/**
 	 * Lanca Exception personalizada com a mensagem "Erro no cadastro de medicamento. " + motivo.
 	 * 
 	 * @param motivo
