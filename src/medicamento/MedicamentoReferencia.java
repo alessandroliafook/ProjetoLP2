@@ -4,7 +4,7 @@ public class MedicamentoReferencia implements TipoMedicamentoIF {
 
 	public final double DESCONTO = 1;
 
-	private static MedicamentoReferencia INSTANCE;
+	private static TipoMedicamentoIF INSTANCE;
 
 	/**
 	 * Construtor privado para inicializar uma unica instancia de medicamento de
@@ -20,7 +20,7 @@ public class MedicamentoReferencia implements TipoMedicamentoIF {
 	 * 
 	 * @return A instancia do Medicamento de Referencia existente no sistema.
 	 */
-	public static MedicamentoReferencia getInstance() {
+	public static TipoMedicamentoIF getInstance() {
 
 		if (INSTANCE == null) {
 			INSTANCE = new MedicamentoReferencia();

@@ -1,6 +1,8 @@
 package util;
 
 import exceptions.CadastroMedicamentoException;
+import exceptions.NomeMedicamentoException;
+import exceptions.NumeroInvalidoException;
 
 public class VerificaCadastroMedicamento {
 
@@ -13,12 +15,11 @@ public class VerificaCadastroMedicamento {
 	 * @throws CadastroMedicamentoException 
 	 *             - Lanca excecao caso a String com o nome do medicamento seja vazia.
 	 */
-	public static void validaNomeMedicamento(String nomeMedicamento) throws CadastroMedicamentoException {
+	public static void validaNomeMedicamento(String nomeMedicamento) throws NomeMedicamentoException {
 
 		if (nomeMedicamento.trim().equals("")) {
 			
-			String motivo = "Nome do medicamento nao pode ser vazio.";
-			throw new CadastroMedicamentoException(motivo);
+			throw new NomeMedicamentoException();
 
 		}
 	}
@@ -28,13 +29,13 @@ public class VerificaCadastroMedicamento {
 	 * 
 	 * @param qntMedicamentos
 	 *            - Inteiro correspondente ao preco associado ao medicamento a ser verificada.
-	 * @throws CadastroMedicamentoException
+	 * @throws NumeroInvalidoException
 	 *             - Lanca excecao acaso o valor informad0 seja menor que zero.
 	 */
-	public static void validaPrecoMedicamento(double precoMedicamento) throws CadastroMedicamentoException {
+	public static void validaPrecoMedicamento(double precoMedicamento) throws NumeroInvalidoException {
 		if (precoMedicamento < 0) {
-			String motivo = "Preco do medicamento nao pode ser negativo.";
-			throw new CadastroMedicamentoException(motivo);
+			String parametro = "Preco do medicamento";
+			throw new NumeroInvalidoException(parametro);
 		}
 	}
 
@@ -44,13 +45,13 @@ public class VerificaCadastroMedicamento {
 	 * 
 	 * @param qntMedicamentos
 	 *            - Inteiro correspondente a quantidade  de medicamentos a ser verificada.
-	 * @throws CadastroMedicamentoException
+	 * @throws NumeroInvalidoException
 	 *             - Lanca excecao acaso a quantidade informada seja menor que zero.
 	 */
-	public static void validaQuantidadeMedicamento(int qntMedicamento) throws CadastroMedicamentoException {
+	public static void validaQuantidadeMedicamento(int qntMedicamento) throws NumeroInvalidoException {
 		if (qntMedicamento < 0) {
-			String motivo = "Quantidade do medicamento nao pode ser negativo.";
-			throw new CadastroMedicamentoException(motivo);
+			String parametro = "Quantidade do medicamento";
+			throw new NumeroInvalidoException(parametro);
 		}
 	}
 

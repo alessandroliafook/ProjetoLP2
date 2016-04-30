@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
-import exceptions.NumeroInvalidoException;
 import exceptions.StringInvalidaException;
 
 import factory.FactoryDeMedicamentos;
@@ -16,7 +15,6 @@ import factory.FactoryDeMedicamentos;
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
 import medicamento.ComparaPorNome;
-import util.VerificaConsultaMedicamento;
 
 public class Farmacia {
 
@@ -82,7 +80,17 @@ public class Farmacia {
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, Set<String> categorias)
 			throws CadastroMedicamentoException {
 
-		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
+		Medicamento medicamento;
+
+		try {
+
+			medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
+
+		} catch (Exception e) {
+
+			throw new CadastroMedicamentoException(e.getMessage());
+
+		}
 
 		if (this.estoqueDeMedicamentos.contains(medicamento)) {
 
@@ -148,11 +156,10 @@ public class Farmacia {
 	 *            Inteiro referente a quantidade de medicamentos a serem
 	 *            fornecidas.
 	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
+	 * @throws Exception
 	 * @throws NumeroInvalidoException
-	 * @throws StringInvalidaException
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada)
-			throws NumeroInvalidoException, StringInvalidaException {
+	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -166,8 +173,8 @@ public class Farmacia {
 					return medicamento;
 				}
 
-				throw new NumeroInvalidoException("quantidade de medicamento solicitada",
-						"existe apenas" + medicamento.getQuantidade() + "no estoque");
+				throw new Exception("quantidade de medicamento solicitada" + "existe apenas"
+						+ medicamento.getQuantidade() + "no estoque");
 			}
 
 		}
@@ -182,10 +189,11 @@ public class Farmacia {
 	 * @param nomeMedicamento
 	 *            String contendo o nome do medicamento a ser entregue.
 	 * @return Objeto do tipo Medicamento.
-	 * @throws ConsultaMedicamentoException Lanca excecao acaso o medicamento pesquisado nao exista no estoque.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
+	 *             estoque.
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento)
-			throws ConsultaMedicamentoException {
+	public Medicamento forneceMedicamento(String nomeMedicamento) throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -216,10 +224,19 @@ public class Farmacia {
 	 */
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
-		VerificaConsultaMedicamento.validaCategoria(categoria);
+		CategoriasEnum enumCategoria;
+
+		try {
+
+			enumCategoria = CategoriasEnum.valueOf(categoria);
+
+		} catch (IllegalArgumentException e) {
+
+			throw new ConsultaMedicamentoException("Categoria invalida.");
+
+		}
 
 		int medicamentosEncontrados = 0;
-		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
 		List<Medicamento> listaPorCategoria = new ArrayList<Medicamento>();
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
@@ -237,9 +254,9 @@ public class Farmacia {
 			return listaPorCategoria.toString();
 
 		} else {
+	
 			throw new ConsultaMedicamentoException("Nao ha remedios cadastrados nessa categoria.");
 		}
-
 	}
 
 	/**
@@ -305,34 +322,39 @@ public class Farmacia {
 
 	/**
 	 * Metodo que consulta o atributo escolhido do medicamento escolhido.
-	 * @param atributoDoMedicamento String com o atributo que se deseja informacao.
-	 * @param medicamento Objeto que se deseja a informacao de seu atributo.
+	 * 
+	 * @param atributoDoMedicamento
+	 *            String com o atributo que se deseja informacao.
+	 * @param medicamento
+	 *            Objeto que se deseja a informacao de seu atributo.
 	 * @return String contendo a informacao solicitada
-	 * @throws ConsultaMedicamentoException retorna excecao acaso o atributo nao exista.
+	 * @throws ConsultaMedicamentoException
+	 *             retorna excecao acaso o atributo nao exista.
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento, Medicamento medicamento) throws ConsultaMedicamentoException{
-		
-		switch(atributoDoMedicamento.toLowerCase()){
-		
+	public String getInfoMedicamento(String atributoDoMedicamento, Medicamento medicamento)
+			throws ConsultaMedicamentoException {
+
+		switch (atributoDoMedicamento.toLowerCase()) {
+
 		case "nome":
 			return medicamento.getNome();
-		
+
 		case "preco":
 			return String.valueOf(medicamento.getPreco());
-		
+
 		case "quantidade":
 			return String.valueOf(medicamento.getQuantidade());
-			
+
 		case "categorias":
 			List<CategoriasEnum> listaDeCategorias = new ArrayList<CategoriasEnum>(medicamento.getCategorias());
 			return listaDeCategorias.toString();
 
 		case "tipo":
 			return medicamento.getTipo();
-		
+
 		default:
 			throw new ConsultaMedicamentoException("Nao ha atributo com o nome especificado associado ao medicamento.");
-		
+
 		}
 	}
 }

@@ -3,10 +3,11 @@ package medicamento;
 import java.util.Set;
 import java.util.TreeSet;
 
-import exceptions.CadastroMedicamentoException;
+import exceptions.CategoriaMedicamentoInvalidaException;
+import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.StringInvalidaException;
-
+import exceptions.TipoMedicamentoException;
 import factory.FactoryTipoMedicamento;
 
 import util.VerificaCadastroMedicamento;
@@ -36,48 +37,41 @@ public class Medicamento implements Comparable<Medicamento> {
 	 * @param tipo
 	 *            String que indica o tipo de medicamento (referencia ou
 	 *            generico).
+	 * @throws CategoriaMedicamentoInvalidaException
 	 * @throws StringInvalidaException
 	 *             Lanca excecao acaso seja inserida alguma String(nome,
 	 *             categoria, tipo) igual a null ou vazia.
 	 * @throws NumeroInvalidoException
 	 *             Lanca excecao acaso seja inserido algum numero, seja real ou
 	 *             inteiro, menor que zero.
+	 * @throws TipoMedicamentoException
 	 */
 	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
-			throws CadastroMedicamentoException {
+			throws NomeMedicamentoException, CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
+			TipoMedicamentoException {
 
 		VerificaCadastroMedicamento.validaNomeMedicamento(nome);
 		VerificaCadastroMedicamento.validaPrecoMedicamento(preco);
 		VerificaCadastroMedicamento.validaQuantidadeMedicamento(quantidade);
 
-		selecionaTipo(tipo);
 		this.nome = nome;
 		this.preco = this.tipo.calculaPreco(preco);
 		this.quantidade = quantidade;
 		this.categorias = new TreeSet<CategoriasEnum>();
+		this.tipo = FactoryTipoMedicamento.selecionaTipo(tipo);
 
 		for (String categoria : categorias) {
 
-			this.categorias.add(CategoriasEnum.valueOf(categoria));
+			try {
+
+				this.categorias.add(CategoriasEnum.valueOf(categoria));
+
+			} catch (IllegalArgumentException e) {
+
+				throw new CategoriaMedicamentoInvalidaException();
+			}
 		}
 
-	}
-
-	/**
-	 * Metodo que escolhe qual objeto de TipoMedicamentoIF sera associado a
-	 * instancia tipo.
-	 * 
-	 * @param tipo
-	 *            String com o nome do tipo a ser escolhido dentre as
-	 *            opcoes(referencia, generico).
-	 */
-	private void selecionaTipo(String tipo) {
-		switch (tipo) {
-		case "referencia":
-			this.tipo = FactoryTipoMedicamento.criaMedicamentoReferencia();
-		case "generico":
-			this.tipo = FactoryTipoMedicamento.criaMedicamentoGenerico();
-		}
 	}
 
 	@Override
@@ -125,10 +119,10 @@ public class Medicamento implements Comparable<Medicamento> {
 	/**
 	 * Metodo que retorna o nome do objeto.
 	 */
-	public String toString(){
+	public String toString() {
 		return getNome();
 	}
-	
+
 	/**
 	 * Metodo que informa o nome do medicamento.
 	 * 
@@ -165,9 +159,9 @@ public class Medicamento implements Comparable<Medicamento> {
 		return quantidade;
 	}
 
-	
 	/**
 	 * Metodo que informa o tipo de medicamento.
+	 * 
 	 * @return String com o tipo do medicamento.
 	 */
 	public String getTipo() {

@@ -1,36 +1,36 @@
 package factory;
 
+import exceptions.TipoMedicamentoException;
 import medicamento.MedicamentoGenerico;
 import medicamento.MedicamentoReferencia;
+import medicamento.TipoMedicamentoIF;
 
 public class FactoryTipoMedicamento {
 
 	/**
-	 * Metodo responsavel que faz o fowarding do metodo responsavel por criar
-	 * uma instancia do Medicamento de Generico se nao existir, ou retornar a
-	 * instancia existente acaso jah tenha sido criada, usando a estrategia do
-	 * singleton.
+	 * Metodo que escolhe qual objeto de TipoMedicamentoIF sera associado a
+	 * instancia tipo.
 	 * 
-	 * @return A instancia do Medicamento de Generico existente no sistema.
+	 * @param tipo
+	 *            String com o nome do tipo a ser escolhido dentre as
+	 *            opcoes(referencia, generico).
+	 * @throws TipoMedicamentoException
+	 *             Lanca excecao acaso o tipo nao seja valido.
 	 */
-	public static MedicamentoGenerico criaMedicamentoGenerico() {
+	public static TipoMedicamentoIF selecionaTipo(String tipo) throws TipoMedicamentoException {
 
-		return MedicamentoGenerico.getInstance();
+		switch (tipo) {
 
-	}
+		case "referencia":
+			return MedicamentoReferencia.getInstance();
 
-	/**
-	 * Metodo responsavel que faz o fowarding do metodo responsavel por criar
-	 * uma instancia do Medicamento de Referencia se nao existir, ou retornar a
-	 * instancia existente acaso jah tenha sido criada, usando a estrategia do
-	 * singleton.
-	 * 
-	 * @return A instancia do Medicamento de Referencia existente no sistema.
-	 */
-	public static MedicamentoReferencia criaMedicamentoReferencia() {
+		case "generico":
+			return MedicamentoGenerico.getInstance();
 
-		return MedicamentoReferencia.getInstance();
+		default:
+			throw new TipoMedicamentoException();
 
+		}
 	}
 
 }
