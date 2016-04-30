@@ -140,8 +140,10 @@ public class Verificacao {
 	 *            - Nome a ser atualizado
 	 * @return - True caso seja valido, False do contrario.
 	 */
-	public static void validaNovoNome(String novoNome) throws NovoNomeInvalidoException {
+	public static void validaNovoNome(String novoNome) throws NovoNomeInvalidoException, StringInvalidaException {
 
+		validaString(novoNome, "novo nome do funcionario");
+		
 		boolean contemApenasLetras = true;
 		boolean naoExcedeDezesseis = true;
 

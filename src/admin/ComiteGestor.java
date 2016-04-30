@@ -237,10 +237,7 @@ public final class ComiteGestor {
 	public void atualizaNome(String matricula, String novoNome) {
 
 		Verificacao.validaString(matricula, "matricula do funcionario");
-
-		if (!verificaNome(novoNome)) {
-			throw new Exception("Nome invalido");
-		}
+		Verificacao.validaNovoNome(novoNome);
 
 	}
 
