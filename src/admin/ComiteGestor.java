@@ -9,8 +9,10 @@ import java.util.Set;
 import java.util.TreeSet;
 import util.Verificacao;
 import exceptions.NaoAutorizadoException;
+import exceptions.NovoNomeInvalidoException;
 import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
+import factory.FactoryDePessoa;
 import pessoal.Funcionario;
 
 public final class ComiteGestor {
@@ -26,14 +28,14 @@ public final class ComiteGestor {
 	private Set<Funcionario> corpoClinico;
 	private Map<String, String> cadastros;
 	private Set<Funcionario> corpoProfissional;
-	private FactoryDeFuncionario facFuncionario;
+	private FactoryDePessoa facFuncionario;
 
 	private ComiteGestor() {
 
 		this.primeiroAcesso = false;
 		this.corpoClinico = new HashSet<Funcionario>();
 		this.cadastros = new HashMap<String, String>();
-		this.facFuncionario = new FactoryDeFuncionario();
+		this.facFuncionario = new FactoryDePessoa();
 		this.corpoProfissional = new HashSet<Funcionario>();
 
 	}
@@ -99,8 +101,9 @@ public final class ComiteGestor {
 	 * @param chave
 	 *            A senha do diretor geral sera igual a chave que libera o
 	 *            sistema
+	 * @throws Exception 
 	 */
-	private void primeiroCadastro(String nome, String cargo, String dataNascimento, String chave) {
+	private void primeiroCadastro(String nome, String cargo, String dataNascimento, String chave) throws Exception {
 		cadastraFuncionario(nome, cargo, dataNascimento);
 		diretorGeral.setSenha(chave);
 	}
@@ -167,6 +170,8 @@ public final class ComiteGestor {
 		if (cadastros.containsKey(matricula) && cadastros.get(matricula).equals(senha)) {
 			return true;
 		}
+		
+		return false;
 	}
 
 	/**
@@ -202,13 +207,10 @@ public final class ComiteGestor {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
-	 * @throws StringInvalidaException
-	 *             - Caso algum dos parametros seja invalidos
-	 * @throws DateTimeParseException
-	 *             - Caso a data de nascimento nao esteja no formato adequado
+	 * @throws Exception 
 	 */
 	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
-			throws StringInvalidaException, DateTimeParseException, NaoAutorizadoException {
+			throws Exception {
 
 		Verificacao.validaAutorizacao(funcLogado.getMatricula(), "matricula");
 
@@ -216,7 +218,7 @@ public final class ComiteGestor {
 		Verificacao.validaString(cargo, "cargo");
 		Verificacao.validaString(dataNascimento, "data de nascimento");
 
-		Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+		Funcionario func = (Funcionario) facFuncionario.criaFuncionario(nome, dataNascimento, cargo,  this.numeroMatriculas);
 		realizaCadastro(func.getMatricula(), func.getSenha());
 
 		switch (cargo) {
@@ -234,11 +236,112 @@ public final class ComiteGestor {
 		this.numeroMatriculas += 1;
 	}
 
-	public void atualizaNome(String matricula, String novoNome) {
+	/**
+	 * Metodo que atualiza o nome de um funcionario. O diretor geral pode mudar
+	 * essa informacao de qualquer outro funcionario, os demais podem apenas
+	 * mudar a si.
+	 * 
+	 * @param matricula
+	 *            - Matricula do funcionario a ser atualizado
+	 * @param novoNome
+	 *            - Novo nome a ser atualizado
+	 * @throws StringInvalidaException
+	 *             - Caso alguma dos parametros seja invalido
+	 * @throws NovoNomeInvalidoException
+	 *             - Caso o novo nome a ser atualizado nao siga o padrao
+	 *             estabelecido
+	 * @throws ObjetoNaoEncontradoException 
+	 */
+	public void atualizaNome(String matricula, String novoNome)
+			throws StringInvalidaException, NovoNomeInvalidoException, ObjetoNaoEncontradoException {
 
 		Verificacao.validaString(matricula, "matricula do funcionario");
 		Verificacao.validaNovoNome(novoNome);
 
+		if (autoAtualizacao(matricula)) {
+			funcLogado.setNome(novoNome);
+		} else if (diretorLogado()) {
+			Funcionario func = getFuncionario(matricula);
+			func.setNome(novoNome);
+		}
+
+	}
+
+	/**
+	 * Metodo que atualiza a data de nascimento de um funcionario. O diretor
+	 * geral pode mudar essa informacao de qualquer outro funcionario, os demais
+	 * podem apenas mudar a si.
+	 * 
+	 * @param matricula
+	 *            - Matricula do funcionario a ser atualizado
+	 * @param novoNome
+	 *            - Nova data de nascimento a ser atualizada
+	 * @throws StringInvalidaException
+	 *             - Caso alguma dos parametros seja invalido
+	 * @throws ObjetoNaoEncontradoException 
+	 * 
+	 */
+	public void atualizaDataNascimento(String matricula, String novaDataNascimento)
+			throws StringInvalidaException, NovoNomeInvalidoException, ObjetoNaoEncontradoException {
+
+		Verificacao.validaString(matricula, "matricula do funcionario");
+		Verificacao.validaString(novaDataNascimento, "nova data de nascimento");
+
+		if (autoAtualizacao(matricula)) {
+			funcLogado.setNome(novaDataNascimento);
+		} else if (diretorLogado()) {
+			Funcionario func = getFuncionario(matricula);
+			func.setNome(novaDataNascimento);
+		}
+
+	}
+
+	/**
+	 * Metodo que atualiza a senha de um funcionario. O diretor geral pode mudar
+	 * essa informacao de qualquer outro funcionario, os demais podem apenas
+	 * mudar a si.
+	 * 
+	 * @param matricula
+	 *            - Matricula do funcionario a ser atualizado
+	 * @param novoNome
+	 *            - Nova senha a ser atualizada
+	 * @throws StringInvalidaException
+	 *             - Caso algum dos parametros seja invalido
+	 * @throws ObjetoNaoEncontradoException 
+	 */
+	public void atualizaSenha(String matricula, String novaDataNascimento) throws StringInvalidaException, ObjetoNaoEncontradoException {
+
+		Verificacao.validaString(matricula, "matricula do funcionario");
+		Verificacao.validaString(novaDataNascimento, "nova senha do funcionario");
+
+		if (autoAtualizacao(matricula)) {
+			funcLogado.setNome(novaDataNascimento);
+		} else if (diretorLogado()) {
+			Funcionario func = getFuncionario(matricula);
+			func.setNome(novaDataNascimento);
+		}
+
+	}
+
+	/**
+	 * Metodo que verifica se eh o diretor que esta logado
+	 * 
+	 * @return - True se for o diretor que esta logado, False do contrario
+	 */
+	private boolean diretorLogado() {
+		return (funcLogado.getMatricula().charAt(0) == '1');
+	}
+
+	/**
+	 * Metodo que verifica se um funcionario esta se autoatualizando
+	 * 
+	 * @param matricula
+	 *            - Matricula do funcionario a ser verificado
+	 * @return - True se um funcionario estiver se atualizando, False do
+	 *         contrario
+	 */
+	private boolean autoAtualizacao(String matricula) {
+		return (matricula.equals(funcLogado.getMatricula()));
 	}
 
 }
