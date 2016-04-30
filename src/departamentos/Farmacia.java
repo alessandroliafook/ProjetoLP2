@@ -1,3 +1,4 @@
+
 package departamentos;
 
 import java.util.ArrayList;
@@ -6,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import exceptions.AtualizaMedicamentoException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
 
@@ -115,33 +117,56 @@ public class Farmacia {
 	}
 
 	/**
-	 * Metodo que acrescenta a quantidade estocada do medicamento associado ao
-	 * nome informado.
+	 * Metodo que atualiza o preco ou a quantidade de um medicamento existente.
 	 * 
-	 * @param nomeMedicamento
-	 *            String referente ao nome do medicamento que se pretende
-	 *            aumentar a quantidade estocada.
-	 * @param quantidadeASerEstocada
-	 *            Inteiro relativo a quantidade que se prentede aumentar.
-	 * @throws StringInvalidaException
-	 *             Lanca excecao personalizada acaso o nome do medicamento seja
-	 *             vazio ou igual a null.
-	 * @throws NumeroInvalidoException
-	 *             Lanca excecao personalizada acaso a quantidade a ser estocada
-	 *             seja menor que zero.
+	 * @param nome
+	 *            String contendo o nome do medicamento que se prentende
+	 *            atualizar.
+	 * @param atributo
+	 *            String com o nome do atributo que se pretende atualizar, seja
+	 *            preco ou quantidade.
+	 * @param novoValor
+	 *            double com o novo valor da ser atribuido, observe que no caso
+	 *            da quantidade, o metodo converte o valor para inteiro.
+	 * @throws AtualizaMedicamentoException
+	 *             Lanca excecao acaso seja solicitado para modificar nome,
+	 *             tipo, um atributo que nao exista, ou um medicamento nao
+	 *             cadastrado no sistema.
 	 */
-	public void estocaMedicamento(String nomeMedicamento, int quantidadeASerEstocada) {
+	public void atualizaMedicamento(String nome, String atributo, double novoValor)
+			throws AtualizaMedicamentoException {
 
-		for (Medicamento medicamento : estoqueDeMedicamentos) {
+		for (Medicamento medicamento : this.estoqueDeMedicamentos) {
 
-			if (medicamento.getNome().equals(nomeMedicamento)) {
+			if (medicamento.getNome().equals(nome)) {
 
-				int total = medicamento.getQuantidade() + quantidadeASerEstocada;
+				switch (atributo.toLowerCase()) {
 
-				medicamento.setQuantidade(total);
+				case "preco":
+					medicamento.setPreco(novoValor);
+					break;
+
+				case "quantidade":
+					int quantidade = (int) novoValor;
+					medicamento.setQuantidade(quantidade);
+					break;
+
+				case "nome":
+					throw new AtualizaMedicamentoException("Nome do medicamento nao pode ser alterado.");
+
+				case "tipo":
+					throw new AtualizaMedicamentoException("Tipo do medicamento nao pode ser alterado.");
+
+				default:
+					throw new AtualizaMedicamentoException("Atributo do medicamento invalido.");
+
+				}
+
 			}
 
 		}
+
+		throw new AtualizaMedicamentoException("Medicamento nao cadastrado.");
 
 	}
 
@@ -253,7 +278,7 @@ public class Farmacia {
 			return listaPorCategoria.toString();
 
 		} else {
-	
+
 			throw new ConsultaMedicamentoException("Nao ha remedios cadastrados nessa categoria.");
 		}
 	}

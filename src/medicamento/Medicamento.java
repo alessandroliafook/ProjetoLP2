@@ -1,6 +1,5 @@
 package medicamento;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -61,13 +60,13 @@ public class Medicamento implements Comparable<Medicamento> {
 		this.preco = this.tipo.calculaPreco(preco);
 		this.quantidade = quantidade;
 		this.categorias = new TreeSet<CategoriasEnum>();
-		
+
 		List<String> listCategorias = Arrays.asList(categorias.split(","));
 
-		for (int i=0; i<listCategorias.size(); i++) {
+		for (int i = 0; i < listCategorias.size(); i++) {
 
 			try {
-				
+
 				String categoria = listCategorias.get(i).toUpperCase();
 				this.categorias.add(CategoriasEnum.valueOf(categoria));
 
@@ -103,7 +102,9 @@ public class Medicamento implements Comparable<Medicamento> {
 	 */
 	public String informacoes() {
 
-		String string = "Medicamento de Referencia: " + getNome() + " - Preco: R$ " + getPreco() + " - Disponivel: "
+		String preco = String.format("%.2f", getPreco());
+
+		String string = "Medicamento " + getTipo() + ": " + getNome() + " - Preco: R$ " + preco + " - Disponivel: "
 				+ getQuantidade() + " - Categorias: ";
 
 		StringBuilder builder = new StringBuilder(string);
@@ -182,6 +183,17 @@ public class Medicamento implements Comparable<Medicamento> {
 	 */
 	public void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
+	}
+
+	/**
+	 * Metodo que modifica o preco de medicamentos. O total passa a ser aquele
+	 * informado no parametro.
+	 * 
+	 * @param preco
+	 *            Double que passara a ser o total de medicamentos existente.
+	 */
+	public void setPreco(double preco) {
+		this.preco = preco;
 	}
 
 	/**
