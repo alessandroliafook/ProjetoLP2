@@ -1,6 +1,5 @@
 package util;
 
-import exceptions.CadastroMedicamentoException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
 
@@ -12,7 +11,7 @@ public class VerificaCadastroMedicamento {
 	 * 
 	 * @param nomeMedicamento
 	 *            - String contendo o nome do medicamento.
-	 * @throws CadastroMedicamentoException 
+	 * @throws NomeMedicamentoException 
 	 *             - Lanca excecao caso a String com o nome do medicamento seja vazia.
 	 */
 	public static void validaNomeMedicamento(String nomeMedicamento) throws NomeMedicamentoException {
