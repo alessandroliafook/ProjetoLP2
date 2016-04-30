@@ -56,13 +56,13 @@ public class Medicamento implements Comparable<Medicamento> {
 		VerificaCadastroMedicamento.validaPrecoMedicamento(preco);
 		VerificaCadastroMedicamento.validaQuantidadeMedicamento(quantidade);
 
+		this.tipo = FactoryTipoMedicamento.selecionaTipo(tipo);
 		this.nome = nome;
 		this.preco = this.tipo.calculaPreco(preco);
 		this.quantidade = quantidade;
 		this.categorias = new TreeSet<CategoriasEnum>();
-		this.tipo = FactoryTipoMedicamento.selecionaTipo(tipo);
 		
-		List<String> listCategorias = new ArrayList<String>(Arrays.asList(categorias.split(",")));
+		List<String> listCategorias = Arrays.asList(categorias.split(","));
 
 		for (int i=0; i<listCategorias.size(); i++) {
 
