@@ -2,6 +2,7 @@ package factory;
 
 import java.util.Set;
 
+import exceptions.CadastroMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.StringInvalidaException;
 import medicamento.Medicamento;
@@ -37,7 +38,7 @@ public class FactoryDeMedicamentos {
 	 *             inteiro, menor que zero.
 	 */
 	public Medicamento criaMedicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
-			throws StringInvalidaException, NumeroInvalidoException {
+			throws CadastroMedicamentoException {
 
 		Medicamento medicamento = new Medicamento(nome, preco, quantidade, categorias, tipo);
 

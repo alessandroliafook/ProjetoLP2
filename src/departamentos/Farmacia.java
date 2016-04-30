@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
+import exceptions.CadastroMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.ObjetoNaoEncontradoException;
 import exceptions.StringInvalidaException;
@@ -77,7 +78,7 @@ public class Farmacia {
 	 *             menores que zero.
 	 */
 	public void cadastraMedicamento(String tipo, int quantidade, double preco, String nome, Set<String> categorias)
-			throws StringInvalidaException, NumeroInvalidoException {
+			throws CadastroMedicamentoException {
 
 		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
 
@@ -108,10 +109,7 @@ public class Farmacia {
 	 *             seja menor que zero.
 	 */
 	public void estocaMedicamento(String nomeMedicamento, int quantidadeASerEstocada)
-			throws StringInvalidaException, NumeroInvalidoException {
-
-		Verificacao.validaString(nomeMedicamento, "nome do medicamento");
-		Verificacao.validaNumeroInteiro(quantidadeASerEstocada, "quantidade de medicamento a ser estocada");
+			throws CadastroMedicamentoException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 

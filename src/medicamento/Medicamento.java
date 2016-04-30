@@ -3,12 +3,13 @@ package medicamento;
 import java.util.HashSet;
 import java.util.Set;
 
+import exceptions.CadastroMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.StringInvalidaException;
 
 import factory.FactoryTipoMedicamento;
 
-import util.Verificacao;
+import util.VerificaCadastro;
 
 public class Medicamento implements Comparable<Medicamento> {
 
@@ -43,12 +44,11 @@ public class Medicamento implements Comparable<Medicamento> {
 	 *             inteiro, menor que zero.
 	 */
 	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
-			throws StringInvalidaException, NumeroInvalidoException {
+			throws CadastroMedicamentoException {
 
-		Verificacao.validaString(nome, "nome do medicamento");
-		Verificacao.validaNumeroReal(preco, "preco do medicamento");
-		Verificacao.validaNumeroInteiro(quantidade, "quantidade de medicamento");
-		Verificacao.validaString(tipo, "tipo do medicamento");
+		VerificaCadastro.validaNomeMedicamento(nome);
+		VerificaCadastro.validaPrecoMedicamento(preco);
+		VerificaCadastro.validaQuantidadeMedicamento(quantidade);
 
 		selecionaTipo(tipo);
 		this.nome = nome;
@@ -58,7 +58,6 @@ public class Medicamento implements Comparable<Medicamento> {
 
 		for (String categoria : categorias) {
 
-			Verificacao.validaString(categoria, "categoria do medicamento");
 			this.categorias.add(CategoriasEnum.valueOf(categoria));
 		}
 
