@@ -1,6 +1,5 @@
 package departamentos;
 
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -77,17 +76,27 @@ public class Farmacia {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public void cadastraMedicamento(String tipo, int quantidade, double preco, String nome, Set<String> categorias)
+	public String cadastraMedicamento(String tipo, int quantidade, double preco, String nome, Set<String> categorias)
 			throws CadastroMedicamentoException {
 
 		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
 
-		if (estoqueDeMedicamentos.contains(medicamento)) {
-			estocaMedicamento(nome, quantidade);
+		if (estoqueDeMedicamentos.add(medicamento)) {
+			return nome;
 
 		} else {
 
-			estoqueDeMedicamentos.add(medicamento);
+			for (Medicamento medicamentoEstocado : estoqueDeMedicamentos) {
+
+				if (medicamentoEstocado.equals(medicamento)) {
+
+					int qntTotal = medicamentoEstocado.getQuantidade() + quantidade;
+					medicamentoEstocado.setQuantidade(qntTotal);
+
+				}
+			}
+
+			return nome;
 		}
 
 	}
@@ -170,23 +179,31 @@ public class Farmacia {
 	 * @return
 	 * @throws ObjetoNaoEncontradoException
 	 */
-	public ArrayList<String> consultaPorCategoria(String categoria) throws ObjetoNaoEncontradoException {
+	public String consultaMedCategoria(String categoria) throws ObjetoNaoEncontradoException {
 
 		Verificacao.validaCategoria(categoria);
 
-		ArrayList<String> listaDeMedicamentos = new ArrayList<String>();
-
+		int medicamentosEncontrados = 0;
+		StringBuilder listaDeMedicamentos = new StringBuilder();
 		CategoriasEnum enumCategoria = CategoriasEnum.valueOf(categoria);
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
+
 			if (medicamento.getCategorias().contains(enumCategoria)) {
-				listaDeMedicamentos.add(medicamento.getNome());
+
+				listaDeMedicamentos.append(medicamento.getNome()).append(",");
+				medicamentosEncontrados += 1;
 			}
 
 		}
 
-		return listaDeMedicamentos;
+		if (medicamentosEncontrados > 0) {
+			listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
+		}
+
+		return listaDeMedicamentos.toString();
+
 
 	}
 
