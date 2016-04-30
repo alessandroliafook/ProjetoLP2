@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import util.VerificaCadastroFuncionario;
+import util.VerificacaoLiberaSistema;
 import util.Verificacao;
 import exceptions.CadastroFuncionarioException;
 import exceptions.NaoAutorizadoException;
@@ -72,22 +73,13 @@ public final class ComiteGestor {
 	 */
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 
-		Verificacao.validaString(chave, "chave do sistema");
+		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
+		VerificacaoLiberaSistema.validaAcesso(this.primeiroAcesso);
 
-		if (!this.primeiroAcesso) {
-			if (chave.equals(CHAVE)) {
-				primeiroCadastro(nome, "diretor", dataNascimento, chave);
-				this.primeiroAcesso = true;
+		primeiroCadastro(nome, "Diretor Geral", dataNascimento, chave);
+		this.primeiroAcesso = true;
 
-				return diretorGeral.getMatricula();
-
-			} else {
-				throw new StringInvalidaException("chave", "eh invalida");
-			}
-
-		} else {
-			throw new Exception("Primeiro login ja realizado");
-		}
+		return diretorGeral.getMatricula();
 	}
 
 	/**
