@@ -1,7 +1,7 @@
 package medicamento;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import exceptions.CadastroMedicamentoException;
 import exceptions.NumeroInvalidoException;
@@ -54,7 +54,7 @@ public class Medicamento implements Comparable<Medicamento> {
 		this.nome = nome;
 		this.preco = this.tipo.calculaPreco(preco);
 		this.quantidade = quantidade;
-		this.categorias = new HashSet<CategoriasEnum>();
+		this.categorias = new TreeSet<CategoriasEnum>();
 
 		for (String categoria : categorias) {
 
@@ -163,6 +163,15 @@ public class Medicamento implements Comparable<Medicamento> {
 	 */
 	public int getQuantidade() {
 		return quantidade;
+	}
+
+	
+	/**
+	 * Metodo que informa o tipo de medicamento.
+	 * @return String com o tipo do medicamento.
+	 */
+	public String getTipo() {
+		return tipo.toString();
 	}
 
 	/**

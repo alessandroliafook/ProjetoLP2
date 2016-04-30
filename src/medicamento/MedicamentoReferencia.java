@@ -40,5 +40,13 @@ public class MedicamentoReferencia implements TipoMedicamentoIF {
 		return preco * DESCONTO;
 
 	}
+	/**
+	 * Metodo que informa qual o nome associado ao tipo de medicamento.
+	 * 
+	 * @return String contendo o tipo de medicamento.
+	 */
+	public String toString() {
+		return "de Referencia";
+	}
 
 }

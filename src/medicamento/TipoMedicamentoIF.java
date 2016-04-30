@@ -11,5 +11,11 @@ public interface TipoMedicamentoIF {
 	 *         desconto associado a cada tipo.
 	 */
 	double calculaPreco(double preco);
+	
+	/**
+	 * Metodo que informa qual o tipo de medicamento.
+	 * @return String contendo o nome do tipo de medicamento correspondente.
+	 */
+	String toString();
 
 }

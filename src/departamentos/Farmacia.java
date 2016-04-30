@@ -79,7 +79,7 @@ public class Farmacia {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public String cadastraMedicamento(String tipo, int quantidade, double preco, String nome, Set<String> categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, Set<String> categorias)
 			throws CadastroMedicamentoException {
 
 		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
@@ -177,6 +177,31 @@ public class Farmacia {
 	}
 
 	/**
+	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome.
+	 * 
+	 * @param nomeMedicamento
+	 *            String contendo o nome do medicamento a ser entregue.
+	 * @return Objeto do tipo Medicamento.
+	 * @throws ConsultaMedicamentoException Lanca excecao acaso o medicamento pesquisado nao exista no estoque.
+	 */
+	public Medicamento forneceMedicamento(String nomeMedicamento)
+			throws ConsultaMedicamentoException {
+
+		for (Medicamento medicamento : estoqueDeMedicamentos) {
+
+			if (medicamento.getNome().equals(nomeMedicamento)) {
+
+				return medicamento;
+
+			}
+
+		}
+
+		throw new ConsultaMedicamentoException("Medicamento nao cadastrado");
+
+	}
+
+	/**
 	 * Metodo que consulta a lista de medicamentos associados a uma categoria
 	 * informada.
 	 * 
@@ -200,7 +225,7 @@ public class Farmacia {
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
-				
+
 				listaPorCategoria.add(medicamento);
 				medicamentosEncontrados += 1;
 			}
@@ -208,7 +233,7 @@ public class Farmacia {
 		}
 
 		if (medicamentosEncontrados > 0) {
-			
+
 			return listaPorCategoria.toString();
 
 		} else {
@@ -242,17 +267,29 @@ public class Farmacia {
 
 	}
 
+	/**
+	 * Metodo que retorna uma a lista de medicamentos armazenados na farmacia.
+	 * 
+	 * @param ordenacao
+	 *            String com o criterio de ordenacao desejado, que deve ser por
+	 *            preco ou ordem alfabetica.
+	 * @return String com os nomes dos medicamentos existentes na farmacia
+	 *         ordenados segundo o parametro de ordenacao solicitado.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
+	 *             preco ou ordem alfabética.
+	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
 		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
-		
+
 		switch (ordenacao.toLowerCase()) {
 
 		case "preco":
-			
+
 			Collections.sort(listaDeMedicamentos);
 			return listaDeMedicamentos.toString();
-			
+
 		case "alfabetica":
 
 			ComparaPorNome comparador = new ComparaPorNome();
@@ -266,4 +303,36 @@ public class Farmacia {
 
 	}
 
+	/**
+	 * Metodo que consulta o atributo escolhido do medicamento escolhido.
+	 * @param atributoDoMedicamento String com o atributo que se deseja informacao.
+	 * @param medicamento Objeto que se deseja a informacao de seu atributo.
+	 * @return String contendo a informacao solicitada
+	 * @throws ConsultaMedicamentoException retorna excecao acaso o atributo nao exista.
+	 */
+	public String getInfoMedicamento(String atributoDoMedicamento, Medicamento medicamento) throws ConsultaMedicamentoException{
+		
+		switch(atributoDoMedicamento.toLowerCase()){
+		
+		case "nome":
+			return medicamento.getNome();
+		
+		case "preco":
+			return String.valueOf(medicamento.getPreco());
+		
+		case "quantidade":
+			return String.valueOf(medicamento.getQuantidade());
+			
+		case "categorias":
+			List<CategoriasEnum> listaDeCategorias = new ArrayList<CategoriasEnum>(medicamento.getCategorias());
+			return listaDeCategorias.toString();
+
+		case "tipo":
+			return medicamento.getTipo();
+		
+		default:
+			throw new ConsultaMedicamentoException("Nao ha atributo com o nome especificado associado ao medicamento.");
+		
+		}
+	}
 }
