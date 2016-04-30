@@ -179,7 +179,7 @@ public class Farmacia {
 
 		}
 
-		throw new StringInvalidaException("medicamento solicitado", "nao existe no estoque");
+		throw new ConsultaMedicamentoException("Medicamento solicitado nao existe no estoque.");
 
 	}
 
