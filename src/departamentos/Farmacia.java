@@ -8,7 +8,6 @@ import java.util.TreeSet;
 
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
-import exceptions.StringInvalidaException;
 
 import factory.FactoryDeMedicamentos;
 
