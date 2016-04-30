@@ -1,4 +1,4 @@
-package monopoly;
+package hospital;
 
 import admin.ComiteGestor;
 import easyaccept.EasyAccept;
