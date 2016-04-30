@@ -105,15 +105,22 @@ public class Medicamento implements Comparable<Medicamento> {
 	 */
 	public String toString() {
 
-		String string = "Medicamento de Referencia: " + getNome() + " - Preco: R$ " + getPreco() + " - Disponivel: " + getQuantidade() + " - Categorias: ";
-				
-		for (CategoriasEnum categoria : categorias){
-			
-			string = string + categoria.name().toLowerCase() + ",";
-		}		
-				
+		String string = "Medicamento de Referencia: " + getNome() + " - Preco: R$ " + getPreco() + " - Disponivel: "
+				+ getQuantidade() + " - Categorias: ";
 
-		return string;
+		StringBuilder builder = new StringBuilder(string);
+
+		for (CategoriasEnum categoria : categorias) {
+
+			builder.append(categoria.name().toLowerCase()).append(",");
+
+		}
+
+		if (categorias.size() > 0) {
+			builder.deleteCharAt(builder.length() - 1);
+		}
+
+		return builder.toString();
 	}
 
 	/**
