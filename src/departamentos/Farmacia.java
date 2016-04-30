@@ -1,7 +1,11 @@
 package departamentos;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
+
+import javax.xml.soap.Text;
 
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
@@ -12,12 +16,14 @@ import factory.FactoryDeMedicamentos;
 
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
+import medicamento.ComparaPorNome;
+import util.StringUtil;
 import util.VerificaConsultaMedicamento;
 
 public class Farmacia {
 
 	public static Farmacia INSTANCE;
-	Set<Medicamento> estoqueDeMedicamentos;
+	List<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 
 	/**
@@ -26,7 +32,7 @@ public class Farmacia {
 	 */
 	private Farmacia() {
 
-		this.estoqueDeMedicamentos = new TreeSet<Medicamento>();
+		this.estoqueDeMedicamentos = new ArrayList<Medicamento>();
 		farmaceutico = new FactoryDeMedicamentos();
 
 	}
@@ -80,12 +86,9 @@ public class Farmacia {
 
 		Medicamento medicamento = farmaceutico.criaMedicamento(nome, preco, quantidade, categorias, tipo);
 
-		if (estoqueDeMedicamentos.add(medicamento)) {
-			return nome;
+		if (this.estoqueDeMedicamentos.contains(medicamento)) {
 
-		} else {
-
-			for (Medicamento medicamentoEstocado : estoqueDeMedicamentos) {
+			for (Medicamento medicamentoEstocado : this.estoqueDeMedicamentos) {
 
 				if (medicamentoEstocado.equals(medicamento)) {
 
@@ -93,8 +96,14 @@ public class Farmacia {
 					medicamentoEstocado.setQuantidade(qntTotal);
 
 				}
+
 			}
 
+			return nome;
+
+		} else {
+
+			this.estoqueDeMedicamentos.add(medicamento);
 			return nome;
 		}
 
@@ -233,23 +242,62 @@ public class Farmacia {
 		}
 
 		throw new ConsultaMedicamentoException("Medicamento nao cadastrado.");
-		
+
 	}
 
-	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException{
-		
-		
-		switch(ordenacao.toLowerCase()){
-			
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
+
+		String listaDeMedicamentos;
+
+		switch (ordenacao.toLowerCase()) {
+
 		case "preco":
-		
+
+			for (Medicamento medicamento : estoqueDeMedicamentos) {
+
+				listaDeMedicamentos.append(medicamento.getNome()).append(",");
+
+			}
+
+			if (estoqueDeMedicamentos.size() > 0) {
+				listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
+
+			}
+
 		case "alfabetica":
-		
+
+			List<Medicamento> estoqueReordenado = new ArrayList<Medicamento>();
+
+			estoqueReordenado.addAll(this.estoqueDeMedicamentos);
+			ComparaPorNome comparador = new ComparaPorNome();
+
+			Collections.sort(estoqueReordenado, comparador);
+
+			List<String> lista = new ArrayList<String>();
+
+			for(Medicamento medicamento : estoqueReordenado){
+				lista.add(medicamento.getNome());
+			}
+			
+			listaDeMedicamentos = String.join("," , lista);
+					
+			
+			for (Medicamento medicamento : estoqueDeMedicamentos) {
+
+				listaDeMedicamentos.append(medicamento.getNome()).append(",");
+
+			}
+
+			if (estoqueDeMedicamentos.size() > 0) {
+				listaDeMedicamentos.deleteCharAt(listaDeMedicamentos.length() - 1);
+
+			}
+
 		default:
 			throw new ConsultaMedicamentoException("Tipo de ordenacao invalida.");
-		
+
 		}
-		
+
 	}
-	
+
 }

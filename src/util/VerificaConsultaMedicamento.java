@@ -1,7 +1,6 @@
 package util;
 
 import exceptions.ConsultaMedicamentoException;
-import exceptions.ObjetoNaoEncontradoException;
 import medicamento.CategoriasEnum;
 
 public class VerificaConsultaMedicamento {

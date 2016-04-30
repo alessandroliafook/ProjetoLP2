@@ -4,7 +4,7 @@ import java.util.Comparator;
 
 import medicamento.Medicamento;
 
-public class OrdenaPorNome implements Comparator<Medicamento> {
+public class ComparaPorNome implements Comparator<Medicamento> {
 
 	@Override
 	/**
