@@ -24,10 +24,11 @@ public abstract class Pessoa {
 	 *             - Caso nome ou data sejam string vazias ou nulas
 	 */
 	public Pessoa(String nome, String data) throws Exception {
-
-		Verificacao.validaString(data, "data de nascimento");
-		Verificacao.validaString(nome, "nome da pessoa");
-
+		
+		boolean isPaciente = (this instanceof Paciente);
+		VerificaPessoa.validaNome(nome, isPaciente);
+		VerificaPessoa.validaData(data);
+		
 		setNome(nome);
 		setData(data);
 	}

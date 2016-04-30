@@ -1,6 +1,6 @@
 package pessoal;
 
-import util.Verificacao;
+import util.VerificaPessoa;
 
 public class Paciente extends Pessoa implements Comparable<Paciente> {
 
@@ -38,10 +38,11 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 
 		super(nome, dataNascimento);
 
-		Verificacao.validaNumeroReal(peso, "peso do paciente");
-		Verificacao.validaString(sexo, "sexo do paciente");
-		Verificacao.validaString(genero, "genero do paciente");
-		Verificacao.validaNumeroInteiro(id, "id do paciente");
+		VerificaPessoa.validaPeso(peso);
+		VerificaPessoa.validaTipoSanguineo(tipoSanguineo);
+		//VerificaPessoa.validaSexo(sexo);
+		//VerificaPessoa.validaGenero(genero);
+		//VerificaPessoa.validaId(id);
 
 		setPeso(peso);
 		setTipoSanguineo(tipoSanguineo);

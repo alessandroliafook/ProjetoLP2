@@ -25,8 +25,8 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 	public Funcionario(String nome, String dataNascimento, String matricula, String senha) throws Exception {
 
 		super(nome, dataNascimento);
-		Verificacao.validaString(matricula, "matricula do funcionario");
-		Verificacao.validaString(senha, "senha do funcionario");
+		//VerificaPessoa.validaMatricula(matricula);
+		//VerficaPessoa.validaSenha(senha);
 		setMatricula(matricula);
 		setSenha(senha);
 
