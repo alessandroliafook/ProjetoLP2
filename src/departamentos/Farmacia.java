@@ -28,7 +28,7 @@ public class Farmacia {
 	private Farmacia() {
 
 		this.estoqueDeMedicamentos = new TreeSet<Medicamento>();
-		farmaceutico = FactoryDeMedicamentos.getInstance();
+		farmaceutico = new FactoryDeMedicamentos();
 
 	}
 
@@ -203,7 +203,7 @@ public class Farmacia {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaPorNome(String nomeDoRemedio) throws StringInvalidaException {
+	public String getInfoMedicamento(String nomeDoRemedio) throws StringInvalidaException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 

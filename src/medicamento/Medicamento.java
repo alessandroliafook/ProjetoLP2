@@ -105,7 +105,13 @@ public class Medicamento implements Comparable<Medicamento> {
 	 */
 	public String toString() {
 
-		String string = "";
+		String string = "Medicamento de Referencia: " + getNome() + " - Preco: R$ " + getPreco() + " - Disponivel: " + getQuantidade() + " - Categorias: ";
+				
+		for (CategoriasEnum categoria : categorias){
+			
+			string = string + categoria.name().toLowerCase() + ",";
+		}		
+				
 
 		return string;
 	}

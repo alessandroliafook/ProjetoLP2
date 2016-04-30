@@ -8,26 +8,9 @@ import medicamento.Medicamento;
 
 public class FactoryDeMedicamentos {
 
-	private static FactoryDeMedicamentos INSTANCE;
-
-	private FactoryDeMedicamentos() {
+	public FactoryDeMedicamentos() {
 	}
 
-	/**
-	 * Metodo responsavel por criar uma instancia do Factory de Medicamentos se
-	 * nao existir, ou retornar a instancia existente acaso jah tenha sido
-	 * criada, usando a estrategia do singleton.
-	 * 
-	 * @return A instancia do Factory de Medicamentos existente no sistema.
-	 */
-	public static FactoryDeMedicamentos getInstance() {
-
-		if (INSTANCE == null) {
-			INSTANCE = new FactoryDeMedicamentos();
-		}
-
-		return INSTANCE;
-	}
 
 	/**
 	 * Metodo responsavel por criar um objeto do tipo Medicamento.
