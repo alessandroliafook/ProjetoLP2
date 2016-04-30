@@ -10,14 +10,14 @@ public abstract class Pessoa {
 
 	private String nome;
 	private LocalDate dataNascimento;
-	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	/**
 	 * 
 	 * @param nome
 	 *            - Nome da pessoa
 	 * @param data
-	 *            - Data de nascimento no formato "dd-mm-aaaa"
+	 *            - Data de nascimento no formato "dd/mm/aaaa"
 	 * @throws DateTimeParseException
 	 *             - Caso a data nao esteja no formato especificado
 	 * @throws StringInvalidaException

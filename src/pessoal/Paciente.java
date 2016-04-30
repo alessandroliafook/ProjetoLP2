@@ -15,7 +15,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 	 * @param nome
 	 *            - Nome do paciente
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd-mm-aaaa"
+	 *            - Data de nascimento no formato "dd/mm/aaaa"
 	 * @param peso
 	 *            - Peso do paciente
 	 * @param tipoSanguineo

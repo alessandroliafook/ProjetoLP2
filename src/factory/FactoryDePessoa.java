@@ -9,14 +9,14 @@ import pessoal.Pessoa;
 
 public class FactoryDePessoa {
 
-	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	/**
 	 * 
 	 * @param nome
 	 *            - Nome do funcionario a ser criado
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd-MM-yyyy"
+	 *            - Data de nascimento no formato "dd/mm/aaaa"
 	 * @param cargo
 	 *            - Cargo do funcionarios
 	 * @param quantidadeMatriculas
@@ -41,7 +41,7 @@ public class FactoryDePessoa {
 	 * @param nome
 	 *            - Nome do paciente
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd-mm-aaaa"
+	 *            - Data de nascimento no formato "dd/mm/aaaa"
 	 * @param peso
 	 *            - Peso do paciente
 	 * @param tipoSanguineo
@@ -107,7 +107,7 @@ public class FactoryDePessoa {
 	 * Gera uma senha padrao para um novo usuario
 	 * 
 	 * @param dataString
-	 *            Data de nascimento do usuario no forma "dd-MM-yyyy"
+	 *            Data de nascimento do usuario no forma "dd/mm/aaaa"
 	 * @param matricula
 	 *            Matricula do usuario
 	 * @return A senha gerada

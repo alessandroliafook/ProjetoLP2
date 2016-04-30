@@ -12,7 +12,7 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 	 * @param nome
 	 *            - Nome do funcionario
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd-mm-aaaa"
+	 *            - Data de nascimento no formato "dd/mm/aaaa"
 	 * @param matricula
 	 *            - Matricula gerada para o funcionario
 	 * @param senha
