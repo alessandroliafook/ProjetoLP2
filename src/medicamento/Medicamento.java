@@ -1,5 +1,8 @@
 package medicamento;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -46,7 +49,7 @@ public class Medicamento implements Comparable<Medicamento> {
 	 *             inteiro, menor que zero.
 	 * @throws TipoMedicamentoException
 	 */
-	public Medicamento(String nome, double preco, int quantidade, Set<String> categorias, String tipo)
+	public Medicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws NomeMedicamentoException, CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
 			TipoMedicamentoException {
 
@@ -59,8 +62,10 @@ public class Medicamento implements Comparable<Medicamento> {
 		this.quantidade = quantidade;
 		this.categorias = new TreeSet<CategoriasEnum>();
 		this.tipo = FactoryTipoMedicamento.selecionaTipo(tipo);
+		
+		List<String> listCategorias = new ArrayList<String>(Arrays.asList(categorias.split(" , ")));
 
-		for (String categoria : categorias) {
+		for (String categoria : listCategorias) {
 
 			try {
 
