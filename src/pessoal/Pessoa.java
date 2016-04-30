@@ -36,8 +36,8 @@ public abstract class Pessoa {
 		return this.nome;
 	}
 
-	public LocalDate getData() {
-		return this.dataNascimento;
+	public String getData() {
+		return this.dataNascimento.toString();
 	}
 
 	public void setNome(String nome) {
