@@ -7,7 +7,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import util.VerificaCadastroFuncionario;
 import util.Verificacao;
+import exceptions.CadastroFuncionarioException;
 import exceptions.NaoAutorizadoException;
 import exceptions.NovoNomeInvalidoException;
 import exceptions.ObjetoNaoEncontradoException;
@@ -101,7 +104,7 @@ public final class ComiteGestor {
 	 * @param chave
 	 *            A senha do diretor geral sera igual a chave que libera o
 	 *            sistema
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private void primeiroCadastro(String nome, String cargo, String dataNascimento, String chave) throws Exception {
 		cadastraFuncionario(nome, cargo, dataNascimento);
@@ -170,7 +173,7 @@ public final class ComiteGestor {
 		if (cadastros.containsKey(matricula) && cadastros.get(matricula).equals(senha)) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -207,18 +210,16 @@ public final class ComiteGestor {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
-	 * @throws Exception 
+	 * @throws CadastroFuncionarioException
+	 *             - Caso nao seja possivel criar o funcionario
 	 */
-	public void cadastraFuncionario(String nome, String cargo, String dataNascimento)
-			throws Exception {
+	public void cadastraFuncionario(String nome, String cargo, String dataNascimento) throws CadastroFuncionarioException {
 
-		Verificacao.validaAutorizacao(funcLogado.getMatricula(), "matricula");
+		VerificaCadastroFuncionario.validaNomeFuncionario(nome);
+		VerificaCadastroFuncionario.validaDataFuncionario(dataNascimento);
 
-		Verificacao.validaString(nome, "nome");
-		Verificacao.validaString(cargo, "cargo");
-		Verificacao.validaString(dataNascimento, "data de nascimento");
-
-		Funcionario func = (Funcionario) facFuncionario.criaFuncionario(nome, dataNascimento, cargo,  this.numeroMatriculas);
+		Funcionario func = (Funcionario) facFuncionario.criaFuncionario(nome, dataNascimento, cargo,
+				this.numeroMatriculas);
 		realizaCadastro(func.getMatricula(), func.getSenha());
 
 		switch (cargo) {
@@ -250,7 +251,7 @@ public final class ComiteGestor {
 	 * @throws NovoNomeInvalidoException
 	 *             - Caso o novo nome a ser atualizado nao siga o padrao
 	 *             estabelecido
-	 * @throws ObjetoNaoEncontradoException 
+	 * @throws ObjetoNaoEncontradoException
 	 */
 	public void atualizaNome(String matricula, String novoNome)
 			throws StringInvalidaException, NovoNomeInvalidoException, ObjetoNaoEncontradoException {
@@ -278,7 +279,7 @@ public final class ComiteGestor {
 	 *            - Nova data de nascimento a ser atualizada
 	 * @throws StringInvalidaException
 	 *             - Caso alguma dos parametros seja invalido
-	 * @throws ObjetoNaoEncontradoException 
+	 * @throws ObjetoNaoEncontradoException
 	 * 
 	 */
 	public void atualizaDataNascimento(String matricula, String novaDataNascimento)
@@ -307,9 +308,10 @@ public final class ComiteGestor {
 	 *            - Nova senha a ser atualizada
 	 * @throws StringInvalidaException
 	 *             - Caso algum dos parametros seja invalido
-	 * @throws ObjetoNaoEncontradoException 
+	 * @throws ObjetoNaoEncontradoException
 	 */
-	public void atualizaSenha(String matricula, String novaDataNascimento) throws StringInvalidaException, ObjetoNaoEncontradoException {
+	public void atualizaSenha(String matricula, String novaDataNascimento)
+			throws StringInvalidaException, ObjetoNaoEncontradoException {
 
 		Verificacao.validaString(matricula, "matricula do funcionario");
 		Verificacao.validaString(novaDataNascimento, "nova senha do funcionario");
