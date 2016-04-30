@@ -94,7 +94,7 @@ public class FactoryDePessoa {
 	private String geraMatricula(String cargo, int quantidadeMatriculas) {
 		String novaMatricula = "";
 
-		switch (cargo.toLowerCase()) {
+		switch (cargo) {
 		case "Diretor Geral":
 			novaMatricula += "1";
 			break;

@@ -1,5 +1,6 @@
 package pessoal;
 
+import cargos.DiretorGeral;
 import util.*;
 
 public class Funcionario extends Pessoa implements Comparable<Funcionario> {
@@ -38,6 +39,13 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 
 	public String getSenha() {
 		return this.senha;
+	}
+	
+	public String getCargo(){
+		if(matricula.charAt(0) == '1') return "Diretor Geral";
+		else if(matricula.charAt(0) == '2') return "Medico";
+		else return "Tecnico Administrativo";
+			
 	}
 
 	private void setMatricula(String matricula) {
