@@ -48,6 +48,7 @@ public final class ComiteGestor {
 	public static synchronized ComiteGestor getInstancia() {
 		if (instancia == null) {
 			instancia = new ComiteGestor();
+
 		}
 
 		return instancia;
@@ -231,6 +232,16 @@ public final class ComiteGestor {
 		}
 
 		this.numeroMatriculas += 1;
+	}
+
+	public void atualizaNome(String matricula, String novoNome) {
+
+		Verificacao.validaString(matricula, "matricula do funcionario");
+
+		if (!verificaNome(novoNome)) {
+			throw new Exception("Nome invalido");
+		}
+
 	}
 
 }
