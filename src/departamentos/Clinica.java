@@ -4,6 +4,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import exceptions.CadastroPacienteException;
+import exceptions.ConsultaProntuarioException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
 import prontuario.Prontuario;
@@ -18,8 +19,8 @@ public class Clinica {
 		pacienteFactory = new FactoryDePessoa();
 	}
 
-	public Paciente cadastraPaciente(String nome, String data, double peso, String sexo,
-			String genero, String tipoSanguineo) throws Exception {
+	public Paciente cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
+			String tipoSanguineo) throws Exception {
 
 		try {
 			Paciente novoPaciente = pacienteFactory.criaPaciente(nome, data, peso, tipoSanguineo, sexo, genero,
@@ -66,14 +67,29 @@ public class Clinica {
 		case "TipoSanguineo":
 			retorno = paciente.getTipoSanguineo();
 			break;
-		case "Peso:":
+		case "Peso":
 			retorno = String.valueOf(paciente.getPeso());
 			break;
+		case "Idade":
+			retorno = String.valueOf(paciente.getIdade());
 		default:
 			break;
 		}
 
 		return retorno;
+	}
+
+	public Paciente getProntuario(int posicao) throws ConsultaProntuarioException{
+		if(posicao < 0){
+			throw new ConsultaProntuarioException("Indice do prontuario nao pode ser negativo.");
+		}
+		else if(posicao >= prontuarios.size()){
+			throw new ConsultaProntuarioException("Nao ha prontuarios suficientes (max = " + getNumeroCadastros() + ").");
+		}
+		
+		Prontuario prontuarioSolicitado = (Prontuario)prontuarios.toArray()[posicao];
+		
+		return prontuarioSolicitado.getPaciente();
 	}
 
 }
