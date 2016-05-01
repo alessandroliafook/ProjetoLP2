@@ -19,7 +19,7 @@ import medicamento.ComparaPorNome;
 
 public class Farmacia {
 
-	public static Farmacia INSTANCE;
+	private static Farmacia INSTANCE;
 	Set<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 
