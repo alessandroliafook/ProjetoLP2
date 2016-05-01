@@ -193,7 +193,7 @@ public class Medicamento implements Comparable<Medicamento> {
 	 *            Double que passara a ser o total de medicamentos existente.
 	 */
 	public void setPreco(double preco) {
-		this.preco = preco;
+		this.preco = tipo.calculaPreco(preco);
 	}
 
 	/**

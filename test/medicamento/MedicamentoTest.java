@@ -24,7 +24,7 @@ public class MedicamentoTest {
 
 			Set<CategoriasEnum> list2 = new TreeSet<CategoriasEnum>();
 			list2.add(CategoriasEnum.ANALGESICO);
-			list2.add(CategoriasEnum.ANTIMETICO);
+			list2.add(CategoriasEnum.ANTIEMETICO);
 			
 			// testando gets e sets
 			assertEquals("Valium", valium.getNome());

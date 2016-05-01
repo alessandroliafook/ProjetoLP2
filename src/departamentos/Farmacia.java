@@ -41,7 +41,7 @@ public class Farmacia {
 	 * 
 	 * @return A unica instancia de farmacia a ser criada no sistema.
 	 */
-	public Farmacia getInstance() {
+	public static Farmacia getInstance() {
 
 		if (INSTANCE == null) {
 			INSTANCE = new Farmacia();
@@ -133,9 +133,9 @@ public class Farmacia {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo, double novoValor)
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
 			throws AtualizaMedicamentoException {
-
+		
 		for (Medicamento medicamento : this.estoqueDeMedicamentos) {
 
 			if (medicamento.getNome().equals(nome)) {
@@ -143,11 +143,12 @@ public class Farmacia {
 				switch (atributo.toLowerCase()) {
 
 				case "preco":
-					medicamento.setPreco(novoValor);
+					double preco = Double.parseDouble(novoValor);
+					medicamento.setPreco(preco);
 					break;
 
 				case "quantidade":
-					int quantidade = (int) novoValor;
+					int quantidade = Integer.parseInt(novoValor);
 					medicamento.setQuantidade(quantidade);
 					break;
 
@@ -252,7 +253,7 @@ public class Farmacia {
 
 		try {
 
-			enumCategoria = CategoriasEnum.valueOf(categoria);
+			enumCategoria = CategoriasEnum.valueOf(categoria.toUpperCase());
 
 		} catch (IllegalArgumentException e) {
 
@@ -261,13 +262,13 @@ public class Farmacia {
 		}
 
 		int medicamentosEncontrados = 0;
-		List<Medicamento> listaPorCategoria = new ArrayList<Medicamento>();
+		List<String> listaPorCategoria = new ArrayList<String>();
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
 
-				listaPorCategoria.add(medicamento);
+				listaPorCategoria.add(medicamento.getNome());
 				medicamentosEncontrados += 1;
 			}
 
@@ -275,7 +276,8 @@ public class Farmacia {
 
 		if (medicamentosEncontrados > 0) {
 
-			return listaPorCategoria.toString();
+			String string = String.join(",", listaPorCategoria);
+			return string;
 
 		} else {
 
@@ -323,19 +325,33 @@ public class Farmacia {
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
 		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
-
+		List<String> list = new ArrayList<String>();
+		String string = "";
+		
 		switch (ordenacao.toLowerCase()) {
 
 		case "preco":
 
 			Collections.sort(listaDeMedicamentos);
-			return listaDeMedicamentos.toString();
+			
+			for(int indice = 0; indice < listaDeMedicamentos.size(); indice++){
+				list.add(listaDeMedicamentos.get(indice).getNome());
+			}
+			
+			string = String.join(",", list);
+			return string;
 
 		case "alfabetica":
 
 			ComparaPorNome comparador = new ComparaPorNome();
 			Collections.sort(listaDeMedicamentos, comparador);
-			return listaDeMedicamentos.toString();
+
+			for(int indice = 0; indice < listaDeMedicamentos.size(); indice++){
+				list.add(listaDeMedicamentos.get(indice).getNome());
+			}
+			
+			string = String.join(",", list);
+			return string;
 
 		default:
 			throw new ConsultaMedicamentoException("Tipo de ordenacao invalida.");
@@ -358,27 +374,45 @@ public class Farmacia {
 	public String getInfoMedicamento(String atributoDoMedicamento, Medicamento medicamento)
 			throws ConsultaMedicamentoException {
 
-		switch (atributoDoMedicamento.toLowerCase()) {
+		for(Medicamento medicamentoEstocado : this.estoqueDeMedicamentos){
 
-		case "nome":
-			return medicamento.getNome();
+			if(medicamentoEstocado.equals(medicamento)){
 
-		case "preco":
-			return String.valueOf(medicamento.getPreco());
+				switch (atributoDoMedicamento.toLowerCase()) {
 
-		case "quantidade":
-			return String.valueOf(medicamento.getQuantidade());
+				case "nome":
+					return medicamento.getNome();
 
-		case "categorias":
-			List<CategoriasEnum> listaDeCategorias = new ArrayList<CategoriasEnum>(medicamento.getCategorias());
-			return listaDeCategorias.toString();
+				case "preco":
+					return String.format("%.1f",medicamento.getPreco());
 
-		case "tipo":
-			return medicamento.getTipo();
+				case "quantidade":
+					return String.valueOf(medicamento.getQuantidade());
 
-		default:
-			throw new ConsultaMedicamentoException("Nao ha atributo com o nome especificado associado ao medicamento.");
+				case "categorias":
+					
+					List<String> listaDeCategorias = new ArrayList<String>();
+					
+					for(CategoriasEnum categoria : medicamento.getCategorias()){
+						listaDeCategorias.add(categoria.name().toLowerCase());
+					}
+					
+					String string = String.join(",", listaDeCategorias);
+					return string;
 
+				case "tipo":
+					return medicamento.getTipo();
+
+				default:
+					throw new ConsultaMedicamentoException("Nao ha atributo com o nome especificado associado ao medicamento.");
+
+				}
+
+			}
+		
 		}
+	
+		throw new ConsultaMedicamentoException("Medicamento nao cadastrado.");	
 	}
+	
 }

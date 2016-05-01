@@ -25,7 +25,7 @@ public class FactoryDeMedicamentosTest {
 
 			Set<CategoriasEnum> list2 = new TreeSet<CategoriasEnum>();
 			list2.add(CategoriasEnum.ANALGESICO);
-			list2.add(CategoriasEnum.ANTIMETICO);
+			list2.add(CategoriasEnum.ANTIEMETICO);
 
 			
 			// teste construtor
