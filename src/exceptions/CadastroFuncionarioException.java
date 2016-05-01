@@ -4,6 +4,11 @@ public class CadastroFuncionarioException extends Exception{
 
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5373300271880215368L;
+
+	/**
 	 * Lanca Exception personalizada com a mensagem "Erro no cadastro de funcionario. " + motivo.
 	 * 
 	 * @param motivo
