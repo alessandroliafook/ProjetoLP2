@@ -1,19 +1,16 @@
 package admin;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
-
-import util.VerificaCadastroFuncionario;
 import util.VerificacaoLiberaSistema;
+import exceptions.AtualizaFuncionarioException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.DataInvalidaException;
+import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.MaisDeUmDiretorException;
@@ -44,7 +41,6 @@ public final class ComiteGestor {
 		this.cadastros = new HashMap<String, String>();
 		this.facFuncionario = new FactoryDePessoa();
 		this.corpoProfissional = new HashSet<Funcionario>();
-
 	}
 
 	/**
@@ -57,7 +53,6 @@ public final class ComiteGestor {
 	public static synchronized ComiteGestor getInstancia() {
 		if (instancia == null) {
 			instancia = new ComiteGestor();
-
 		}
 
 		return instancia;
@@ -114,12 +109,24 @@ public final class ComiteGestor {
 	 *            especifica a matricula a ser cadastrada
 	 * @param senha
 	 *            especifica a senha correspondente
-	 * @throws StringInvalidaException
-	 *             caso algum dos parametros seja invalido
 	 */
 
-	private void realizaCadastro(String matricula, String senha) {
+	private void adicionaLogin(String matricula, String senha) {
 		cadastros.put(matricula, senha);
+	}
+
+	/**
+	 * Medoto que remove uma matricula no sistema juntamente com a senha
+	 * correspondente.
+	 * 
+	 * @param matricula
+	 *            especifica a matricula a ser cadastrada
+	 * @param senha
+	 *            especifica a senha correspondente
+	 */
+	private void removeLogin(String matricula, String senha) {
+		cadastros.put(matricula, "");
+		cadastros.remove(matricula);
 	}
 
 	/**
@@ -151,7 +158,6 @@ public final class ComiteGestor {
 		}
 
 		return f;
-
 	}
 
 	/**
@@ -168,7 +174,15 @@ public final class ComiteGestor {
 	 */
 	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
 
-		validaMatricula(matricula);
+		try {
+			validaMatricula(matricula);
+		} catch (Exception e) {
+			throw new ConsultaFuncionarioException(e.getMessage());
+		}
+
+		if (!isMatriculado(matricula)) {
+			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
+		}
 
 		Funcionario func = getFuncionario(matricula);
 		String ret = "";
@@ -188,19 +202,18 @@ public final class ComiteGestor {
 		}
 
 		return ret;
-
 	}
 
 	/**
 	 * Metodo que verifica se a matricula do funcionario esta seguindo o padrao
-	 * adotado
+	 * adotado e se este esta realmente matriculado
 	 * 
 	 * @param matricula
 	 *            Matricula a ser verificada
 	 * @throws ConsultaFuncionarioException
 	 *             Caso nao esteja seguiundo o padrao, lanca excecao
 	 */
-	public void validaMatricula(String matricula) throws ConsultaFuncionarioException {
+	public void validaMatricula(String matricula) throws Exception {
 
 		boolean apenasNumeros = true;
 		boolean tamanhoCorreto = true;
@@ -213,15 +226,10 @@ public final class ComiteGestor {
 		if (matricula.length() != 8) {
 			tamanhoCorreto = false;
 		}
-		
-		if (!cadastros.containsKey(matricula)){
-			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
-		}
 
 		if (!(tamanhoCorreto && apenasNumeros)) {
-			throw new ConsultaFuncionarioException("A matricula nao segue o padrao.");
+			throw new Exception("A matricula nao segue o padrao.");
 		}
-		
 	}
 
 	/**
@@ -245,16 +253,24 @@ public final class ComiteGestor {
 		}
 
 		// testa se a matricula esta cadastrada
-		else if (!cadastros.containsKey(matricula)) {
+		else if (!isMatriculado(matricula)) {
 			motivo = "Funcionario nao cadastrado.";
 			throw new LoginException(motivo);
 		}
 
 		// teste se a senha corresponde a matricula cadastrada
-		else if (!cadastros.get(matricula).equals(senha)) {
+		else if (!isSenhaCorreta(matricula, senha)) {
 			motivo = "Senha incorreta.";
 			throw new LoginException(motivo);
 		}
+	}
+
+	private boolean isSenhaCorreta(String matricula, String senha) {
+		return cadastros.get(matricula).equals(senha);
+	}
+
+	private boolean isMatriculado(String matricula) {
+		return cadastros.containsKey(matricula);
 	}
 
 	/**
@@ -270,11 +286,17 @@ public final class ComiteGestor {
 	 *             correspondam
 	 */
 	public void login(String matricula, String senha) throws LoginException {
-
 		validaLogin(matricula, senha);
 		funcLogado = getFuncionario(matricula);
 	}
 
+	/**
+	 * Metodo que desloga o funcionario atualmente logado, habilitando assim o
+	 * fechamento do sistema.
+	 * 
+	 * @throws LogoutException
+	 *             Caso nao haja nenhum funcionario logado, lanca excecao
+	 */
 	public void logout() throws LogoutException {
 		if (funcLogado == null) {
 			throw new LogoutException("Nao ha um funcionario logado.");
@@ -322,7 +344,7 @@ public final class ComiteGestor {
 				break;
 			}
 
-			realizaCadastro(func.getMatricula(), func.getSenha());
+			adicionaLogin(func.getMatricula(), func.getSenha());
 			this.numeroMatriculas += 1;
 
 		} catch (NomeFuncionarioVazioException e) {
@@ -332,7 +354,207 @@ public final class ComiteGestor {
 		} catch (CargoInvalidoException e) {
 			throw new CadastroFuncionarioException(e.getMessage());
 		}
+	}
 
+	/**
+	 * Metodo que sera usado apenas pelo diretor geral para atualizar
+	 * informacoes de outros funcionarios
+	 * 
+	 * @param matricula
+	 *            Matricula do funcionario a ter as informacoes atualizadas
+	 * @param atributo
+	 *            Informacao a ser atualizada
+	 * @param novoValor
+	 *            Novo valor do atributo selecionado para ser atualizado
+	 * @throws AtualizaFuncionarioException
+	 *             Caso o funcionario que esteja tentando realizar a operacao
+	 *             nao tenha permissao.
+	 * @throws AtualizaFuncionarioException
+	 *             Caso a matricula esteja em um formato invalido
+	 * @throws AtualizaFuncionarioException
+	 *             Caso nao exista nenhum funcionario cadastrado com tal
+	 *             matricula
+	 * @throws AtualizaFuncionarioException
+	 *             Caso o novo valor a ser inserido esteja invalido
+	 */
+	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
+			throws AtualizaFuncionarioException {
+
+		// verifica se eh o diretor que esta tentando atualizar alguem
+		if (!isAutorizado()) {
+			throw new AtualizaFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
+		}
+
+		// verifica se essa matricula eh valida
+		try {
+			validaMatricula(matricula);
+		} catch (Exception e) {
+			throw new AtualizaFuncionarioException(e.getMessage());
+		}
+
+		// sendo valida a matricula, verifica se ela realmente existe no sistema
+		if (!isMatriculado(matricula)) {
+			throw new AtualizaFuncionarioException("Funcionario nao cadastrado.");
+		}
+
+		Funcionario func = getFuncionario(matricula);
+
+		switch (atributo) {
+		case "Nome":
+			try {
+				func.setNome(novoValor);
+			} catch (Exception e) {
+				throw new AtualizaFuncionarioException(e.getMessage());
+			}
+			break;
+		case "Data":
+			try {
+				func.setData(novoValor);
+			} catch (Exception e) {
+				throw new AtualizaFuncionarioException(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * Metodo que atualiza as informacoes do funcionario logado
+	 * 
+	 * @param atributo
+	 *            Atributo que se deseja atualizar
+	 * @param novoValor
+	 *            Novo valor a ser atribuido
+	 * @throws AtualizaFuncionarioException
+	 *             Caso nao exista nenhum funcionario cadastrado com tal
+	 *             matricula
+	 * @throws AtualizaFuncionarioException
+	 *             Caso o novo valor a ser inserido esteja invalido
+	 */
+	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
+		switch (atributo) {
+		case "Nome":
+			try {
+				funcLogado.setNome(novoValor);
+			} catch (Exception e) {
+				throw new AtualizaFuncionarioException(e.getMessage());
+			}
+			break;
+		case "Data":
+			try {
+				funcLogado.setData(novoValor);
+			} catch (Exception e) {
+				throw new AtualizaFuncionarioException(e.getMessage());
+			}
+		}
+	}
+
+	/**
+	 * Metodo que exlcui um funcionario do sistema
+	 * 
+	 * @param matricula
+	 *            Matricula do funcionario a ser exlcuido
+	 * @param senha
+	 *            Senha correspodente a matricula
+	 * @throws ExclusaoFuncionarioException
+	 *             Caso o funcionario inexista no sistema
+	 * @throws ExclusaoFuncionarioException
+	 *             Caso a senha esteja invalida
+	 * @throws ExclusaoFuncionarioException
+	 *             Caso o funcionario logado nao tenha permissao para exlcuir
+	 */
+	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
+
+		try {
+			validaMatricula(matricula);
+		} catch (Exception e) {
+			throw new ExclusaoFuncionarioException(e.getMessage());
+		}
+
+		if (!isMatriculado(matricula)) {
+			throw new ExclusaoFuncionarioException("Funcionario nao cadastrado.");
+		}
+
+		if (!isSenhaCorreta(matricula, senha)) {
+			throw new ExclusaoFuncionarioException("Senha invalida");
+		}
+
+		if (!isAutorizado()) {
+			throw new ExclusaoFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
+		}
+
+		excluiFuncionarioUtil(getFuncionario(matricula));
+		removeLogin(matricula, senha);
+	}
+
+	/**
+	 * Metodo que remove um funcionario do seu respectivo corpo de funcionarios
+	 * 
+	 * @param funcionario
+	 *            Funcionario a ser removido
+	 */
+	private void excluiFuncionarioUtil(Funcionario funcionario) {
+
+		if (funcionario.getCargo().equals("Medico")) {
+			corpoClinico.remove(funcionario);
+		} else if (funcionario.getCargo().equals("Tecnico Administrativo")) {
+			corpoProfissional.remove(funcionario);
+		}
+	}
+
+	/**
+	 * Metodo que atualiza a senha de um funcionario. E necessario que o
+	 * funcionario confirme sua senha antes de realizar a troca
+	 * 
+	 * @param senhaAntiga
+	 *            Senha a ser confirmada
+	 * @param novaSenha
+	 *            Nova senha
+	 * @throws AtualizaFuncionarioException
+	 *             Caso nao seja possivel confirmar a senha do funcionario
+	 */
+	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
+		confirmaSenha(senhaAntiga);
+		validaSenha(novaSenha);
+		funcLogado.setSenha(novaSenha);
+	}
+
+	/**
+	 * Metodo que valida a senha a ser atualizada
+	 * 
+	 * @param novaSenha
+	 *            Senha a ser verificada
+	 * @throws AtualizaFuncionarioException
+	 *             Caso a senha nao siga o padrao estabelecido
+	 */
+	private void validaSenha(String novaSenha) throws AtualizaFuncionarioException {
+		// A nova senha deve ter entre 8 - 12 caracteres alfanumericos.
+		boolean tamanho = (novaSenha.length() >= 8 && novaSenha.length() <= 12);
+		boolean alfanum = true;
+
+		for (Character c : novaSenha.toCharArray()) {
+			if (!Character.isAlphabetic(c) && !Character.isDigit(c)) {
+				alfanum = false;
+			}
+		}
+
+		if (!(tamanho && alfanum)) {
+			throw new AtualizaFuncionarioException("A nova senha deve ter entre 8 - 12 caracteres alfanumericos.");
+		}
+	}
+
+	/**
+	 * Metodo que confirma a senha de um funcionario para futura troca de senha
+	 * 
+	 * @param senhaAntiga
+	 *            Senha a ser confirmada
+	 * @throws AtualizaFuncionarioException
+	 *             Caso a senha nao seja confirmada
+	 */
+	private void confirmaSenha(String senhaAntiga) throws AtualizaFuncionarioException {
+		if (!cadastros.get(funcLogado.getMatricula()).equals(senhaAntiga)) {
+			throw new AtualizaFuncionarioException("Senha invalida");
+		}
 	}
 
 	/**
@@ -348,90 +570,20 @@ public final class ComiteGestor {
 		if (diretorGeral != null && cargo.equals("Diretor Geral")) {
 			throw new MaisDeUmDiretorException();
 		}
-
 	}
 
+	/**
+	 * Metodo que verifica se o usuario que esta logado tem permissao para
+	 * realizar a tarefa
+	 * 
+	 * @throws CadastroFuncionarioException
+	 *             Caso nao tenha permissao
+	 */
 	private void validaPermissao() throws CadastroFuncionarioException {
-		if (!funcLogado.equals(diretorGeral)) {
+		if (isAutorizado()) {
 			throw new CadastroFuncionarioException(
 					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
 		}
-	}
-
-	/**
-	 * Metodo que atualiza o nome de um funcionario. O diretor geral pode mudar
-	 * essa informacao de qualquer outro funcionario, os demais podem apenas
-	 * mudar a si.
-	 * 
-	 * @param matricula
-	 *            - Matricula do funcionario a ser atualizado
-	 * @param novoNome
-	 *            - Novo nome a ser atualizado
-	 * @throws StringInvalidaException
-	 *             - Caso alguma dos parametros seja invalido
-	 * @throws NovoNomeInvalidoException
-	 *             - Caso o novo nome a ser atualizado nao siga o padrao
-	 *             estabelecido
-	 * @throws ObjetoNaoEncontradoException
-	 */
-	public void atualizaNome(String matricula, String novoNome) {
-
-		if (autoAtualizacao(matricula)) {
-			funcLogado.setNome(novoNome);
-		} else if (diretorLogado()) {
-			Funcionario func = getFuncionario(matricula);
-			func.setNome(novoNome);
-		}
-
-	}
-
-	/**
-	 * Metodo que atualiza a data de nascimento de um funcionario. O diretor
-	 * geral pode mudar essa informacao de qualquer outro funcionario, os demais
-	 * podem apenas mudar a si.
-	 * 
-	 * @param matricula
-	 *            - Matricula do funcionario a ser atualizado
-	 * @param novoNome
-	 *            - Nova data de nascimento a ser atualizada
-	 * @throws StringInvalidaException
-	 *             - Caso alguma dos parametros seja invalido
-	 * @throws ObjetoNaoEncontradoException
-	 * 
-	 */
-	public void atualizaDataNascimento(String matricula, String novaDataNascimento) {
-
-		if (autoAtualizacao(matricula)) {
-			funcLogado.setNome(novaDataNascimento);
-		} else if (diretorLogado()) {
-			Funcionario func = getFuncionario(matricula);
-			func.setNome(novaDataNascimento);
-		}
-
-	}
-
-	/**
-	 * Metodo que atualiza a senha de um funcionario. O diretor geral pode mudar
-	 * essa informacao de qualquer outro funcionario, os demais podem apenas
-	 * mudar a si.
-	 * 
-	 * @param matricula
-	 *            - Matricula do funcionario a ser atualizado
-	 * @param novoNome
-	 *            - Nova senha a ser atualizada
-	 * @throws StringInvalidaException
-	 *             - Caso algum dos parametros seja invalido
-	 * @throws ObjetoNaoEncontradoException
-	 */
-	public void atualizaSenha(String matricula, String novaDataNascimento) {
-
-		if (autoAtualizacao(matricula)) {
-			funcLogado.setNome(novaDataNascimento);
-		} else if (diretorLogado()) {
-			Funcionario func = getFuncionario(matricula);
-			func.setNome(novaDataNascimento);
-		}
-
 	}
 
 	/**
@@ -439,26 +591,19 @@ public final class ComiteGestor {
 	 * 
 	 * @return - True se for o diretor que esta logado, False do contrario
 	 */
-	private boolean diretorLogado() {
+	private boolean isAutorizado() {
 		return (funcLogado.getMatricula().charAt(0) == '1');
 	}
 
 	/**
-	 * Metodo que verifica se um funcionario esta se autoatualizando
+	 * Metodo que fecha o sistema
 	 * 
-	 * @param matricula
-	 *            - Matricula do funcionario a ser verificado
-	 * @return - True se um funcionario estiver se atualizando, False do
-	 *         contrario
+	 * @throws SistemaException
+	 *             Caso ainda exista um usuario logado
 	 */
-	private boolean autoAtualizacao(String matricula) {
-		return (matricula.equals(funcLogado.getMatricula()));
-	}
-
 	public void fechaSistema() throws SistemaException {
 		if (funcLogado != null) {
 			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome());
 		}
 	}
-
 }

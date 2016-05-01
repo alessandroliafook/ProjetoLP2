@@ -64,7 +64,7 @@ logout
 ##########
 
 login matricula="22016002" senha="19892201"
-expectError "Erro ao atualizar funcionario. Nome do funcionario nao pode ser vazio." atualizaInfoFuncionario atributo="nome" novoValor=""
+expectError "Erro ao atualizar funcionario. Nome do funcionario nao pode ser vazio." atualizaInfoFuncionario atributo="Nome" novoValor=""
 atualizaInfoFuncionario  atributo="Nome" novoValor="Edgar A. Poe"
 expectError "Erro ao atualizar funcionario. Data invalida." atualizaInfoFuncionario  atributo="Data" novoValor="24/85/1999"
 atualizaInfoFuncionario atributo="Data" novoValor="19/01/1999"
