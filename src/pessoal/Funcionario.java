@@ -1,8 +1,13 @@
 package pessoal;
 
+import java.io.Serializable;
 
-public class Funcionario extends Pessoa implements Comparable<Funcionario> {
+public class Funcionario extends Pessoa implements Comparable<Funcionario>,Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2456859660892263148L;
 	private String matricula;
 	private String senha;
 

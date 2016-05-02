@@ -1,10 +1,15 @@
 package prontuario;
 
+import java.io.Serializable;
 import java.util.List;
 import pessoal.Paciente;
 
-public class Prontuario implements Comparable<Prontuario> {
+public class Prontuario implements Comparable<Prontuario>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1342099551666299695L;
 	private Paciente paciente;
 	private List<Object> procedimentos; //Para uso futuro
 	

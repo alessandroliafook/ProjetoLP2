@@ -1,9 +1,15 @@
 package pessoal;
 
+import java.io.Serializable;
+
 import util.VerificaPessoa;
 
-public class Paciente extends Pessoa implements Comparable<Paciente> {
+public class Paciente extends Pessoa implements Comparable<Paciente>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1296421988284829321L;
 	private double peso;
 	private String tipoSanguineo;
 	private String sexo;
@@ -33,16 +39,16 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 	 * @throws NumeroInvalidoException
 	 *             - Caso o peso do paciente seja negativo
 	 */
-	public Paciente(String nome, String dataNascimento, double peso,
-			String tipoSanguineo, String sexo, String genero,int id) throws Exception {
+	public Paciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo, String genero,
+			int id) throws Exception {
 
 		super(nome, dataNascimento);
 
 		VerificaPessoa.validaPeso(peso);
 		VerificaPessoa.validaTipoSanguineo(tipoSanguineo);
-		//VerificaPessoa.validaSexo(sexo);
-		//VerificaPessoa.validaGenero(genero);
-		//VerificaPessoa.validaId(id);
+		// VerificaPessoa.validaSexo(sexo);
+		// VerificaPessoa.validaGenero(genero);
+		// VerificaPessoa.validaId(id);
 
 		setPeso(peso);
 		setTipoSanguineo(tipoSanguineo);
@@ -99,7 +105,6 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 		return super.getNome().compareTo(outroPaciente.getNome());
 	}
 
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -113,13 +118,11 @@ public class Paciente extends Pessoa implements Comparable<Paciente> {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if(obj instanceof Paciente){
+		if (obj instanceof Paciente) {
 			Paciente outroPaciente = (Paciente) obj;
 			return this.id == outroPaciente.getID();
 		}
 		return false;
 	}
-
-	
 
 }
