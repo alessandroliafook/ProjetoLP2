@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import java.io.Serializable;
+
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
@@ -13,8 +15,12 @@ import factory.FactoryTipoMedicamento;
 
 import util.VerificaCadastroMedicamento;
 
-public class Medicamento implements Comparable<Medicamento> {
+public class Medicamento implements Comparable<Medicamento>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3829508154930744712L;
 	private String nome;
 	private double preco;
 	private int quantidade;
