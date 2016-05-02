@@ -36,7 +36,7 @@ public abstract class Pessoa {
 	 * @return A idade da Pessoa
 	 */
 	public int getIdade() {
-		int diferenca = (int)ChronoUnit.YEARS.between(LocalDate.now(), this.dataNascimento);
+		int diferenca = (int)ChronoUnit.YEARS.between(this.dataNascimento, LocalDate.now());
 		return diferenca;
 	}
 
