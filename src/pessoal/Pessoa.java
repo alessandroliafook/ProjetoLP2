@@ -2,7 +2,7 @@ package pessoal;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 
 import exceptions.DataInvalidaException;
 import util.*;
@@ -36,7 +36,8 @@ public abstract class Pessoa {
 	 * @return A idade da Pessoa
 	 */
 	public int getIdade() {
-		return LocalDate.now().getYear() - dataNascimento.getYear();
+		int diferenca = (int)ChronoUnit.YEARS.between(LocalDate.now(), this.dataNascimento);
+		return diferenca;
 	}
 
 	public String getNome() {
