@@ -72,7 +72,7 @@ public class FactoryDePessoa {
 	public Paciente criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
 			String genero, int numeroCadastros) throws Exception {
 
-		VerificaPessoa.validaNome(nome, false);
+		VerificaPessoa.validaNome(nome, true);
 		VerificaPessoa.validaData(dataNascimento);
 		VerificaPessoa.validaPeso(peso);
 		VerificaPessoa.validaTipoSanguineo(tipoSanguineo);
