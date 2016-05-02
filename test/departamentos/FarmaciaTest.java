@@ -36,19 +36,19 @@ public class FarmaciaTest {
 
 			// testando construtor
 
-			Farmacia farmacia = Farmacia.getInstance();
+			Farmacia farmacia = new Farmacia();
 
 			// testando cadastro
 
-			farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico");
-			farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico");
-			farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico");
-			farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal");
-			farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal");
-			farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
-					"antiinflamatorio,antitermico,analgesico");
-			farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico");
-
+			assertEquals("Valium", farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
+			assertEquals("Metamizol", farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico"));
+			assertEquals("Morfina", farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
+			assertEquals("Medroxyprogesterona", farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal"));
+			assertEquals("Duraston", farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
+			assertEquals("Nimesulida", farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
+					"antiinflamatorio,antitermico,analgesico"));
+			assertEquals("Penicilina", farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico"));
+	
 			// teste que pega informacoes dos medicamentos
 
 			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", valium));
@@ -109,7 +109,7 @@ public class FarmaciaTest {
 
 			// repetindo as condicoes do teste anterior
 
-			Farmacia farmacia = Farmacia.getInstance();
+			Farmacia farmacia = new Farmacia();
 
 			farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico");
 			farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico");

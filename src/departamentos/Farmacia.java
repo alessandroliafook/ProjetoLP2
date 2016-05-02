@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import java.io.Serializable;
+
 import exceptions.AtualizaMedicamentoException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
@@ -17,37 +19,23 @@ import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
 import medicamento.ComparaPorNome;
 
-public class Farmacia {
+public class Farmacia implements Serializable{
 
-	private static Farmacia INSTANCE;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1325300249760149147L;
 	Set<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 
 	/**
-	 * Construtor privado para inicializar uma unica instancia de farmacia,
-	 * aplicando o padrao de projeto singleton.
+	 * Construtor da classe farmacia que inicia o estoque vazio e a factory de medicamentos.
 	 */
-	private Farmacia() {
+	public Farmacia() {
 
 		this.estoqueDeMedicamentos = new TreeSet<Medicamento>();
 		farmaceutico = new FactoryDeMedicamentos();
 
-	}
-
-	/**
-	 * Metodo para gerar uma instancia de Farmacia acaso nao exista, garantindo
-	 * que havera apenas uma instancia de farmacia no sistema, conforme o padrao
-	 * de projeto singleton.
-	 * 
-	 * @return A unica instancia de farmacia a ser criada no sistema.
-	 */
-	public static Farmacia getInstance() {
-
-		if (INSTANCE == null) {
-			INSTANCE = new Farmacia();
-		}
-
-		return INSTANCE;
 	}
 
 	/**
