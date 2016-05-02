@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import exceptions.DataInvalidaException;
 import util.*;
 
 public abstract class Pessoa {
@@ -15,41 +16,49 @@ public abstract class Pessoa {
 	/**
 	 * 
 	 * @param nome
-	 *            - Nome da pessoa
+	 *            Nome da pessoa
 	 * @param data
-	 *            - Data de nascimento no formato "dd/mm/aaaa"
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
-	 * @throws StringInvalidaException
-	 *             - Caso nome ou data sejam string vazias ou nulas
+	 *            Data de nascimento no formato "dd/mm/aaaa"
+	 * @throws DataInvalidaException
+	 *             Caso a data nao esteja no formato especificado
+	 * @throws NomeFuncionarioVazioException
+	 *             Caso a subclasse do objeto seja Funcionario e nome seja vazio
+	 * @throws NomePacienteVazioException
+	 *             Caso a subclasse do objeto seja Paciente e nome seja vazio
 	 */
 	public Pessoa(String nome, String data) throws Exception {
-		
-		boolean isPaciente = (this instanceof Paciente);
-		VerificaPessoa.validaNome(nome, isPaciente);
-		VerificaPessoa.validaData(data);
-		
 		setNome(nome);
 		setData(data);
 	}
 
-	public int getIdade(){
+	/**
+	 * 
+	 * @return A idade da Pessoa
+	 */
+	public int getIdade() {
 		return LocalDate.now().getYear() - dataNascimento.getYear();
 	}
-	
+
 	public String getNome() {
 		return this.nome;
 	}
 
+	/**
+	 * 
+	 * @return Uma String com data de nascimento da pessoa no formato "aaaa-mm-dd"
+	 */
 	public String getData() {
 		return this.dataNascimento.toString();
 	}
 
-	public void setNome(String nome) {
+	public void setNome(String nome) throws Exception {
+		boolean isPaciente = (this instanceof Paciente);
+		VerificaPessoa.validaNome(nome, isPaciente);
 		this.nome = nome;
 	}
 
-	public void setData(String data) throws DateTimeParseException {
+	public void setData(String data) throws DataInvalidaException {
+		VerificaPessoa.validaData(data);
 		this.dataNascimento = LocalDate.parse(data, FORMATO_DE_DATA);
 	}
 }

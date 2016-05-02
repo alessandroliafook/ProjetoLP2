@@ -9,17 +9,17 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 	/**
 	 * 
 	 * @param nome
-	 *            - Nome do funcionario
+	 *            Nome do funcionario
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd/mm/aaaa"
+	 *            Data de nascimento no formato "dd/mm/aaaa"
 	 * @param matricula
-	 *            - Matricula gerada para o funcionario
+	 *            Matricula gerada para o funcionario
 	 * @param senha
-	 *            - Senha gerada para o funcionario
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
-	 * @throws StringInvalidaException
-	 *             - Caso quaisquer dos parametros sejam string vazias ou nulas
+	 *            Senha gerada para o funcionario
+	 * @throws DataInvalidaException
+	 *            Caso a data nao esteja no formato especificado
+	 * @throws NomeFuncionarioVazioException
+	 *            Caso nome seja vazio
 	 */
 	public Funcionario(String nome, String dataNascimento, String matricula, String senha) throws Exception {
 
@@ -37,6 +37,10 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario> {
 		return this.senha;
 	}
 	
+	/**
+	 * Verifica o cargo do funcionario com base na matricula
+	 * @return Uma String cpm o cargo do Funcionario
+	 */
 	public String getCargo(){
 		if(matricula.charAt(0) == '1') return "Diretor Geral";
 		else if(matricula.charAt(0) == '2') return "Medico";

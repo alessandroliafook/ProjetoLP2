@@ -19,8 +19,26 @@ public class Clinica {
 		pacienteFactory = new FactoryDePessoa();
 	}
 
+	/**
+	 * 
+	 * @param nome
+	 *            Nome do paciente a ser cadastrado
+	 * @param data
+	 *            Data de nascimento do paciente
+	 * @param peso
+	 *            Peso do paciente
+	 * @param sexo
+	 *            Sexo do paciente
+	 * @param genero
+	 *            Genero do paciente
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do paciente(A/B/O/AB seguido de + ou -) Ex: AB-
+	 * @return Objeto Paciente referente ao paciente cadastrado
+	 * @throws CadastroPacienteException
+	 *             Caso o cadastro nao seja bem sucedido
+	 */
 	public Paciente cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
-			String tipoSanguineo) throws Exception {
+			String tipoSanguineo) throws CadastroPacienteException {
 
 		try {
 			Paciente novoPaciente = pacienteFactory.criaPaciente(nome, data, peso, tipoSanguineo, sexo, genero,
@@ -40,14 +58,35 @@ public class Clinica {
 
 	}
 
+	/**
+	 * 
+	 * @return O numero de pacientes ja cadastrados
+	 */
 	public int getNumeroCadastros() {
 		return prontuarios.size();
 	}
 
+	/**
+	 * Verifica se o prontuario fornecido ja existe no sistema
+	 * 
+	 * @param prontuario
+	 *            Objeto Prontuario a ser verificado
+	 * @return True caso o objeto ja exista no sistema, False caso contrario
+	 */
 	public boolean existeProntuario(Prontuario prontuario) {
 		return prontuarios.contains(prontuario);
 	}
 
+	/**
+	 * Retorna a informacao solicitada do paciente especificado
+	 * 
+	 * @param paciente
+	 *            Objeto Paciente do qual sera retirada a informacao solicitada
+	 * @param atributo
+	 *            Descricao da informacao
+	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
+	 * @return Uma String com a informacao solicitada
+	 */
 	public String getInfoPaciente(Paciente paciente, String atributo) {
 		String retorno = "";
 
@@ -79,16 +118,25 @@ public class Clinica {
 		return retorno;
 	}
 
-	public Paciente getProntuario(int posicao) throws ConsultaProntuarioException{
-		if(posicao < 0){
+	/**
+	 * Obtem as informacoes do prontuario de um paciente cadastrado no sistema
+	 * 
+	 * @param posicao
+	 *            A posicao em que o prontuario esta armazenado no sistema
+	 * @return Objeto Paciente retirado do Prontuario na posicao especificada
+	 * @throws ConsultaProntuarioException
+	 *             Caso a posicao seja invalida
+	 */
+	public Paciente getProntuario(int posicao) throws ConsultaProntuarioException {
+		if (posicao < 0) {
 			throw new ConsultaProntuarioException("Indice do prontuario nao pode ser negativo.");
+		} else if (posicao >= prontuarios.size()) {
+			throw new ConsultaProntuarioException(
+					"Nao ha prontuarios suficientes (max = " + getNumeroCadastros() + ").");
 		}
-		else if(posicao >= prontuarios.size()){
-			throw new ConsultaProntuarioException("Nao ha prontuarios suficientes (max = " + getNumeroCadastros() + ").");
-		}
-		
-		Prontuario prontuarioSolicitado = (Prontuario)prontuarios.toArray()[posicao];
-		
+
+		Prontuario prontuarioSolicitado = (Prontuario) prontuarios.toArray()[posicao];
+
 		return prontuarioSolicitado.getPaciente();
 	}
 
