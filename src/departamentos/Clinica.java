@@ -73,7 +73,7 @@ public class Clinica {
 	 *            Objeto Prontuario a ser verificado
 	 * @return True caso o objeto ja exista no sistema, False caso contrario
 	 */
-	public boolean existeProntuario(Prontuario prontuario) {
+	private boolean existeProntuario(Prontuario prontuario) {
 		return prontuarios.contains(prontuario);
 	}
 
