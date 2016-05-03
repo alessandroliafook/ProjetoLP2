@@ -124,5 +124,11 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		}
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+		return super.getNome() + " id = " + id ;
+	}
+
 
 }
