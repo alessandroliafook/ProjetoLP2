@@ -88,5 +88,13 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>,Seria
 	public int compareTo(Funcionario outro) {
 		return super.getNome().compareTo(outro.getNome());
 	}
+	
+	/**
+	 * Retorna o padrao "Nome matricula"
+	 */
+	@Override
+	public String toString(){
+		return super.getNome() + " " + this.matricula;
+	}
 
 }
