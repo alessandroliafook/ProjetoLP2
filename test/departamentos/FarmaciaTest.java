@@ -2,13 +2,7 @@ package departamentos;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-import java.util.TreeSet;
-
 import org.junit.Test;
-
-import medicamento.CategoriasEnum;
-import medicamento.Medicamento;
 
 public class FarmaciaTest {
 
@@ -17,69 +11,52 @@ public class FarmaciaTest {
 
 		try {
 
-			Set<CategoriasEnum> list1 = new TreeSet<CategoriasEnum>();
-			list1.add(CategoriasEnum.ANALGESICO);
-
-			Set<CategoriasEnum> list2 = new TreeSet<CategoriasEnum>();
-			list2.add(CategoriasEnum.ANALGESICO);
-			list2.add(CategoriasEnum.ANTIEMETICO);
-
-			Medicamento valium = new Medicamento("Valium", "generico", 21.50, 45, "analgesico");
-			Medicamento metamizol = new Medicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico");
-			Medicamento morfina = new Medicamento("Morfina", "referencia", 150, 600, "analgesico");
-			Medicamento medroxyprogesterona = new Medicamento("Medroxyprogesterona", "generico", 285.50, 200,
-					"hormonal");
-			Medicamento duraston = new Medicamento("Duraston", "generico", 112.50, 150, "hormonal");
-			Medicamento nimesulida = new Medicamento("Nimesulida", "referencia", 12.50, 150,
-					"antiinflamatorio,antitermico,analgesico");
-			Medicamento penicilina = new Medicamento("Penicilina", "referencia", 80.00, 150, "antibiotico");
-
 			// testando construtor
 
 			Farmacia farmacia = new Farmacia();
 
 			// testando cadastro
 
-			assertEquals(valium, farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
-			assertEquals(metamizol,
+			assertEquals("Valium", farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
+			assertEquals("Metamizol",
 					farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico"));
-			assertEquals(morfina, farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
+			assertEquals("Morfina", farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
 			assertEquals("Medroxyprogesterona",
 					farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal"));
-			assertEquals(duraston, farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
-			assertEquals(nimesulida, farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
+			assertEquals("Duraston", farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
+			assertEquals("Nimesulida", farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
 					"antiinflamatorio,antitermico,analgesico"));
-			assertEquals(penicilina,
+			assertEquals("Penicilina",
 					farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico"));
 
 			// teste que pega informacoes dos medicamentos
 
-			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", valium));
-			assertEquals("12.9", farmacia.getInfoMedicamento("preco", valium));
-			assertEquals("45", farmacia.getInfoMedicamento("quantidade", valium));
-			assertEquals("analgesico", farmacia.getInfoMedicamento("categorias", valium));
+			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", "Valium"));
+			assertEquals("12.9", farmacia.getInfoMedicamento("preco", "Valium"));
+			assertEquals("45", farmacia.getInfoMedicamento("quantidade", "Valium"));
+			assertEquals("analgesico", farmacia.getInfoMedicamento("categorias", "Valium"));
 
-			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", medroxyprogesterona));
-			assertEquals("171.3", farmacia.getInfoMedicamento("preco", medroxyprogesterona));
-			assertEquals("200", farmacia.getInfoMedicamento("quantidade", medroxyprogesterona));
-			assertEquals("hormonal", farmacia.getInfoMedicamento("categorias", medroxyprogesterona));
+			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", "Medroxyprogesterona"));
+			assertEquals("171.3", farmacia.getInfoMedicamento("preco", "Medroxyprogesterona"));
+			assertEquals("200", farmacia.getInfoMedicamento("quantidade", "Medroxyprogesterona"));
+			assertEquals("hormonal", farmacia.getInfoMedicamento("categorias", "Medroxyprogesterona"));
 
-			assertEquals("de Referencia", farmacia.getInfoMedicamento("tipo", nimesulida));
-			assertEquals("12.5", farmacia.getInfoMedicamento("preco", nimesulida));
-			assertEquals("150", farmacia.getInfoMedicamento("quantidade", nimesulida));
+			assertEquals("de Referencia", farmacia.getInfoMedicamento("tipo", "Nimesulida"));
+			assertEquals("12.5", farmacia.getInfoMedicamento("preco", "Nimesulida"));
+			assertEquals("150", farmacia.getInfoMedicamento("quantidade", "Nimesulida"));
 			assertEquals("analgesico,antiinflamatorio,antitermico",
-					farmacia.getInfoMedicamento("categorias", nimesulida));
+					farmacia.getInfoMedicamento("categorias", "Nimesulida"));
 
 			// teste metodo que atualiza informacoes dos medicamentos
 
 			farmacia.atualizaMedicamento("Nimesulida", "preco", "15.0");
 			farmacia.atualizaMedicamento("Nimesulida", "quantidade", "200");
-			assertEquals("15.0", farmacia.getInfoMedicamento("preco", nimesulida));
-			assertEquals("200", farmacia.getInfoMedicamento("quantidade", nimesulida));
+			assertEquals("15.0", farmacia.getInfoMedicamento("preco", "Nimesulida"));
+			assertEquals("200", farmacia.getInfoMedicamento("quantidade", "Nimesulida"));
 
 			farmacia.atualizaMedicamento("Valium", "preco", "20.0");
-			assertEquals("12.0", farmacia.getInfoMedicamento("preco", valium));
-			assertEquals("45", farmacia.getInfoMedicamento("quantidade", valium));
+			assertEquals("12.0", farmacia.getInfoMedicamento("preco", "Valium"));
+			assertEquals("45", farmacia.getInfoMedicamento("quantidade", "Valium"));
 
 			// teste de busca de medicamentos por categoria
 
