@@ -263,7 +263,7 @@ public final class ComiteGestor {
 
 		// testa se a matricula esta cadastrada
 		else if (!isMatriculado(matricula)) {
-			motivo = "Funcionario nao cadastrado. - " + String.valueOf(this.cadastros.containsKey(matricula));
+			motivo = "Funcionario nao cadastrado.";
 			throw new LoginException(motivo);
 		}
 

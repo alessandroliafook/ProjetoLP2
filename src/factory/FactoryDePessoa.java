@@ -111,7 +111,7 @@ public class FactoryDePessoa {
 		}
 
 		novaMatricula += LocalDate.now().getYear();
-		novaMatricula += quantidadeMatriculas;
+		novaMatricula += String.format("%03d", quantidadeMatriculas);
 
 		return novaMatricula;
 	}
