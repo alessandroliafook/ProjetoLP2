@@ -79,7 +79,7 @@ public class HospitalFacade {
 		comite.validaLogin(matricula, senha);
 	}
 
-	public Medicamento cadastraMedicamento(String nome, String tipo,
+	public String cadastraMedicamento(String nome, String tipo,
 			double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 		return comite.cadastraMedicamento(nome, tipo, preco, quantidade,
@@ -117,8 +117,8 @@ public class HospitalFacade {
 	}
 
 	public String getInfoMedicamento(String atributoDoMedicamento,
-			Medicamento medicamento) throws ConsultaMedicamentoException {
-		return comite.getInfoMedicamento(atributoDoMedicamento, medicamento);
+			String nomeMedicamento) throws ConsultaMedicamentoException {
+		return comite.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	public Paciente cadastraPaciente(String nome, String data, double peso,

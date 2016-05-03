@@ -173,7 +173,7 @@ public final class ComiteGestor {
 	 * 
 	 * @param matricula
 	 *            Matricula do funcionario a ter a informacao recuperada
-	 * @param atributo
+	 * @param atributomedicamento
 	 *            Atributo do funcionario a ser recuperado
 	 * @return String que possui a informacao
 	 * @throws ConsultaFuncionarioException
@@ -212,7 +212,7 @@ public final class ComiteGestor {
 	}
 
 	/**
-	 * Metodo que verifica se a matricula do funcionario esta seguindo o padrao
+	 * Metodo que verifica se a matrimedicamentocula do funcionario esta seguindo o padrao
 	 * adotado e se este esta realmente matriculado
 	 * 
 	 * @param matricula
