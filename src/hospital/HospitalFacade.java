@@ -121,7 +121,7 @@ public class HospitalFacade {
 		return comite.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
-	public Paciente cadastraPaciente(String nome, String data, double peso,
+	public int cadastraPaciente(String nome, String data, double peso,
 			String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 		return comite.cadastraPaciente(nome, data, peso, sexo, genero,
@@ -132,11 +132,11 @@ public class HospitalFacade {
 		return comite.getNumeroCadastros();
 	}
 
-	public String getInfoPaciente(Paciente paciente, String atributo) {
-		return comite.getInfoPaciente(paciente, atributo);
+	public String getInfoPaciente(int id, String atributo) {
+		return comite.getInfoPaciente(id, atributo);
 	}
 
-	public Paciente getProntuario(int posicao)
+	public int getProntuario(int posicao)
 			throws ConsultaProntuarioException {
 		return comite.getProntuario(posicao);
 	}

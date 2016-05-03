@@ -10,7 +10,7 @@ import factory.FactoryDePessoa;
 import pessoal.Paciente;
 import prontuario.Prontuario;
 
-public class Clinica implements Serializable{
+public class Clinica implements Serializable {
 
 	/**
 	 * 
@@ -38,12 +38,12 @@ public class Clinica implements Serializable{
 	 *            Genero do paciente
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do paciente(A/B/O/AB seguido de + ou -) Ex: AB-
-	 * @return Objeto Paciente referente ao paciente cadastrado
+	 * @return O id do paciente cadastrado
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public Paciente cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
-			String tipoSanguineo) throws CadastroPacienteException {
+	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
+			throws CadastroPacienteException {
 
 		try {
 			Paciente novoPaciente = pacienteFactory.criaPaciente(nome, data, peso, tipoSanguineo, sexo, genero,
@@ -55,7 +55,7 @@ public class Clinica implements Serializable{
 			}
 
 			prontuarios.add(novoProntuario);
-			return novoPaciente;
+			return novoPaciente.getID();
 
 		} catch (Exception e) {
 			throw new CadastroPacienteException(e.getMessage());
@@ -92,8 +92,9 @@ public class Clinica implements Serializable{
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(Paciente paciente, String atributo) {
+	public String getInfoPaciente(int id, String atributo) {
 		String retorno = "";
+		Paciente paciente = buscaPaciente(id);
 
 		switch (atributo) {
 		case "Nome":
@@ -124,15 +125,31 @@ public class Clinica implements Serializable{
 	}
 
 	/**
+	 * Busca um paciente no sistema atraves do seu ID
+	 * 
+	 * @param id
+	 *            ID do paciente a ser buscado
+	 * @return Objeto do tipo Paciente com o ID especificado
+	 */
+	private Paciente buscaPaciente(int id) {
+		for(Prontuario prontuario : this.prontuarios){
+			if(prontuario.getPaciente().getID() == id){
+				return prontuario.getPaciente();
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Obtem as informacoes do prontuario de um paciente cadastrado no sistema
 	 * 
 	 * @param posicao
 	 *            A posicao em que o prontuario esta armazenado no sistema
-	 * @return Objeto Paciente retirado do Prontuario na posicao especificada
+	 * @return Id do Paciente retirado do Prontuario na posicao especificada
 	 * @throws ConsultaProntuarioException
 	 *             Caso a posicao seja invalida
 	 */
-	public Paciente getProntuario(int posicao) throws ConsultaProntuarioException {
+	public int getProntuario(int posicao) throws ConsultaProntuarioException {
 		if (posicao < 0) {
 			throw new ConsultaProntuarioException("Indice do prontuario nao pode ser negativo.");
 		} else if (posicao >= prontuarios.size()) {
@@ -142,7 +159,7 @@ public class Clinica implements Serializable{
 
 		Prontuario prontuarioSolicitado = (Prontuario) prontuarios.toArray()[posicao];
 
-		return prontuarioSolicitado.getPaciente();
+		return prontuarioSolicitado.getPaciente().getID();
 	}
 
 }

@@ -762,7 +762,7 @@ public final class ComiteGestor {
 	 * @throws CadastroPacienteException
 	 * @see departamentos.Clinica#cadastraPaciente(java.lang.String, java.lang.String, double, java.lang.String, java.lang.String, java.lang.String)
 	 */
-	public Paciente cadastraPaciente(String nome, String data, double peso,
+	public int cadastraPaciente(String nome, String data, double peso,
 			String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 		return clinica.cadastraPaciente(nome, data, peso, sexo, genero,
@@ -785,8 +785,8 @@ public final class ComiteGestor {
 	 * @return
 	 * @see departamentos.Clinica#getInfoPaciente(pessoal.Paciente, java.lang.String)
 	 */
-	public String getInfoPaciente(Paciente paciente, String atributo) {
-		return clinica.getInfoPaciente(paciente, atributo);
+	public String getInfoPaciente(int id, String atributo) {
+		return clinica.getInfoPaciente(id, atributo);
 	}
 
 
@@ -796,7 +796,7 @@ public final class ComiteGestor {
 	 * @throws ConsultaProntuarioException
 	 * @see departamentos.Clinica#getProntuario(int)
 	 */
-	public Paciente getProntuario(int posicao)
+	public int getProntuario(int posicao)
 			throws ConsultaProntuarioException {
 		return clinica.getProntuario(posicao);
 	}
