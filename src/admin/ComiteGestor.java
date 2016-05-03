@@ -654,7 +654,7 @@ public final class ComiteGestor {
 	 * @throws CadastroMedicamentoException
 	 * @see departamentos.Farmacia#cadastraMedicamento(java.lang.String, java.lang.String, double, int, java.lang.String)
 	 */
-	public Medicamento cadastraMedicamento(String nome, String tipo, double preco,
+	public String cadastraMedicamento(String nome, String tipo, double preco,
 			int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
@@ -745,8 +745,8 @@ public final class ComiteGestor {
 	 * @see departamentos.Farmacia#getInfoMedicamento(java.lang.String, medicamento.Medicamento)
 	 */
 	public String getInfoMedicamento(String atributoDoMedicamento,
-			Medicamento medicamento) throws ConsultaMedicamentoException {
-		return farmacia.getInfoMedicamento(atributoDoMedicamento, medicamento);
+			String nomeMedicamento) throws ConsultaMedicamentoException {
+		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	// metodos da clinica
