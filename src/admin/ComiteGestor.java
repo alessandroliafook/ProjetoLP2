@@ -120,6 +120,8 @@ public final class ComiteGestor {
 		try {
 
 			diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+			diretorGeral.setSenha(chave);
+			
 			adicionaLogin(diretorGeral.getMatricula(), diretorGeral.getSenha());
 
 		} catch (NomeFuncionarioVazioException e) {
@@ -130,7 +132,7 @@ public final class ComiteGestor {
 			throw new CadastroFuncionarioException(e.getMessage());
 		}
 		
-		diretorGeral.setSenha(chave);
+		
 	}
 
 	/**
