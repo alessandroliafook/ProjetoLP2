@@ -40,16 +40,16 @@ public class FarmaciaTest {
 
 			// testando cadastro
 
-			assertEquals("Valium", farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
-			assertEquals("Metamizol",
+			assertEquals(valium, farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
+			assertEquals(metamizol,
 					farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico"));
-			assertEquals("Morfina", farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
+			assertEquals(morfina, farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
 			assertEquals("Medroxyprogesterona",
 					farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal"));
-			assertEquals("Duraston", farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
-			assertEquals("Nimesulida", farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
+			assertEquals(duraston, farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
+			assertEquals(nimesulida, farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
 					"antiinflamatorio,antitermico,analgesico"));
-			assertEquals("Penicilina",
+			assertEquals(penicilina,
 					farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico"));
 
 			// teste que pega informacoes dos medicamentos

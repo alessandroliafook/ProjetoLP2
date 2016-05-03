@@ -66,7 +66,7 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public Medicamento cadastraMedicamento(String nome, String tipo,
+	public String cadastraMedicamento(String nome, String tipo,
 			double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
@@ -92,7 +92,7 @@ public class Farmacia implements Serializable {
 					int qntTotal = medicamentoEstocado.getQuantidade()
 							+ quantidade;
 					medicamentoEstocado.setQuantidade(qntTotal);
-					return medicamentoEstocado;
+					return medicamentoEstocado.getNome();
 				}
 
 			}
@@ -100,7 +100,7 @@ public class Farmacia implements Serializable {
 		}
 
 		this.estoqueDeMedicamentos.add(medicamento);
-		return medicamento;
+		return medicamento.getNome();
 
 	}
 
@@ -374,11 +374,11 @@ public class Farmacia implements Serializable {
 	 *             retorna excecao acaso o atributo nao exista.
 	 */
 	public String getInfoMedicamento(String atributoDoMedicamento,
-			Medicamento medicamento) throws ConsultaMedicamentoException {
+			String nomeMedicamento) throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamentoEstocado : this.estoqueDeMedicamentos) {
 
-			if (medicamentoEstocado.equals(medicamento)) {
+			if (medicamentoEstocado.getNome().equals(nomeMedicamento)) {
 
 				switch (atributoDoMedicamento.toLowerCase()) {
 
