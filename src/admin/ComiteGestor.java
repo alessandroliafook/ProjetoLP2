@@ -278,8 +278,6 @@ public final class ComiteGestor {
 	 */
 	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 
-		String mat = "";
-		Funcionario func;
 		cargo = cargo.toLowerCase();
 
 		validaPermissao();
@@ -287,8 +285,8 @@ public final class ComiteGestor {
 
 		try {
 
-			func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
-			mat = func.getMatricula();
+			Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+			String mat = func.getMatricula();
 
 			switch (cargo) {
 			case "medico":
@@ -300,8 +298,9 @@ public final class ComiteGestor {
 			}
 
 			adicionaLogin(func.getMatricula(), func.getSenha());
-			System.out.println("id" + this.numeroMatriculas + " recebe " + mat);
 
+			System.out.println("id" + this.numeroMatriculas + " recebe " + mat);
+			
 			this.numeroMatriculas += 1;
 			return mat;
 
@@ -313,36 +312,17 @@ public final class ComiteGestor {
 			throw new CadastroFuncionarioException(e.getMessage());
 		}
 	}
-
-	/**
-	 * Metodo que recupera informacoes do funcionario especificado, exceto a
-	 * senha.
-	 * 
-	 * @param matricula
-	 *            Matricula do funcionario a ter a informacao recuperada
-	 * @param atributomedicamento
-	 *            Atributo do funcionario a ser recuperado
-	 * @return String que possui a informacao
-	 * @throws ConsultaFuncionarioException
-	 *             Caso o atributo a ser recuperado seja a senha do funcionario
-	 */
+	
 	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
-
-//		System.out.println("PORRA - " + matricula);
-
-		try {
-			validaMatricula(matricula);
-		} catch (Exception e) {
-			throw new ConsultaFuncionarioException(e.getMessage());
-		}
-
-		if (!isMatriculado(matricula)) {
-			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
-		}
-
+		
+		if(matricula == null)
+				System.out.println("NULO");
+		else if (matricula.equals(""))
+				System.out.println("VAZIO");
+		
 		Funcionario func = getFuncionario(matricula);
 		String ret = "";
-
+		
 		switch (atributo) {
 		case "Nome":
 			ret = func.getNome();
@@ -356,9 +336,55 @@ public final class ComiteGestor {
 		case "Senha":
 			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
 		}
-
+		
 		return ret;
 	}
+
+//	/**
+//	 * Metodo que recupera informacoes do funcionario especificado, exceto a
+//	 * senha.
+//	 * 
+//	 * @param matricula
+//	 *            Matricula do funcionario a ter a informacao recuperada
+//	 * @param atributomedicamento
+//	 *            Atributo do funcionario a ser recuperado
+//	 * @return String que possui a informacao
+//	 * @throws ConsultaFuncionarioException
+//	 *             Caso o atributo a ser recuperado seja a senha do funcionario
+//	 */
+//	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
+//		
+//		System.out.println("PORRA - " + matricula);
+//		
+//		try {
+//			validaMatricula(matricula);
+//		} catch (Exception e) {
+//			throw new ConsultaFuncionarioException(e.getMessage());
+//		}
+//
+//		if (!isMatriculado(matricula)) {
+//			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
+//		}
+//
+//		Funcionario func = getFuncionario(matricula);
+//		String ret = "";
+//
+//		switch (atributo) {
+//		case "Nome":
+//			ret = func.getNome();
+//			break;
+//		case "Data":
+//			ret = func.getData();
+//			break;
+//		case "Cargo":
+//			ret = func.getCargo();
+//			break;
+//		case "Senha":
+//			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
+//		}
+//
+//		return ret;
+//	}
 
 	/**
 	 * Metodo que sera usado apenas pelo diretor geral para atualizar
