@@ -10,12 +10,11 @@ public class MedicamentoGenericoTest {
 	public void test() {
 
 		// testando o singleton
-		TipoMedicamentoIF medicamentoGenerico = MedicamentoGenerico.getInstance();
+		TipoMedicamentoIF medicamentoGenerico = new MedicamentoGenerico();
 		
 		// testando a instancia
 		assertTrue(medicamentoGenerico instanceof TipoMedicamentoIF);
 		assertTrue(medicamentoGenerico instanceof MedicamentoGenerico);
-		assertFalse(medicamentoGenerico.getClass().equals(MedicamentoReferencia.getInstance().getClass()));
 
 		// testando o toString
 		assertEquals("Generico", medicamentoGenerico.toString());
