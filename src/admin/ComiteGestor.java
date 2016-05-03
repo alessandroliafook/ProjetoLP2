@@ -4,11 +4,20 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import medicamento.Medicamento;
+import departamentos.Clinica;
+import departamentos.Farmacia;
 import util.VerificacaoLiberaSistema;
 import exceptions.AtualizaFuncionarioException;
+import exceptions.AtualizaMedicamentoException;
 import exceptions.CadastroFuncionarioException;
+import exceptions.CadastroMedicamentoException;
+import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
+import exceptions.ConsultaMedicamentoException;
+import exceptions.ConsultaProntuarioException;
 import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
@@ -18,6 +27,7 @@ import exceptions.NomeFuncionarioVazioException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import pessoal.Funcionario;
+import pessoal.Paciente;
 
 public final class ComiteGestor {
 
@@ -33,6 +43,9 @@ public final class ComiteGestor {
 	private Map<String, String> cadastros;
 	private Set<Funcionario> corpoProfissional;
 	private FactoryDePessoa facFuncionario;
+	
+	private Farmacia farmacia;
+	private Clinica clinica;
 
 	private ComiteGestor() {
 
@@ -41,6 +54,8 @@ public final class ComiteGestor {
 		this.cadastros = new HashMap<String, String>();
 		this.facFuncionario = new FactoryDePessoa();
 		this.corpoProfissional = new HashSet<Funcionario>();
+		this.farmacia  = new Farmacia();
+		this.clinica  = new Clinica();
 	}
 
 	
@@ -609,4 +624,166 @@ public final class ComiteGestor {
 			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome());
 		}
 	}
+
+	// metodos da farmacia
+
+	/**
+	 * @param nome
+	 * @param tipo
+	 * @param preco
+	 * @param quantidade
+	 * @param categorias
+	 * @return
+	 * @throws CadastroMedicamentoException
+	 * @see departamentos.Farmacia#cadastraMedicamento(java.lang.String, java.lang.String, double, int, java.lang.String)
+	 */
+	public String cadastraMedicamento(String nome, String tipo, double preco,
+			int quantidade, String categorias)
+			throws CadastroMedicamentoException {
+		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
+				categorias);
+	}
+
+
+	/**
+	 * @param nome
+	 * @param atributo
+	 * @param novoValor
+	 * @throws AtualizaMedicamentoException
+	 * @see departamentos.Farmacia#atualizaMedicamento(java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public void atualizaMedicamento(String nome, String atributo,
+			String novoValor) throws AtualizaMedicamentoException {
+		farmacia.atualizaMedicamento(nome, atributo, novoValor);
+	}
+
+
+	/**
+	 * @param nomeMedicamento
+	 * @param quantidadeSolicitada
+	 * @return
+	 * @throws Exception
+	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String, int)
+	 */
+	public Medicamento forneceMedicamento(String nomeMedicamento,
+			int quantidadeSolicitada) throws Exception {
+		return farmacia.forneceMedicamento(nomeMedicamento,
+				quantidadeSolicitada);
+	}
+
+
+	/**
+	 * @param nomeMedicamento
+	 * @return
+	 * @throws ConsultaMedicamentoException
+	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String)
+	 */
+	public Medicamento forneceMedicamento(String nomeMedicamento)
+			throws ConsultaMedicamentoException {
+		return farmacia.forneceMedicamento(nomeMedicamento);
+	}
+
+
+	/**
+	 * @param categoria
+	 * @return
+	 * @throws ConsultaMedicamentoException
+	 * @see departamentos.Farmacia#consultaMedCategoria(java.lang.String)
+	 */
+	public String consultaMedCategoria(String categoria)
+			throws ConsultaMedicamentoException {
+		return farmacia.consultaMedCategoria(categoria);
+	}
+
+
+	/**
+	 * @param nomeDoRemedio
+	 * @return
+	 * @throws ConsultaMedicamentoException
+	 * @see departamentos.Farmacia#consultaMedNome(java.lang.String)
+	 */
+	public String consultaMedNome(String nomeDoRemedio)
+			throws ConsultaMedicamentoException {
+		return farmacia.consultaMedNome(nomeDoRemedio);
+	}
+
+
+	/**
+	 * @param ordenacao
+	 * @return
+	 * @throws ConsultaMedicamentoException
+	 * @see departamentos.Farmacia#getEstoqueFarmacia(java.lang.String)
+	 */
+	public String getEstoqueFarmacia(String ordenacao)
+			throws ConsultaMedicamentoException {
+		return farmacia.getEstoqueFarmacia(ordenacao);
+	}
+
+
+	/**
+	 * @param atributoDoMedicamento
+	 * @param medicamento
+	 * @return
+	 * @throws ConsultaMedicamentoException
+	 * @see departamentos.Farmacia#getInfoMedicamento(java.lang.String, medicamento.Medicamento)
+	 */
+	public String getInfoMedicamento(String atributoDoMedicamento,
+			Medicamento medicamento) throws ConsultaMedicamentoException {
+		return farmacia.getInfoMedicamento(atributoDoMedicamento, medicamento);
+	}
+
+	// metodos da clinica
+
+	/**
+	 * @param nome
+	 * @param data
+	 * @param peso
+	 * @param sexo
+	 * @param genero
+	 * @param tipoSanguineo
+	 * @return
+	 * @throws CadastroPacienteException
+	 * @see departamentos.Clinica#cadastraPaciente(java.lang.String, java.lang.String, double, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	public Paciente cadastraPaciente(String nome, String data, double peso,
+			String sexo, String genero, String tipoSanguineo)
+			throws CadastroPacienteException {
+		return clinica.cadastraPaciente(nome, data, peso, sexo, genero,
+				tipoSanguineo);
+	}
+
+
+	/**
+	 * @return
+	 * @see departamentos.Clinica#getNumeroCadastros()
+	 */
+	public int getNumeroCadastros() {
+		return clinica.getNumeroCadastros();
+	}
+
+
+	/**
+	 * @param paciente
+	 * @param atributo
+	 * @return
+	 * @see departamentos.Clinica#getInfoPaciente(pessoal.Paciente, java.lang.String)
+	 */
+	public String getInfoPaciente(Paciente paciente, String atributo) {
+		return clinica.getInfoPaciente(paciente, atributo);
+	}
+
+
+	/**
+	 * @param posicao
+	 * @return
+	 * @throws ConsultaProntuarioException
+	 * @see departamentos.Clinica#getProntuario(int)
+	 */
+	public Paciente getProntuario(int posicao)
+			throws ConsultaProntuarioException {
+		return clinica.getProntuario(posicao);
+	}
+
+	
+	
 }
