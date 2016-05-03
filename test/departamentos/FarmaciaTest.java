@@ -98,7 +98,7 @@ public class FarmaciaTest {
 
 						
 		} catch (Exception e) {
-
+			fail();
 		}
 	}
 
@@ -124,6 +124,7 @@ public class FarmaciaTest {
 			
 			try {
 				farmacia.cadastraMedicamento("", "generico", 21.50, 45, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Nome do medicamento nao pode ser vazio.",
@@ -133,6 +134,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.cadastraMedicamento(" ", "generico", 21.50, 45, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Nome do medicamento nao pode ser vazio.",
@@ -143,6 +145,7 @@ public class FarmaciaTest {
 			try {
 
 				farmacia.cadastraMedicamento("Valium", "", 21.50, 45, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 
@@ -153,6 +156,7 @@ public class FarmaciaTest {
 			try {
 
 				farmacia.cadastraMedicamento("Valium", "experimental", 21.50, 45, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 
@@ -162,6 +166,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.cadastraMedicamento("Valium", "generico", -1, 45, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Preco do medicamento nao pode ser negativo.",
@@ -170,6 +175,7 @@ public class FarmaciaTest {
 			}
 			try {
 				farmacia.cadastraMedicamento("Valium", "generico", 21.50, -1, "analgesico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Quantidade do medicamento nao pode ser negativo.",
@@ -178,6 +184,7 @@ public class FarmaciaTest {
 			}
 			try {
 				farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Categoria invalida.", e.getMessage());
@@ -185,6 +192,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "antidepressivo");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro no cadastro de medicamento. Categoria invalida.", e.getMessage());
@@ -194,6 +202,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.atualizaMedicamento("Nimesulida", "nome", "Nimsulida");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro ao atualizar medicamento. Nome do medicamento nao pode ser alterado.",
@@ -202,6 +211,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.atualizaMedicamento("Nimesulida", "tipo", "generico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro ao atualizar medicamento. Tipo do medicamento nao pode ser alterado.",
@@ -210,6 +220,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.atualizaMedicamento("Dorflex", "preco", "17.00");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro ao atualizar medicamento. Medicamento nao cadastrado.", e.getMessage());
@@ -219,6 +230,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.consultaMedCategoria("antiemetico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro na consulta de medicamentos. Nao ha remedios cadastrados nessa categoria.", e.getMessage());
@@ -226,6 +238,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.consultaMedCategoria("antialergico");
+				fail();
 
 			} catch (Exception e) {
 				assertEquals("Erro na consulta de medicamentos. Categoria invalida.", e.getMessage());
@@ -240,7 +253,7 @@ public class FarmaciaTest {
 
 			try {
 				farmacia.consultaMedNome("Opium");
-
+				fail();
 			} catch (Exception e) {
 				assertEquals("Erro na consulta de medicamentos. Medicamento nao cadastrado.", e.getMessage());
 			}
@@ -248,14 +261,14 @@ public class FarmaciaTest {
 			// excecos de consulta de todos os medicamentos
 			try {
 				farmacia.getEstoqueFarmacia("tipo");
-
+				fail();
 			} catch (Exception e) {
 				assertEquals("Erro na consulta de medicamentos. Tipo de ordenacao invalida.", e.getMessage());
 			}
 			
 			
 		} catch (Exception e) {
-
+			fail();
 		}
 
 	}
