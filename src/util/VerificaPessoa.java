@@ -55,7 +55,7 @@ public class VerificaPessoa {
 			throw new CargoInvalidoException("Nome do cargo nao pode ser vazio.");
 		}
 		
-		String cargosValidos[] = {"Diretor geral", "Medico", "Tecnico Administrativo"};
+		String cargosValidos[] = {"Diretor Geral", "Medico", "Tecnico Administrativo"};
 		boolean isValido = false;
 		
 		for(String cargoCorreto : cargosValidos){

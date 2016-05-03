@@ -114,8 +114,22 @@ public final class ComiteGestor {
 	 *            sistema
 	 * @throws Exception
 	 */
-	private void primeiroCadastro(String nome, String cargo, String dataNascimento, String chave) throws Exception {
-		cadastraFuncionario(nome, cargo, dataNascimento);
+	private void primeiroCadastro(String nome, String cargo,
+			String dataNascimento, String chave) throws Exception {
+		
+		try {
+
+			diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+			adicionaLogin(diretorGeral.getMatricula(), diretorGeral.getSenha());
+
+		} catch (NomeFuncionarioVazioException e) {
+			throw new CadastroFuncionarioException(e.getMessage());
+		} catch (DataInvalidaException e) {
+			throw new CadastroFuncionarioException(e.getMessage());
+		} catch (CargoInvalidoException e) {
+			throw new CadastroFuncionarioException(e.getMessage());
+		}
+		
 		diretorGeral.setSenha(chave);
 	}
 
