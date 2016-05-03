@@ -93,9 +93,7 @@ public final class ComiteGestor {
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
 		
 		diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, "Diretor Geral", this.numeroMatriculas);
-		diretorGeral.setSenha(chave);
-		
-		this.cadastros.put(diretorGeral.getMatricula(), chave);
+		adicionaLogin(diretorGeral.getMatricula(), chave);
 		
 //		primeiroCadastro(nome, "Diretor Geral", dataNascimento, chave);
 		this.primeiroAcesso = true;
@@ -171,7 +169,7 @@ public final class ComiteGestor {
 
 	/**
 	 * Metodo que recupera informacoes do funcionario especificado, exceto a
-	 * senha.
+	 * senha.19671201
 	 * 
 	 * @param matricula
 	 *            Matricula do funcionario a ter a informacao recuperada
@@ -260,7 +258,7 @@ public final class ComiteGestor {
 		if (funcLogado != null) {
 			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome();
 		}
-
+		
 		// testa se a matricula esta cadastrada
 		else if (!isMatriculado(matricula)) {
 			motivo = "Funcionario nao cadastrado.";
