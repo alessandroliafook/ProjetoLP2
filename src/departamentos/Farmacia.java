@@ -386,8 +386,11 @@ public class Farmacia implements Serializable {
 					return medicamentoEstocado.getNome();
 
 				case "preco":
-					return String
-							.format("%.1f", medicamentoEstocado.getPreco());
+					
+					String precoString = String.format("%.1f", medicamentoEstocado.getPreco());
+					String preco = precoString.replace(",", ".");
+					
+					return preco;
 
 				case "quantidade":
 					return String.valueOf(medicamentoEstocado.getQuantidade());
