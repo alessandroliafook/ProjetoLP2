@@ -1,7 +1,6 @@
 package hospital;
 
 import admin.ComiteGestor;
-import easyaccept.EasyAccept;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ExclusaoFuncionarioException;
@@ -13,6 +12,10 @@ public class HospitalFacade {
 
 	ComiteGestor comite = ComiteGestor.getInstancia();
 
+	public void iniciaSistema(){
+		comite.iniciaSistema();
+	}
+	
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 		return comite.liberaSistema(chave, nome, dataNascimento);
 	}
@@ -52,16 +55,6 @@ public class HospitalFacade {
 
 	public void fechaSistema() throws SistemaException {
 		comite.fechaSistema();
-	}
-
-	public static void main(String[] args) {
-
-		args = new String[] { "hospital.HospitalFacade", "teste_aceitacao/usecase_1.txt",
-				"teste_aceitacao/usecase_2.txt", "teste_aceitacao/usecase_3.txt", "teste_aceitacao/usecase_4.txt"
-
-		};
-
-		EasyAccept.main(args);
 	}
 
 }

@@ -43,8 +43,11 @@ public final class ComiteGestor {
 		this.corpoProfissional = new HashSet<Funcionario>();
 	}
 
+	
+	public void iniciaSistema(){}
+	
 	/**
-	 * Método que garante que havera apenas uma instancia dessa classe. Caso ja
+	 * Metodo que garante que havera apenas uma instancia dessa classe. Caso ja
 	 * tennha sido instanciada uma vez, retorna a instancia, do contrario
 	 * instancia e retorna.
 	 * 
@@ -140,24 +143,24 @@ public final class ComiteGestor {
 	 */
 	private Funcionario getFuncionario(String matricula) {
 
-		Funcionario f = null;
+		Funcionario funcionario = null;
 
 		if (this.diretorGeral.getMatricula().equals(matricula))
-			f = diretorGeral;
+			funcionario = diretorGeral;
 
 		for (Funcionario func : corpoClinico) {
 			if (func.getMatricula().equals(matricula)) {
-				f = func;
+				funcionario = func;
 			}
 		}
 
 		for (Funcionario func : corpoProfissional) {
 			if (func.getMatricula().equals(matricula)) {
-				f = func;
+				funcionario = func;
 			}
 		}
 
-		return f;
+		return funcionario;
 	}
 
 	/**
