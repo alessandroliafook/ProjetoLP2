@@ -60,7 +60,7 @@ public class FarmaciaTest {
 
 			// teste de busca de medicamentos por categoria
 
-			assertEquals("Nimesulida,Valium,Metamizol,Morfina", farmacia.consultaMedCategoria("analgesico"));
+			assertEquals("Valium,Nimesulida,Metamizol,Morfina", farmacia.consultaMedCategoria("analgesico"));
 			assertEquals("Duraston,Medroxyprogesterona", farmacia.consultaMedCategoria("hormonal"));
 			assertEquals("Nimesulida", farmacia.consultaMedCategoria("antiinflamatorio"));
 			assertEquals("Penicilina", farmacia.consultaMedCategoria("antibiotico"));

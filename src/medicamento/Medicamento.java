@@ -6,7 +6,6 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import java.io.Serializable;
-import java.text.NumberFormat;
 
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;

@@ -1,6 +1,5 @@
 package util;
 
-import exceptions.CadastroFuncionarioException;
 import exceptions.LiberaSistemaException;
 
 public class VerificacaoLiberaSistema {

@@ -66,16 +66,14 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public String cadastraMedicamento(String nome, String tipo,
-			double preco, int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
 		Medicamento medicamento;
 
 		try {
 
-			medicamento = farmaceutico.criaMedicamento(nome, tipo, preco,
-					quantidade, categorias);
+			medicamento = farmaceutico.criaMedicamento(nome, tipo, preco, quantidade, categorias);
 
 		} catch (Exception e) {
 
@@ -89,8 +87,7 @@ public class Farmacia implements Serializable {
 
 				if (medicamentoEstocado.equals(medicamento)) {
 
-					int qntTotal = medicamentoEstocado.getQuantidade()
-							+ quantidade;
+					int qntTotal = medicamentoEstocado.getQuantidade() + quantidade;
 					medicamentoEstocado.setQuantidade(qntTotal);
 					return medicamentoEstocado.getNome();
 				}
@@ -121,8 +118,8 @@ public class Farmacia implements Serializable {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo,
-			String novoValor) throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
+			throws AtualizaMedicamentoException {
 
 		for (Medicamento medicamento : this.estoqueDeMedicamentos) {
 
@@ -141,16 +138,13 @@ public class Farmacia implements Serializable {
 					return;
 
 				case "nome":
-					throw new AtualizaMedicamentoException(
-							"Nome do medicamento nao pode ser alterado.");
+					throw new AtualizaMedicamentoException("Nome do medicamento nao pode ser alterado.");
 
 				case "tipo":
-					throw new AtualizaMedicamentoException(
-							"Tipo do medicamento nao pode ser alterado.");
+					throw new AtualizaMedicamentoException("Tipo do medicamento nao pode ser alterado.");
 
 				default:
-					throw new AtualizaMedicamentoException(
-							"Atributo do medicamento invalido.");
+					throw new AtualizaMedicamentoException("Atributo do medicamento invalido.");
 
 				}
 
@@ -175,8 +169,7 @@ public class Farmacia implements Serializable {
 	 * @throws Exception
 	 * @throws NumeroInvalidoException
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento,
-			int quantidadeSolicitada) throws Exception {
+	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -184,22 +177,19 @@ public class Farmacia implements Serializable {
 
 				if (medicamento.getQuantidade() >= quantidadeSolicitada) {
 
-					int total = medicamento.getQuantidade()
-							- quantidadeSolicitada;
+					int total = medicamento.getQuantidade() - quantidadeSolicitada;
 					medicamento.setQuantidade(total);
 
 					return medicamento;
 				}
 
-				throw new Exception("quantidade de medicamento solicitada"
-						+ "existe apenas" + medicamento.getQuantidade()
-						+ "no estoque");
+				throw new Exception("quantidade de medicamento solicitada" + "existe apenas"
+						+ medicamento.getQuantidade() + "no estoque");
 			}
 
 		}
 
-		throw new ConsultaMedicamentoException(
-				"Medicamento solicitado nao existe no estoque.");
+		throw new ConsultaMedicamentoException("Medicamento solicitado nao existe no estoque.");
 
 	}
 
@@ -213,8 +203,7 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
 	 *             estoque.
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento)
-			throws ConsultaMedicamentoException {
+	public Medicamento forneceMedicamento(String nomeMedicamento) throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -243,8 +232,7 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
 	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria)
-			throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
 		CategoriasEnum enumCategoria;
 
@@ -259,9 +247,13 @@ public class Farmacia implements Serializable {
 		}
 
 		int medicamentosEncontrados = 0;
+		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
+		Collections.sort(listaDeMedicamentos);
 		List<String> listaPorCategoria = new ArrayList<String>();
 
-		for (Medicamento medicamento : estoqueDeMedicamentos) {
+		for (int indice = 0; indice < listaDeMedicamentos.size(); indice++) {
+
+			Medicamento medicamento = listaDeMedicamentos.get(indice);
 
 			if (medicamento.getCategorias().contains(enumCategoria)) {
 
@@ -278,8 +270,7 @@ public class Farmacia implements Serializable {
 
 		} else {
 
-			throw new ConsultaMedicamentoException(
-					"Nao ha remedios cadastrados nessa categoria.");
+			throw new ConsultaMedicamentoException("Nao ha remedios cadastrados nessa categoria.");
 		}
 	}
 
@@ -294,8 +285,7 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaMedNome(String nomeDoRemedio)
-			throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
@@ -321,11 +311,9 @@ public class Farmacia implements Serializable {
 	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
 	 *             preco ou ordem alfabética.
 	 */
-	public String getEstoqueFarmacia(String ordenacao)
-			throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
-		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(
-				this.estoqueDeMedicamentos);
+		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
 		List<String> list = new ArrayList<String>();
 		String string = "";
 
@@ -355,8 +343,7 @@ public class Farmacia implements Serializable {
 			return string;
 
 		default:
-			throw new ConsultaMedicamentoException(
-					"Tipo de ordenacao invalida.");
+			throw new ConsultaMedicamentoException("Tipo de ordenacao invalida.");
 
 		}
 
@@ -373,8 +360,8 @@ public class Farmacia implements Serializable {
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento,
-			String nomeMedicamento) throws ConsultaMedicamentoException {
+	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
+			throws ConsultaMedicamentoException {
 
 		for (Medicamento medicamentoEstocado : this.estoqueDeMedicamentos) {
 
@@ -386,10 +373,10 @@ public class Farmacia implements Serializable {
 					return medicamentoEstocado.getNome();
 
 				case "preco":
-					
+
 					String precoString = String.format("%.1f", medicamentoEstocado.getPreco());
 					String preco = precoString.replace(",", ".");
-					
+
 					return preco;
 
 				case "quantidade":
@@ -399,8 +386,7 @@ public class Farmacia implements Serializable {
 
 					List<String> listaDeCategorias = new ArrayList<String>();
 
-					for (CategoriasEnum categoria : medicamentoEstocado
-							.getCategorias()) {
+					for (CategoriasEnum categoria : medicamentoEstocado.getCategorias()) {
 						listaDeCategorias.add(categoria.name().toLowerCase());
 					}
 

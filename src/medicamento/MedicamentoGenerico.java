@@ -4,9 +4,7 @@ public class MedicamentoGenerico implements TipoMedicamentoIF {
 
 	public final double DESCONTO = 0.6;
 
-	private static MedicamentoGenerico INSTANCE;
-
-	/**
+		/**
 	 * Construtor para inicializar uma unica instancia de medicamento de
 	 * generico.
 	 */
