@@ -51,11 +51,14 @@ public class VerificaPessoa {
 	}
 	
 	public static void validaCargo(String cargo) throws Exception{
+		
+		cargo = cargo.toLowerCase();
+		
 		if(cargo.trim().equals("")){
 			throw new CargoInvalidoException("Nome do cargo nao pode ser vazio.");
 		}
 		
-		String cargosValidos[] = {"Diretor Geral", "Medico", "Tecnico Administrativo"};
+		String cargosValidos[] = {"diretor geral", "medico", "tecnico administrativo"};
 		boolean isValido = false;
 		
 		for(String cargoCorreto : cargosValidos){

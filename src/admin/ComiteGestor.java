@@ -22,12 +22,10 @@ import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
-import exceptions.MaisDeUmDiretorException;
 import exceptions.NomeFuncionarioVazioException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import pessoal.Funcionario;
-import pessoal.Paciente;
 
 public final class ComiteGestor {
 
@@ -43,7 +41,7 @@ public final class ComiteGestor {
 	private Map<String, String> cadastros;
 	private Set<Funcionario> corpoProfissional;
 	private FactoryDePessoa facFuncionario;
-	
+
 	private Farmacia farmacia;
 	private Clinica clinica;
 
@@ -54,13 +52,13 @@ public final class ComiteGestor {
 		this.cadastros = new HashMap<String, String>();
 		this.facFuncionario = new FactoryDePessoa();
 		this.corpoProfissional = new HashSet<Funcionario>();
-		this.farmacia  = new Farmacia();
-		this.clinica  = new Clinica();
+		this.farmacia = new Farmacia();
+		this.clinica = new Clinica();
 	}
 
-	
-	public void iniciaSistema(){}
-	
+	public void iniciaSistema() {
+	}
+
 	/**
 	 * Metodo que garante que havera apenas uma instancia dessa classe. Caso ja
 	 * tennha sido instanciada uma vez, retorna a instancia, do contrario
@@ -91,49 +89,13 @@ public final class ComiteGestor {
 
 		VerificacaoLiberaSistema.validaAcesso(this.primeiroAcesso);
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
-		
-		diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, "Diretor Geral", this.numeroMatriculas);
-		adicionaLogin(diretorGeral.getMatricula(), chave);
-		
-//		primeiroCadastro(nome, "Diretor Geral", dataNascimento, chave);
+
+		diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, "diretor geral", this.numeroMatriculas);
+		adicionaLogin(diretorGeral.getMatricula(), diretorGeral.getSenha());
+		this.numeroMatriculas += 1;
+
 		this.primeiroAcesso = true;
 		return diretorGeral.getMatricula();
-	}
-
-	/**
-	 * Metodo que realiza o cadastro do primeiro funcionario, sendo este o de um
-	 * diretor geral
-	 * 
-	 * @param nome
-	 *            Nome do diretor geral que devera ser atualizado posteriormente
-	 * @param cargo
-	 *            Diretor geral
-	 * @param dataNascimento
-	 *            Data de nascimento do diretor geral que devera ser atualizada
-	 *            posteriormente
-	 * @param chave
-	 *            A senha do diretor geral sera igual a chave que libera o
-	 *            sistema
-	 * @throws Exception
-	 */
-	private void primeiroCadastro(String nome, String cargo,
-			String dataNascimento, String chave) throws Exception {
-		
-		try {
-
-			diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
-			diretorGeral.setSenha(chave);
-			adicionaLogin(diretorGeral.getMatricula(), diretorGeral.getSenha());
-
-		} catch (NomeFuncionarioVazioException e) {
-			throw new CadastroFuncionarioException(e.getMessage());
-		} catch (DataInvalidaException e) {
-			throw new CadastroFuncionarioException(e.getMessage());
-		} catch (CargoInvalidoException e) {
-			throw new CadastroFuncionarioException(e.getMessage());
-		}
-		
-		
 	}
 
 	/**
@@ -168,52 +130,8 @@ public final class ComiteGestor {
 	}
 
 	/**
-	 * Metodo que recupera informacoes do funcionario especificado, exceto a
-	 * senha.19671201
-	 * 
-	 * @param matricula
-	 *            Matricula do funcionario a ter a informacao recuperada
-	 * @param atributomedicamento
-	 *            Atributo do funcionario a ser recuperado
-	 * @return String que possui a informacao
-	 * @throws ConsultaFuncionarioException
-	 *             Caso o atributo a ser recuperado seja a senha do funcionario
-	 */
-	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
-
-		try {
-			validaMatricula(matricula);
-		} catch (Exception e) {
-			throw new ConsultaFuncionarioException(e.getMessage());
-		}
-
-		if (!isMatriculado(matricula)) {
-			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
-		}
-
-		Funcionario func = getFuncionario(matricula);
-		String ret = "";
-
-		switch (atributo) {
-		case "Nome":
-			ret = func.getNome();
-			break;
-		case "Data":
-			ret = func.getData();
-			break;
-		case "Cargo":
-			ret = func.getCargo();
-			break;
-		case "Senha":
-			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
-		}
-
-		return ret;
-	}
-
-	/**
-	 * Metodo que verifica se a matrimedicamentocula do funcionario esta seguindo o padrao
-	 * adotado e se este esta realmente matriculado
+	 * Metodo que verifica se a matrimedicamentocula do funcionario esta
+	 * seguindo o padrao adotado e se este esta realmente matriculado
 	 * 
 	 * @param matricula
 	 *            Matricula a ser verificada
@@ -258,7 +176,7 @@ public final class ComiteGestor {
 		if (funcLogado != null) {
 			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome();
 		}
-		
+
 		// testa se a matricula esta cadastrada
 		else if (!isMatriculado(matricula)) {
 			motivo = "Funcionario nao cadastrado.";
@@ -324,7 +242,7 @@ public final class ComiteGestor {
 		cadastros.put(matricula, "");
 		cadastros.remove(matricula);
 	}
-	
+
 	/**
 	 * Metodo que desloga o funcionario atualmente logado, habilitando assim o
 	 * fechamento do sistema.
@@ -358,29 +276,34 @@ public final class ComiteGestor {
 	 *             - Caso o cargo do funcionario a ser criada esteja vazio ou
 	 *             nao exista
 	 */
-	public void cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
+	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
+
+		String mat = "";
+		Funcionario func;
+		cargo = cargo.toLowerCase();
 
 		validaPermissao();
 		validaDiretor(cargo);
 
 		try {
 
-			Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+			func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
+			mat = func.getMatricula();
 
 			switch (cargo) {
-			case "Diretor Geral":
-				diretorGeral = func;
-				break;
-			case "Medico":
+			case "medico":
 				corpoClinico.add(func);
 				break;
-			case "Tecnico Administrativo":
+			case "tecnico administrativo":
 				corpoProfissional.add(func);
 				break;
 			}
 
 			adicionaLogin(func.getMatricula(), func.getSenha());
+			System.out.println("id" + this.numeroMatriculas + " recebe " + mat);
+
 			this.numeroMatriculas += 1;
+			return mat;
 
 		} catch (NomeFuncionarioVazioException e) {
 			throw new CadastroFuncionarioException(e.getMessage());
@@ -389,6 +312,52 @@ public final class ComiteGestor {
 		} catch (CargoInvalidoException e) {
 			throw new CadastroFuncionarioException(e.getMessage());
 		}
+	}
+
+	/**
+	 * Metodo que recupera informacoes do funcionario especificado, exceto a
+	 * senha.
+	 * 
+	 * @param matricula
+	 *            Matricula do funcionario a ter a informacao recuperada
+	 * @param atributomedicamento
+	 *            Atributo do funcionario a ser recuperado
+	 * @return String que possui a informacao
+	 * @throws ConsultaFuncionarioException
+	 *             Caso o atributo a ser recuperado seja a senha do funcionario
+	 */
+	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
+
+//		System.out.println("PORRA - " + matricula);
+
+		try {
+			validaMatricula(matricula);
+		} catch (Exception e) {
+			throw new ConsultaFuncionarioException(e.getMessage());
+		}
+
+		if (!isMatriculado(matricula)) {
+			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
+		}
+
+		Funcionario func = getFuncionario(matricula);
+		String ret = "";
+
+		switch (atributo) {
+		case "Nome":
+			ret = func.getNome();
+			break;
+		case "Data":
+			ret = func.getData();
+			break;
+		case "Cargo":
+			ret = func.getCargo();
+			break;
+		case "Senha":
+			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
+		}
+
+		return ret;
 	}
 
 	/**
@@ -601,9 +570,9 @@ public final class ComiteGestor {
 	 * @throws MaisDeUmDiretorException
 	 *             Caso haja um diretor ja criado
 	 */
-	private void validaDiretor(String cargo) throws MaisDeUmDiretorException {
-		if (diretorGeral != null && cargo.equals("Diretor Geral")) {
-			throw new MaisDeUmDiretorException();
+	private void validaDiretor(String cargo) throws CadastroFuncionarioException {
+		if (diretorGeral != null && cargo.equals("diretor geral")) {
+			throw new CadastroFuncionarioException("Nao eh possivel criar mais de um Diretor Geral.");
 		}
 	}
 
@@ -615,7 +584,7 @@ public final class ComiteGestor {
 	 *             Caso nao tenha permissao
 	 */
 	private void validaPermissao() throws CadastroFuncionarioException {
-		if (isAutorizado()) {
+		if (!isAutorizado()) {
 			throw new CadastroFuncionarioException(
 					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
 		}
@@ -652,28 +621,26 @@ public final class ComiteGestor {
 	 * @param categorias
 	 * @return
 	 * @throws CadastroMedicamentoException
-	 * @see departamentos.Farmacia#cadastraMedicamento(java.lang.String, java.lang.String, double, int, java.lang.String)
+	 * @see departamentos.Farmacia#cadastraMedicamento(java.lang.String,
+	 *      java.lang.String, double, int, java.lang.String)
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco,
-			int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
-		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
-				categorias);
+		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
-
 
 	/**
 	 * @param nome
 	 * @param atributo
 	 * @param novoValor
 	 * @throws AtualizaMedicamentoException
-	 * @see departamentos.Farmacia#atualizaMedicamento(java.lang.String, java.lang.String, java.lang.String)
+	 * @see departamentos.Farmacia#atualizaMedicamento(java.lang.String,
+	 *      java.lang.String, java.lang.String)
 	 */
-	public void atualizaMedicamento(String nome, String atributo,
-			String novoValor) throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
+			throws AtualizaMedicamentoException {
 		farmacia.atualizaMedicamento(nome, atributo, novoValor);
 	}
-
 
 	/**
 	 * @param nomeMedicamento
@@ -682,12 +649,9 @@ public final class ComiteGestor {
 	 * @throws Exception
 	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String, int)
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento,
-			int quantidadeSolicitada) throws Exception {
-		return farmacia.forneceMedicamento(nomeMedicamento,
-				quantidadeSolicitada);
+	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
+		return farmacia.forneceMedicamento(nomeMedicamento, quantidadeSolicitada);
 	}
-
 
 	/**
 	 * @param nomeMedicamento
@@ -695,11 +659,9 @@ public final class ComiteGestor {
 	 * @throws ConsultaMedicamentoException
 	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String)
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento)
-			throws ConsultaMedicamentoException {
+	public Medicamento forneceMedicamento(String nomeMedicamento) throws ConsultaMedicamentoException {
 		return farmacia.forneceMedicamento(nomeMedicamento);
 	}
-
 
 	/**
 	 * @param categoria
@@ -707,11 +669,9 @@ public final class ComiteGestor {
 	 * @throws ConsultaMedicamentoException
 	 * @see departamentos.Farmacia#consultaMedCategoria(java.lang.String)
 	 */
-	public String consultaMedCategoria(String categoria)
-			throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 		return farmacia.consultaMedCategoria(categoria);
 	}
-
 
 	/**
 	 * @param nomeDoRemedio
@@ -719,11 +679,9 @@ public final class ComiteGestor {
 	 * @throws ConsultaMedicamentoException
 	 * @see departamentos.Farmacia#consultaMedNome(java.lang.String)
 	 */
-	public String consultaMedNome(String nomeDoRemedio)
-			throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 		return farmacia.consultaMedNome(nomeDoRemedio);
 	}
-
 
 	/**
 	 * @param ordenacao
@@ -731,21 +689,20 @@ public final class ComiteGestor {
 	 * @throws ConsultaMedicamentoException
 	 * @see departamentos.Farmacia#getEstoqueFarmacia(java.lang.String)
 	 */
-	public String getEstoqueFarmacia(String ordenacao)
-			throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 		return farmacia.getEstoqueFarmacia(ordenacao);
 	}
-
 
 	/**
 	 * @param atributoDoMedicamento
 	 * @param medicamento
 	 * @return
 	 * @throws ConsultaMedicamentoException
-	 * @see departamentos.Farmacia#getInfoMedicamento(java.lang.String, medicamento.Medicamento)
+	 * @see departamentos.Farmacia#getInfoMedicamento(java.lang.String,
+	 *      medicamento.Medicamento)
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento,
-			String nomeMedicamento) throws ConsultaMedicamentoException {
+	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
+			throws ConsultaMedicamentoException {
 		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
@@ -760,15 +717,14 @@ public final class ComiteGestor {
 	 * @param tipoSanguineo
 	 * @return
 	 * @throws CadastroPacienteException
-	 * @see departamentos.Clinica#cadastraPaciente(java.lang.String, java.lang.String, double, java.lang.String, java.lang.String, java.lang.String)
+	 * @see departamentos.Clinica#cadastraPaciente(java.lang.String,
+	 *      java.lang.String, double, java.lang.String, java.lang.String,
+	 *      java.lang.String)
 	 */
-	public int cadastraPaciente(String nome, String data, double peso,
-			String sexo, String genero, String tipoSanguineo)
+	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
-		return clinica.cadastraPaciente(nome, data, peso, sexo, genero,
-				tipoSanguineo);
+		return clinica.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
-
 
 	/**
 	 * @return
@@ -778,17 +734,16 @@ public final class ComiteGestor {
 		return clinica.getNumeroCadastros();
 	}
 
-
 	/**
 	 * @param paciente
 	 * @param atributo
 	 * @return
-	 * @see departamentos.Clinica#getInfoPaciente(pessoal.Paciente, java.lang.String)
+	 * @see departamentos.Clinica#getInfoPaciente(pessoal.Paciente,
+	 *      java.lang.String)
 	 */
 	public String getInfoPaciente(int id, String atributo) {
 		return clinica.getInfoPaciente(id, atributo);
 	}
-
 
 	/**
 	 * @param posicao
@@ -796,11 +751,8 @@ public final class ComiteGestor {
 	 * @throws ConsultaProntuarioException
 	 * @see departamentos.Clinica#getProntuario(int)
 	 */
-	public int getProntuario(int posicao)
-			throws ConsultaProntuarioException {
+	public int getProntuario(int posicao) throws ConsultaProntuarioException {
 		return clinica.getProntuario(posicao);
 	}
 
-	
-	
 }

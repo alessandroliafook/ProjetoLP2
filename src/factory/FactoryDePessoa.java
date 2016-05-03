@@ -33,8 +33,8 @@ public class FactoryDePessoa {
 			throws Exception {
 
 		VerificaPessoa.validaNome(nome, false);
-		VerificaPessoa.validaData(dataNascimento);
 		VerificaPessoa.validaCargo(cargo);
+		VerificaPessoa.validaData(dataNascimento);
 
 		String matricula = geraMatricula(cargo, quantidadeMatriculas);
 		String senha = geraSenha(dataNascimento, matricula);
@@ -92,17 +92,18 @@ public class FactoryDePessoa {
 	 */
 	private String geraMatricula(String cargo, int quantidadeMatriculas) {
 		String novaMatricula = "";
-
+		cargo = cargo.toLowerCase();
+		
 		switch (cargo) {
-		case "Diretor Geral":
+		case "diretor geral":
 			novaMatricula += "1";
 			break;
 
-		case "Medico":
+		case "medico":
 			novaMatricula += "2";
 			break;
 
-		case "Tecnico Administrativo":
+		case "tecnico administrativo":
 			novaMatricula += "3";
 			break;
 
@@ -112,7 +113,7 @@ public class FactoryDePessoa {
 
 		novaMatricula += LocalDate.now().getYear();
 		novaMatricula += String.format("%03d", quantidadeMatriculas);
-
+		
 		return novaMatricula;
 	}
 
