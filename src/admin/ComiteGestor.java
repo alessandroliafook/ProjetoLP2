@@ -656,7 +656,7 @@ public final class ComiteGestor {
 	 * @throws CadastroMedicamentoException
 	 * @see departamentos.Farmacia#cadastraMedicamento(java.lang.String, java.lang.String, double, int, java.lang.String)
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco,
+	public Medicamento cadastraMedicamento(String nome, String tipo, double preco,
 			int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
