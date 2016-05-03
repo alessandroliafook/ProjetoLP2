@@ -91,10 +91,14 @@ public final class ComiteGestor {
 
 		VerificacaoLiberaSistema.validaAcesso(this.primeiroAcesso);
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
-
-		primeiroCadastro(nome, "Diretor Geral", dataNascimento, chave);
+		
+		diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, "Diretor Geral", this.numeroMatriculas);
+		diretorGeral.setSenha(chave);
+		
+		this.cadastros.put(diretorGeral.getMatricula(), chave);
+		
+//		primeiroCadastro(nome, "Diretor Geral", dataNascimento, chave);
 		this.primeiroAcesso = true;
-
 		return diretorGeral.getMatricula();
 	}
 
@@ -121,7 +125,6 @@ public final class ComiteGestor {
 
 			diretorGeral = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
 			diretorGeral.setSenha(chave);
-			
 			adicionaLogin(diretorGeral.getMatricula(), diretorGeral.getSenha());
 
 		} catch (NomeFuncionarioVazioException e) {
@@ -133,34 +136,6 @@ public final class ComiteGestor {
 		}
 		
 		
-	}
-
-	/**
-	 * Metodo que adiciona uma nova matricula no sistema juntamente com a senha
-	 * correspondente
-	 * 
-	 * @param matricula
-	 *            especifica a matricula a ser cadastrada
-	 * @param senha
-	 *            especifica a senha correspondente
-	 */
-
-	private void adicionaLogin(String matricula, String senha) {
-		cadastros.put(matricula, senha);
-	}
-
-	/**
-	 * Medoto que remove uma matricula no sistema juntamente com a senha
-	 * correspondente.
-	 * 
-	 * @param matricula
-	 *            especifica a matricula a ser cadastrada
-	 * @param senha
-	 *            especifica a senha correspondente
-	 */
-	private void removeLogin(String matricula, String senha) {
-		cadastros.put(matricula, "");
-		cadastros.remove(matricula);
 	}
 
 	/**
@@ -288,7 +263,7 @@ public final class ComiteGestor {
 
 		// testa se a matricula esta cadastrada
 		else if (!isMatriculado(matricula)) {
-			motivo = "Funcionario nao cadastrado.";
+			motivo = "Funcionario nao cadastrado. - " + String.valueOf(this.cadastros.containsKey(matricula));
 			throw new LoginException(motivo);
 		}
 
@@ -324,6 +299,34 @@ public final class ComiteGestor {
 		funcLogado = getFuncionario(matricula);
 	}
 
+	/**
+	 * Metodo que adiciona uma nova matricula no sistema juntamente com a senha
+	 * correspondente
+	 * 
+	 * @param matricula
+	 *            especifica a matricula a ser cadastrada
+	 * @param senha
+	 *            especifica a senha correspondente
+	 */
+
+	private void adicionaLogin(String matricula, String senha) {
+		cadastros.put(matricula, senha);
+	}
+
+	/**
+	 * Medoto que remove uma matricula no sistema juntamente com a senha
+	 * correspondente.
+	 * 
+	 * @param matricula
+	 *            especifica a matricula a ser cadastrada
+	 * @param senha
+	 *            especifica a senha correspondente
+	 */
+	private void removeLogin(String matricula, String senha) {
+		cadastros.put(matricula, "");
+		cadastros.remove(matricula);
+	}
+	
 	/**
 	 * Metodo que desloga o funcionario atualmente logado, habilitando assim o
 	 * fechamento do sistema.
