@@ -22,10 +22,10 @@ public class FactoryTipoMedicamento {
 		switch (tipo) {
 
 		case "referencia":
-			return MedicamentoReferencia.getInstance();
+			return new MedicamentoReferencia();
 
 		case "generico":
-			return MedicamentoGenerico.getInstance();
+			return new MedicamentoGenerico();
 
 		default:
 			throw new TipoMedicamentoException();

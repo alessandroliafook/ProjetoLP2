@@ -131,14 +131,14 @@ public class Farmacia implements Serializable{
 				switch (atributo.toLowerCase()) {
 
 				case "preco":
-					double preco = Double.parseDouble(novoValor);
+					double preco = Double.parseDouble(novoValor.trim());
 					medicamento.setPreco(preco);
-					break;
+					return;
 
 				case "quantidade":
-					int quantidade = Integer.parseInt(novoValor);
+					int quantidade = Integer.parseInt(novoValor.trim());
 					medicamento.setQuantidade(quantidade);
-					break;
+					return;
 
 				case "nome":
 					throw new AtualizaMedicamentoException("Nome do medicamento nao pode ser alterado.");
@@ -369,19 +369,19 @@ public class Farmacia implements Serializable{
 				switch (atributoDoMedicamento.toLowerCase()) {
 
 				case "nome":
-					return medicamento.getNome();
+					return medicamentoEstocado.getNome();
 
 				case "preco":
-					return String.format("%.1f",medicamento.getPreco());
+					return String.format("%.1f",medicamentoEstocado.getPreco());
 
 				case "quantidade":
-					return String.valueOf(medicamento.getQuantidade());
+					return String.valueOf(medicamentoEstocado.getQuantidade());
 
 				case "categorias":
 					
 					List<String> listaDeCategorias = new ArrayList<String>();
 					
-					for(CategoriasEnum categoria : medicamento.getCategorias()){
+					for(CategoriasEnum categoria : medicamentoEstocado.getCategorias()){
 						listaDeCategorias.add(categoria.name().toLowerCase());
 					}
 					
@@ -389,7 +389,7 @@ public class Farmacia implements Serializable{
 					return string;
 
 				case "tipo":
-					return medicamento.getTipo();
+					return medicamentoEstocado.getTipo();
 
 				default:
 					throw new ConsultaMedicamentoException("Nao ha atributo com o nome especificado associado ao medicamento.");

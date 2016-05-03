@@ -41,14 +41,17 @@ public class FarmaciaTest {
 			// testando cadastro
 
 			assertEquals("Valium", farmacia.cadastraMedicamento("Valium", "generico", 21.50, 45, "analgesico"));
-			assertEquals("Metamizol", farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico"));
+			assertEquals("Metamizol",
+					farmacia.cadastraMedicamento("Metamizol", "referencia", 58.30, 466, "analgesico,antitermico"));
 			assertEquals("Morfina", farmacia.cadastraMedicamento("Morfina", "referencia", 150, 600, "analgesico"));
-			assertEquals("Medroxyprogesterona", farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal"));
+			assertEquals("Medroxyprogesterona",
+					farmacia.cadastraMedicamento("Medroxyprogesterona", "generico", 285.50, 200, "hormonal"));
 			assertEquals("Duraston", farmacia.cadastraMedicamento("Duraston", "generico", 112.50, 150, "hormonal"));
 			assertEquals("Nimesulida", farmacia.cadastraMedicamento("Nimesulida", "referencia", 12.50, 150,
 					"antiinflamatorio,antitermico,analgesico"));
-			assertEquals("Penicilina", farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico"));
-	
+			assertEquals("Penicilina",
+					farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico"));
+
 			// teste que pega informacoes dos medicamentos
 
 			assertEquals("Generico", farmacia.getInfoMedicamento("tipo", valium));
@@ -79,24 +82,32 @@ public class FarmaciaTest {
 			assertEquals("45", farmacia.getInfoMedicamento("quantidade", valium));
 
 			// teste de busca de medicamentos por categoria
-			
-			assertEquals("Valium,Nimesulida,Metamizol,Morfina", farmacia.consultaMedCategoria("analgesico"));
+
+			assertEquals("Nimesulida,Valium,Metamizol,Morfina", farmacia.consultaMedCategoria("analgesico"));
 			assertEquals("Duraston,Medroxyprogesterona", farmacia.consultaMedCategoria("hormonal"));
 			assertEquals("Nimesulida", farmacia.consultaMedCategoria("antiinflamatorio"));
 			assertEquals("Penicilina", farmacia.consultaMedCategoria("antibiotico"));
-			
+
 			// testes de metodo que busca o medicamento por nome
-			
-			assertEquals("Medicamento de Referencia: Metamizol - Preco: R$ 58,30 - Disponivel: 466 - Categorias: analgesico,antitermico", farmacia.consultaMedNome("metamizol"));
-			assertEquals("Medicamento Generico: Medroxyprogesterona - Preco: R$ 171,30 - Disponivel: 200 - Categorias: hormonal", farmacia.consultaMedNome("medroxyprogesterona"));
-			assertEquals("Medicamento de Referencia: Hioscina - Preco: R$ 10,00 - Disponivel: 300 - Categorias: antiemetico", farmacia.consultaMedCategoria("hioscina"));
+			assertEquals(
+					"Medicamento de Referencia: Metamizol - Preco: R$ 58,30 - Disponivel: 466 - Categorias: analgesico,antitermico",
+					farmacia.consultaMedNome("Metamizol"));
+			assertEquals(
+					"Medicamento Generico: Medroxyprogesterona - Preco: R$ 171,30 - Disponivel: 200 - Categorias: hormonal",
+					farmacia.consultaMedNome("Medroxyprogesterona"));
+
+			// acrescentando a Hioscina
+			farmacia.cadastraMedicamento("Hioscina", "referencia", 10, 300, "antiemetico");
+			assertEquals(
+					"Medicamento de Referencia: Hioscina - Preco: R$ 10,00 - Disponivel: 300 - Categorias: antiemetico",
+					farmacia.consultaMedNome("Hioscina"));
 
 			// testes de consulta de todos os medicamentos
-			
-			assertEquals("Hioscina,Valium,Nimesulida,Metamizol,Duraston,Penicilina,Morfina,Medroxyprogesterona", farmacia.getEstoqueFarmacia("preco"));
-			assertEquals("Duraston,Hioscina,Medroxyprogesterona,Metamizol,Morfina,Nimesulida,Penicilina,Valium", farmacia.getEstoqueFarmacia("alfabetica"));
+			assertEquals("Hioscina,Valium,Nimesulida,Metamizol,Duraston,Penicilina,Morfina,Medroxyprogesterona",
+					farmacia.getEstoqueFarmacia("preco"));
+			assertEquals("Duraston,Hioscina,Medroxyprogesterona,Metamizol,Morfina,Nimesulida,Penicilina,Valium",
+					farmacia.getEstoqueFarmacia("alfabetica"));
 
-						
 		} catch (Exception e) {
 			fail();
 		}
@@ -104,7 +115,7 @@ public class FarmaciaTest {
 
 	@Test
 	public void testExceptions() {
-		
+
 		try {
 
 			// repetindo as condicoes do teste anterior
@@ -121,7 +132,7 @@ public class FarmaciaTest {
 			farmacia.cadastraMedicamento("Penicilina", "referencia", 80.00, 150, "antibiotico");
 
 			// excecoes de cadastro
-			
+
 			try {
 				farmacia.cadastraMedicamento("", "generico", 21.50, 45, "analgesico");
 				fail();
@@ -233,7 +244,8 @@ public class FarmaciaTest {
 				fail();
 
 			} catch (Exception e) {
-				assertEquals("Erro na consulta de medicamentos. Nao ha remedios cadastrados nessa categoria.", e.getMessage());
+				assertEquals("Erro na consulta de medicamentos. Nao ha remedios cadastrados nessa categoria.",
+						e.getMessage());
 			}
 
 			try {
@@ -245,7 +257,7 @@ public class FarmaciaTest {
 			}
 
 			// Efetua adicao de remedio antiemetico
-			
+
 			farmacia.cadastraMedicamento("Hioscina", "referencia", 10, 300, "antiemetico");
 			assertEquals("Hioscina", farmacia.consultaMedCategoria("antiemetico"));
 
@@ -265,8 +277,7 @@ public class FarmaciaTest {
 			} catch (Exception e) {
 				assertEquals("Erro na consulta de medicamentos. Tipo de ordenacao invalida.", e.getMessage());
 			}
-			
-			
+
 		} catch (Exception e) {
 			fail();
 		}

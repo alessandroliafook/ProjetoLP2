@@ -7,27 +7,12 @@ public class MedicamentoGenerico implements TipoMedicamentoIF {
 	private static MedicamentoGenerico INSTANCE;
 
 	/**
-	 * Construtor privado para inicializar uma unica instancia de medicamento de
-	 * generico, aplicando o padrao de projeto singleton.
+	 * Construtor para inicializar uma unica instancia de medicamento de
+	 * generico.
 	 */
-	private MedicamentoGenerico() {
+	public MedicamentoGenerico() {
 	}
 
-	/**
-	 * Metodo responsavel por criar uma instancia do Medicamento de Generico se
-	 * nao existir, ou retornar a instancia existente acaso jah tenha sido
-	 * criada, usando a estrategia do singleton.
-	 * 
-	 * @return A instancia do Medicamento de Generico existente no sistema.
-	 */
-	public static MedicamentoGenerico getInstance() {
-
-		if (INSTANCE == null) {
-			INSTANCE = new MedicamentoGenerico();
-		}
-
-		return INSTANCE;
-	}
 
 	/**
 	 * Metodo que aplica o desconto relativo ao preco de medicamento generico.

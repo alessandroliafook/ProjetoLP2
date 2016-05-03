@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
 
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
@@ -91,7 +92,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 */
 	public int compareTo(Medicamento outroMedicamento) {
 
-		if (this.preco < outroMedicamento.getPreco()) {
+		if (this.preco > outroMedicamento.getPreco()) {
 			return 1;
 
 		} else if (this.preco == outroMedicamento.getPreco()) {
@@ -109,8 +110,9 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	public String informacoes() {
 
 		String preco = String.format("%.2f", getPreco());
+		String precoFormatado = preco.replace(".", ",");
 
-		String string = "Medicamento " + getTipo() + ": " + getNome() + " - Preco: R$ " + preco + " - Disponivel: "
+		String string = "Medicamento " + getTipo() + ": " + getNome() + " - Preco: R$ " + precoFormatado + " - Disponivel: "
 				+ getQuantidade() + " - Categorias: ";
 
 		StringBuilder builder = new StringBuilder(string);
@@ -204,20 +206,19 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 
 	/**
 	 * Metodo default do eclipse que compara dois objetos do tipo medicamento
-	 * considerando o nome e o tipo associados.
+	 * considerando o nome associado.
 	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-		result = prime * result + ((tipo == null) ? 0 : tipo.hashCode());
 		return result;
 	}
 
 	/**
 	 * Metodo default do eclipse que compara dois objetos do tipo medicamento
-	 * considerando o nome e o tipo associados.
+	 * considerando o nome associado.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -232,11 +233,6 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
-			return false;
-		if (tipo == null) {
-			if (other.tipo != null)
-				return false;
-		} else if (!tipo.equals(other.tipo))
 			return false;
 		return true;
 	}
