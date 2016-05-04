@@ -41,9 +41,9 @@ public class HospitalFacade {
 		comite.logout();
 	}
 
-	public void cadastraFuncionario(String nome, String cargo,
+	public String cadastraFuncionario(String nome, String cargo,
 			String dataNascimento) throws Exception {
-		comite.cadastraFuncionario(nome, cargo, dataNascimento);
+		return comite.cadastraFuncionario(nome, cargo, dataNascimento);
 	}
 
 	public void atualizaInfoFuncionario(String matricula, String atributo,
