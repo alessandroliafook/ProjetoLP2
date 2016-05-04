@@ -144,9 +144,9 @@ public final class ComiteGestor {
 				apenasNumeros = false;
 		}
 
-		if (matricula.length() != 8) {
-			tamanhoCorreto = false;
-		}
+		// if (matricula.length() != 8) {
+		// tamanhoCorreto = false;
+		// }
 
 		if (!(tamanhoCorreto && apenasNumeros)) {
 			throw new Exception("A matricula nao segue o padrao.");
@@ -170,7 +170,8 @@ public final class ComiteGestor {
 		String motivo = "";
 
 		if (funcLogado != null) {
-			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome();
+			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome() + ".";
+			throw new LoginException(motivo);
 		}
 
 		// testa se a matricula esta cadastrada
@@ -250,6 +251,8 @@ public final class ComiteGestor {
 		if (funcLogado == null) {
 			throw new LogoutException("Nao ha um funcionario logado.");
 		}
+
+		funcLogado = null;
 	}
 
 	/**
@@ -310,12 +313,17 @@ public final class ComiteGestor {
 		}
 	}
 
-	public String getInfoFuncionario(String matricula, String atributo) throws ConsultaFuncionarioException {
+	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 
-		if (matricula == null)
-			System.out.println("NULO");
-		else if (matricula.equals(""))
-			System.out.println("VAZIO");
+		try {
+			validaMatricula(matricula);
+		} catch (Exception e) {
+			throw new ConsultaFuncionarioException(e.getMessage());
+		}
+
+		if (!isMatriculado(matricula)) {
+			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
+		}
 
 		Funcionario func = getFuncionario(matricula);
 		String ret = "";
@@ -445,6 +453,15 @@ public final class ComiteGestor {
 	 */
 	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 
+		if (!isAutorizado()) {
+			throw new ExclusaoFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
+		}
+
+		if (!confirmaDiretor(senha)) {
+			throw new ExclusaoFuncionarioException("Senha invalida.");
+		}
+
 		try {
 			validaMatricula(matricula);
 		} catch (Exception e) {
@@ -455,17 +472,12 @@ public final class ComiteGestor {
 			throw new ExclusaoFuncionarioException("Funcionario nao cadastrado.");
 		}
 
-		if (!isSenhaCorreta(matricula, senha)) {
-			throw new ExclusaoFuncionarioException("Senha invalida");
-		}
-
-		if (!isAutorizado()) {
-			throw new ExclusaoFuncionarioException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
-		}
-
 		excluiFuncionarioUtil(getFuncionario(matricula));
 		removeLogin(matricula, senha);
+	}
+
+	private boolean confirmaDiretor(String senha) {
+		return (senha.equals(diretorGeral.getSenha()));
 	}
 
 	/**
@@ -498,6 +510,7 @@ public final class ComiteGestor {
 		confirmaSenha(senhaAntiga);
 		validaSenha(novaSenha);
 		funcLogado.setSenha(novaSenha);
+		cadastros.put(funcLogado.getMatricula(), novaSenha);
 	}
 
 	/**
@@ -513,8 +526,8 @@ public final class ComiteGestor {
 		boolean tamanho = (novaSenha.length() >= 8 && novaSenha.length() <= 12);
 		boolean alfanum = true;
 
-		for (Character c : novaSenha.toCharArray()) {
-			if (!Character.isAlphabetic(c) && !Character.isDigit(c)) {
+		for (Character caractere : novaSenha.toCharArray()) {
+			if (!Character.isAlphabetic(caractere) && !Character.isDigit(caractere)) {
 				alfanum = false;
 			}
 		}
@@ -534,7 +547,7 @@ public final class ComiteGestor {
 	 */
 	private void confirmaSenha(String senhaAntiga) throws AtualizaFuncionarioException {
 		if (!cadastros.get(funcLogado.getMatricula()).equals(senhaAntiga)) {
-			throw new AtualizaFuncionarioException("Senha invalida");
+			throw new AtualizaFuncionarioException("Senha invalida.");
 		}
 	}
 
@@ -584,7 +597,7 @@ public final class ComiteGestor {
 	 */
 	public void fechaSistema() throws SistemaException {
 		if (funcLogado != null) {
-			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome());
+			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
@@ -603,6 +616,12 @@ public final class ComiteGestor {
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new CadastroMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar medicamentos.");
+		}
+
 		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
@@ -616,6 +635,12 @@ public final class ComiteGestor {
 	 */
 	public void atualizaMedicamento(String nome, String atributo, String novoValor)
 			throws AtualizaMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new AtualizaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para atualizar medicamentos.");
+		}
+
 		farmacia.atualizaMedicamento(nome, atributo, novoValor);
 	}
 
@@ -627,16 +652,28 @@ public final class ComiteGestor {
 	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String, int)
 	 */
 	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
+
+		if (!isDiretorOuTecnico()) {
+			throw new Exception(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para fornecer medicamentos.");
+		}
+
 		return farmacia.forneceMedicamento(nomeMedicamento, quantidadeSolicitada);
 	}
 
 	/**
 	 * @param nomeMedicamento
 	 * @return
-	 * @throws ConsultaMedicamentoException
+	 * @throws Exception
 	 * @see departamentos.Farmacia#forneceMedicamento(java.lang.String)
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento) throws ConsultaMedicamentoException {
+	public Medicamento forneceMedicamento(String nomeMedicamento) throws Exception {
+
+		if (!isDiretorOuTecnico()) {
+			throw new Exception(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para fornecer medicamentos.");
+		}
+
 		return farmacia.forneceMedicamento(nomeMedicamento);
 	}
 
@@ -647,6 +684,12 @@ public final class ComiteGestor {
 	 * @see departamentos.Farmacia#consultaMedCategoria(java.lang.String)
 	 */
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		}
+
 		return farmacia.consultaMedCategoria(categoria);
 	}
 
@@ -657,6 +700,12 @@ public final class ComiteGestor {
 	 * @see departamentos.Farmacia#consultaMedNome(java.lang.String)
 	 */
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		}
+
 		return farmacia.consultaMedNome(nomeDoRemedio);
 	}
 
@@ -667,6 +716,12 @@ public final class ComiteGestor {
 	 * @see departamentos.Farmacia#getEstoqueFarmacia(java.lang.String)
 	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		}
+
 		return farmacia.getEstoqueFarmacia(ordenacao);
 	}
 
@@ -680,6 +735,12 @@ public final class ComiteGestor {
 	 */
 	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
 			throws ConsultaMedicamentoException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		}
+
 		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
@@ -694,13 +755,27 @@ public final class ComiteGestor {
 	 * @param tipoSanguineo
 	 * @return
 	 * @throws CadastroPacienteException
-	 * @see departamentos.Clinica#cadastraPaciente(java.lang.String,
-	 *      java.lang.String, double, java.lang.String, java.lang.String,
-	 *      java.lang.String)
+	 * @throws @see
+	 *             departamentos.Clinica#cadastraPaciente(java.lang.String,
+	 *             java.lang.String, double, java.lang.String, java.lang.String,
+	 *             java.lang.String)
 	 */
 	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
+
+		if (!isDiretorOuTecnico()) {
+			throw new CadastroPacienteException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar pacientes.");
+		}
+
 		return clinica.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
+	}
+
+	private boolean isDiretorOuTecnico() {
+
+		char caractere = funcLogado.getMatricula().charAt(0);
+		return (caractere == '1' || caractere == '3');
+
 	}
 
 	/**

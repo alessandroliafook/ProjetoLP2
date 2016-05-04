@@ -29,7 +29,7 @@ public class HospitalFacade {
 	}
 
 	public String getInfoFuncionario(String matricula, String atributo)
-			throws ConsultaFuncionarioException {
+			throws Exception {
 		return comite.getInfoFuncionario(matricula, atributo);
 	}
 

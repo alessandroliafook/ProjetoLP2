@@ -11,7 +11,7 @@ public class ComiteGestorTest {
 	@Test
 	public void testLiberaSistema() {
 		try {
-			ComiteGestor comite = new ComiteGestor();
+			ComiteGestor comite = ComiteGestor.getInstancia();
 			String matriculaDiretor = comite.liberaSistema("c041ebf8", "paulo", "01/01/2001");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Nome"), "paulo");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Data"), "2001-01-01");
@@ -23,7 +23,7 @@ public class ComiteGestorTest {
 		}
 		
 		try {
-			ComiteGestor comiteGestor = new ComiteGestor();
+			ComiteGestor comiteGestor = ComiteGestor.getInstancia();	
 			comiteGestor.liberaSistema("chaveErrada", "pedro", "15/07/1998");
 			fail();
 		} catch (Exception e) {
