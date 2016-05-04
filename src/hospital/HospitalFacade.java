@@ -97,7 +97,7 @@ public class HospitalFacade {
 	}
 
 	public Medicamento forneceMedicamento(String nomeMedicamento)
-			throws ConsultaMedicamentoException {
+			throws Exception {
 		return comite.forneceMedicamento(nomeMedicamento);
 	}
 
