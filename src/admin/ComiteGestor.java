@@ -382,6 +382,8 @@ public final class ComiteGestor {
 	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
 			throws AtualizaFuncionarioException {
 
+		atributo = atributo.toLowerCase();
+		
 		// verifica se eh o diretor que esta tentando atualizar alguem
 		if (!isAutorizado()) {
 			throw new AtualizaFuncionarioException(
@@ -433,6 +435,9 @@ public final class ComiteGestor {
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
 	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
+		
+		atributo = atributo.toLowerCase();
+		
 		switch (atributo) {
 		case "Nome":
 			try {

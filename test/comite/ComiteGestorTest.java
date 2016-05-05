@@ -118,5 +118,9 @@ public class ComiteGestorTest {
 		}
 
 	}
+	
+	public void fechaSistema() {
+		
+	}
 
 }
