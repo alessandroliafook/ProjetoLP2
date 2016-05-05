@@ -405,14 +405,14 @@ public final class ComiteGestor {
 		Funcionario func = getFuncionario(matricula);
 
 		switch (atributo) {
-		case "Nome":
+		case "nome":
 			try {
 				func.setNome(novoValor);
 			} catch (Exception e) {
 				throw new AtualizaFuncionarioException(e.getMessage());
 			}
 			break;
-		case "Data":
+		case "data":
 			try {
 				func.setData(novoValor);
 			} catch (Exception e) {
@@ -439,14 +439,14 @@ public final class ComiteGestor {
 		atributo = atributo.toLowerCase();
 		
 		switch (atributo) {
-		case "Nome":
+		case "nome":
 			try {
 				funcLogado.setNome(novoValor);
 			} catch (Exception e) {
 				throw new AtualizaFuncionarioException(e.getMessage());
 			}
 			break;
-		case "Data":
+		case "data":
 			try {
 				funcLogado.setData(novoValor);
 			} catch (Exception e) {
