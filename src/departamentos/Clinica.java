@@ -25,6 +25,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
+	 * Metodo que tenta cadastrar um Paciente no sistema
 	 * 
 	 * @param nome
 	 *            Nome do paciente a ser cadastrado
@@ -64,6 +65,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
+	 * Retorna o numero de cadastros ja realizados
 	 * 
 	 * @return O numero de pacientes ja cadastrados
 	 */
@@ -132,8 +134,8 @@ public class Clinica implements Serializable {
 	 * @return Objeto do tipo Paciente com o ID especificado
 	 */
 	private Paciente buscaPaciente(int id) {
-		for(Prontuario prontuario : this.prontuarios){
-			if(prontuario.getPaciente().getID() == id){
+		for (Prontuario prontuario : this.prontuarios) {
+			if (prontuario.getPaciente().getID() == id) {
 				return prontuario.getPaciente();
 			}
 		}

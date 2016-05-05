@@ -2,7 +2,7 @@ package pessoal;
 
 import java.io.Serializable;
 
-public class Funcionario extends Pessoa implements Comparable<Funcionario>,Serializable {
+public class Funcionario extends Pessoa implements Comparable<Funcionario>, Serializable {
 
 	/**
 	 * 
@@ -12,6 +12,7 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>,Seria
 	private String senha;
 
 	/**
+	 * Cria um novo objeto Funcionario com os parametros fornecidos
 	 * 
 	 * @param nome
 	 *            Nome do funcionario
@@ -22,9 +23,9 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>,Seria
 	 * @param senha
 	 *            Senha gerada para o funcionario
 	 * @throws DataInvalidaException
-	 *            Caso a data nao esteja no formato especificado
+	 *             Caso a data nao esteja no formato especificado
 	 * @throws NomeFuncionarioVazioException
-	 *            Caso nome seja vazio
+	 *             Caso nome seja vazio
 	 */
 	public Funcionario(String nome, String dataNascimento, String matricula, String senha) throws Exception {
 
@@ -41,16 +42,20 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>,Seria
 	public String getSenha() {
 		return this.senha;
 	}
-	
+
 	/**
 	 * Verifica o cargo do funcionario com base na matricula
+	 * 
 	 * @return Uma String cpm o cargo do Funcionario
 	 */
-	public String getCargo(){
-		if(matricula.charAt(0) == '1') return "Diretor Geral";
-		else if(matricula.charAt(0) == '2') return "Medico";
-		else return "Tecnico Administrativo";
-			
+	public String getCargo() {
+		if (matricula.charAt(0) == '1')
+			return "Diretor Geral";
+		else if (matricula.charAt(0) == '2')
+			return "Medico";
+		else
+			return "Tecnico Administrativo";
+
 	}
 
 	private void setMatricula(String matricula) {
@@ -88,12 +93,12 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>,Seria
 	public int compareTo(Funcionario outro) {
 		return super.getNome().compareTo(outro.getNome());
 	}
-	
+
 	/**
 	 * Retorna o padrao "Nome matricula"
 	 */
 	@Override
-	public String toString(){
+	public String toString() {
 		return super.getNome() + " " + this.matricula;
 	}
 

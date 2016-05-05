@@ -32,11 +32,12 @@ public abstract class Pessoa {
 	}
 
 	/**
+	 * Retorna a idade da pessoa utilizando a classe ChronoUnit
 	 * 
 	 * @return A idade da Pessoa
 	 */
 	public int getIdade() {
-		int diferenca = (int)ChronoUnit.YEARS.between(this.dataNascimento, LocalDate.now());
+		int diferenca = (int) ChronoUnit.YEARS.between(this.dataNascimento, LocalDate.now());
 		return diferenca;
 	}
 
@@ -45,8 +46,9 @@ public abstract class Pessoa {
 	}
 
 	/**
+	 * Retorna a data de nascimento no formato "aaaa-mm-dd"
 	 * 
-	 * @return Uma String com data de nascimento da pessoa no formato "aaaa-mm-dd"
+	 * @return Uma String com data de nascimento da pessoa
 	 */
 	public String getData() {
 		return this.dataNascimento.toString();

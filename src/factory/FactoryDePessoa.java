@@ -12,6 +12,7 @@ public class FactoryDePessoa {
 	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	/**
+	 * Cria um objeto do tipo Funcionario
 	 * 
 	 * @param nome
 	 *            Nome do funcionario a ser criado
@@ -43,6 +44,7 @@ public class FactoryDePessoa {
 	}
 
 	/**
+	 * Cria um objeto do tipo Paciente
 	 * 
 	 * @param nome
 	 *            Nome do paciente
@@ -64,10 +66,10 @@ public class FactoryDePessoa {
 	 * @throws NomePacienteVazioException
 	 *             Caso o nome fornecido seja vazio
 	 * @throws PesoInvalidoException
-	 * 			   Caso o peso fornecido seja negativo
+	 *             Caso o peso fornecido seja negativo
 	 * @throws TipoSanguineoInvalidoException
-	 * 			   Caso o tipo sanguineo informado seja vazio ou invalido     
-	 *             
+	 *             Caso o tipo sanguineo informado seja vazio ou invalido
+	 * 
 	 */
 	public Paciente criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
 			String genero, int numeroCadastros) throws Exception {
@@ -76,7 +78,7 @@ public class FactoryDePessoa {
 		VerificaPessoa.validaData(dataNascimento);
 		VerificaPessoa.validaPeso(peso);
 		VerificaPessoa.validaTipoSanguineo(tipoSanguineo);
-		
+
 		return new Paciente(nome, dataNascimento, peso, tipoSanguineo, sexo, genero, numeroCadastros);
 
 	}
@@ -93,7 +95,7 @@ public class FactoryDePessoa {
 	private String geraMatricula(String cargo, int quantidadeMatriculas) {
 		String novaMatricula = "";
 		cargo = cargo.toLowerCase();
-		
+
 		switch (cargo) {
 		case "diretor geral":
 			novaMatricula += "1";
@@ -113,7 +115,7 @@ public class FactoryDePessoa {
 
 		novaMatricula += LocalDate.now().getYear();
 		novaMatricula += String.format("%03d", quantidadeMatriculas);
-		
+
 		return novaMatricula;
 	}
 

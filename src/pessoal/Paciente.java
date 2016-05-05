@@ -17,6 +17,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	private int id;
 
 	/**
+	 * Cria um novo objeto Funcionario com os parametros especificados
 	 * 
 	 * @param nome
 	 *            - Nome do paciente
@@ -124,11 +125,10 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		}
 		return false;
 	}
-	
+
 	@Override
 	public String toString() {
-		return super.getNome() + " id = " + id ;
+		return super.getNome() + " id = " + id;
 	}
-
 
 }
