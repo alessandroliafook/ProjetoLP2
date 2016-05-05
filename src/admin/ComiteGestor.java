@@ -822,18 +822,23 @@ public final class ComiteGestor {
 	// metodos da clinica
 
 	/**
+	 * Metodo que tenta cadastrar um Paciente no sistema
+	 * 
 	 * @param nome
+	 *            Nome do paciente a ser cadastrado
 	 * @param data
+	 *            Data de nascimento do paciente
 	 * @param peso
+	 *            Peso do paciente
 	 * @param sexo
+	 *            Sexo do paciente
 	 * @param genero
+	 *            Genero do paciente
 	 * @param tipoSanguineo
-	 * @return
+	 *            Tipo sanguineo do paciente(A/B/O/AB seguido de + ou -) Ex: AB-
+	 * @return O id do paciente cadastrado
 	 * @throws CadastroPacienteException
-	 * @throws @see
-	 *             departamentos.Clinica#cadastraPaciente(java.lang.String,
-	 *             java.lang.String, double, java.lang.String, java.lang.String,
-	 *             java.lang.String)
+	 *             Caso o cadastro nao seja bem sucedido
 	 */
 	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
@@ -854,29 +859,34 @@ public final class ComiteGestor {
 	}
 
 	/**
-	 * @return
-	 * @see departamentos.Clinica#getNumeroCadastros()
+	 * Retorna o numero de cadastros ja realizados
+	 * 
+	 * @return O numero de pacientes ja cadastrados
 	 */
 	public int getNumeroCadastros() {
 		return clinica.getNumeroCadastros();
 	}
 
 	/**
+	 * Retorna a informacao solicitada do paciente especificado
+	 * 
 	 * @param paciente
+	 *            Objeto Paciente do qual sera retirada a informacao solicitada
 	 * @param atributo
-	 * @return
-	 * @see departamentos.Clinica#getInfoPaciente(pessoal.Paciente,
-	 *      java.lang.String)
+	 *            Descricao da informacao
+	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
+	 * @return Uma String com a informacao solicitada
 	 */
 	public String getInfoPaciente(int id, String atributo) {
 		return clinica.getInfoPaciente(id, atributo);
 	}
 
 	/**
-	 * @param posicao
-	 * @return
-	 * @throws ConsultaProntuarioException
-	 * @see departamentos.Clinica#getProntuario(int)
+	 * Verifica se o prontuario fornecido ja existe no sistema
+	 * 
+	 * @param prontuario
+	 *            Objeto Prontuario a ser verificado
+	 * @return True caso o objeto ja exista no sistema, False caso contrario
 	 */
 	public int getProntuario(int posicao) throws ConsultaProntuarioException {
 		return clinica.getProntuario(posicao);

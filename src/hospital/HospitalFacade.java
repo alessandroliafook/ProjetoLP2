@@ -354,19 +354,62 @@ public class HospitalFacade {
 
 	// metodos da clinica
 	
+	/**
+	 * Metodo que tenta cadastrar um Paciente no sistema
+	 * 
+	 * @param nome
+	 *            Nome do paciente a ser cadastrado
+	 * @param data
+	 *            Data de nascimento do paciente
+	 * @param peso
+	 *            Peso do paciente
+	 * @param sexo
+	 *            Sexo do paciente
+	 * @param genero
+	 *            Genero do paciente
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do paciente(A/B/O/AB seguido de + ou -) Ex: AB-
+	 * @return O id do paciente cadastrado
+	 * @throws CadastroPacienteException
+	 *             Caso o cadastro nao seja bem sucedido
+	 */
 	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
+	/**
+	 * Retorna o numero de cadastros ja realizados
+	 * 
+	 * @return O numero de pacientes ja cadastrados
+	 */
 	public int getNumeroCadastros() {
 		return comite.getNumeroCadastros();
 	}
-
+	
+	/**
+	 * Retorna a informacao solicitada do paciente especificado
+	 * 
+	 * @param paciente
+	 *            Objeto Paciente do qual sera retirada a informacao solicitada
+	 * @param atributo
+	 *            Descricao da informacao
+	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
+	 * @return Uma String com a informacao solicitada
+	 */
 	public String getInfoPaciente(int id, String atributo) {
 		return comite.getInfoPaciente(id, atributo);
 	}
 
+	/**
+	 * Obtem as informacoes do prontuario de um paciente cadastrado no sistema
+	 * 
+	 * @param posicao
+	 *            A posicao em que o prontuario esta armazenado no sistema
+	 * @return Id do Paciente retirado do Prontuario na posicao especificada
+	 * @throws ConsultaProntuarioException
+	 *             Caso a posicao seja invalida
+	 */
 	public int getProntuario(int posicao) throws ConsultaProntuarioException {
 		return comite.getProntuario(posicao);
 	}
