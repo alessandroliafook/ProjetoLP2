@@ -59,6 +59,7 @@ public class Farmacia implements Serializable {
 	 * @param categorias
 	 *            Conjunto de Strings com os nomes das categorias associadas ao
 	 *            medicamento.
+	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha sido realizada com sucesso.
 	 * @throws StringInvalidaException
 	 *             Lanca excecao personalizada acaso qualques das String
 	 *             informadas seja vazia ou igual a null.
@@ -123,7 +124,7 @@ public class Farmacia implements Serializable {
 
 		for (Medicamento medicamento : this.estoqueDeMedicamentos) {
 
-			if (medicamento.getNome().equals(nome)) {
+			if (medicamento.getNome().equalsIgnoreCase(nome)) {
 
 				switch (atributo.toLowerCase()) {
 
@@ -166,14 +167,13 @@ public class Farmacia implements Serializable {
 	 *            Inteiro referente a quantidade de medicamentos a serem
 	 *            fornecidas.
 	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
-	 * @throws Exception
-	 * @throws NumeroInvalidoException
+	 * @throws Exception - retorna excecao acaso a quantidade solicitada seja maior que a existente no estoque.
 	 */
 	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
-			if (medicamento.getNome().equals(nomeMedicamento)) {
+			if (medicamento.getNome().equalsIgnoreCase(nomeMedicamento)) {
 
 				if (medicamento.getQuantidade() >= quantidadeSolicitada) {
 
@@ -207,7 +207,7 @@ public class Farmacia implements Serializable {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
-			if (medicamento.getNome().equals(nomeMedicamento)) {
+			if (medicamento.getNome().equalsIgnoreCase(nomeMedicamento)) {
 
 				return medicamento;
 
@@ -289,7 +289,7 @@ public class Farmacia implements Serializable {
 
 		for (Medicamento medicamento : estoqueDeMedicamentos) {
 
-			if (medicamento.getNome().equals(nomeDoRemedio)) {
+			if (medicamento.getNome().equalsIgnoreCase(nomeDoRemedio)) {
 				return medicamento.informacoes();
 			}
 
@@ -365,7 +365,7 @@ public class Farmacia implements Serializable {
 
 		for (Medicamento medicamentoEstocado : this.estoqueDeMedicamentos) {
 
-			if (medicamentoEstocado.getNome().equals(nomeMedicamento)) {
+			if (medicamentoEstocado.getNome().equalsIgnoreCase(nomeMedicamento)) {
 
 				switch (atributoDoMedicamento.toLowerCase()) {
 
