@@ -1,7 +1,6 @@
 package hospital;
 
 import medicamento.Medicamento;
-import pessoal.Paciente;
 import admin.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
@@ -201,41 +200,160 @@ public class HospitalFacade {
 		comite.fechaSistema();
 	}
 
+	// metodos da farmacia
+	
+	/**
+	 * Metodo que cadastra um medicamento no estoque da farmacia. Acaso o
+	 * medicamento ja exista na farmacia, apenas adiciona a quantidade informada
+	 * no objeto ja existente.
+	 * 
+	 * @param tipo
+	 *            String que informa se o medicamento eh generico ou de
+	 *            referencia.
+	 * @param quantidade
+	 *            Inteiro que indica a quantidade de medicamentos que se deseja
+	 *            cadastrar no sistema.
+	 * @param preco
+	 *            Numero Real referente ao valor associado ao medicamento. Acaso
+	 *            o medicamento seja do tipo generico, o preco associado sera
+	 *            40% menor que o informado.
+	 * @param nome
+	 *            String referente ao nome do medicamento que se deseja
+	 *            cadastrar.
+	 * @param categorias
+	 *            Conjunto de Strings com os nomes das categorias associadas ao
+	 *            medicamento.
+	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha sido realizada com sucesso.
+	 * @throws StringInvalidaException
+	 *             Lanca excecao personalizada acaso qualques das String
+	 *             informadas seja vazia ou igual a null.
+	 * @throws NumeroInvalidoException
+	 *             Lanca excecao acaso qualquer dos valores informados sejam
+	 *             menores que zero.
+	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 		return comite.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
+	/**
+	 * Metodo que atualiza o preco ou a quantidade de um medicamento existente.
+	 * 
+	 * @param nome
+	 *            String contendo o nome do medicamento que se prentende
+	 *            atualizar.
+	 * @param atributo
+	 *            String com o nome do atributo que se pretende atualizar, seja
+	 *            preco ou quantidade.
+	 * @param novoValor
+	 *            double com o novo valor da ser atribuido, observe que no caso
+	 *            da quantidade, o metodo converte o valor para inteiro.
+	 * @throws AtualizaMedicamentoException
+	 *             Lanca excecao acaso seja solicitado para modificar nome,
+	 *             tipo, um atributo que nao exista, ou um medicamento nao
+	 *             cadastrado no sistema.
+	 */
 	public void atualizaMedicamento(String nome, String atributo, String novoValor)
 			throws AtualizaMedicamentoException {
 		comite.atualizaMedicamento(nome, atributo, novoValor);
 	}
 
+	/**
+	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome,
+	 * reduzindo a quantidade pedida do total existente.
+	 * 
+	 * @param nomeMedicamento
+	 *            String contendo o nome do medicamento a ser entregue.
+	 * @param quantidadeFornecida
+	 *            Inteiro referente a quantidade de medicamentos a serem
+	 *            fornecidas.
+	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
+	 * @throws Exception - retorna excecao acaso a quantidade solicitada seja maior que a existente no estoque.
+	 */
 	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
 		return comite.forneceMedicamento(nomeMedicamento, quantidadeSolicitada);
 	}
 
+	/**
+	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome.
+	 * 
+	 * @param nomeMedicamento
+	 *            String contendo o nome do medicamento a ser entregue.
+	 * @return Objeto do tipo Medicamento.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
+	 *             estoque.
+	 */
 	public Medicamento forneceMedicamento(String nomeMedicamento) throws Exception {
 		return comite.forneceMedicamento(nomeMedicamento);
 	}
 
+	/**
+	 * Metodo que consulta a lista de medicamentos associados a uma categoria
+	 * informada.
+	 * 
+	 * @param categoria
+	 *            - String com o nome da categoria associada aos medicamentos
+	 *            que se pretende listar.
+	 * @return String com a lista de medicamentos que contenham a categoria
+	 *         pesquisada.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
+	 *             nenhum medicamento associado a mesma.
+	 */
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 		return comite.consultaMedCategoria(categoria);
 	}
 
+	/**
+	 * Metodo que retorna as informacoes importantes do medicamento solicitado.
+	 * 
+	 * @param nomeDoRemedio
+	 *            String relacionada ao nome do medicamento que se pretende
+	 *            obter as informacoes.
+	 * @return String com as informacoes do medicamento solicitado.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso o nome informado seja igual a null ou
+	 *             vazio.
+	 */
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 		return comite.consultaMedNome(nomeDoRemedio);
 	}
 
+	/**
+	 * Metodo que retorna uma a lista de medicamentos armazenados na farmacia.
+	 * 
+	 * @param ordenacao
+	 *            String com o criterio de ordenacao desejado, que deve ser por
+	 *            preco ou ordem alfabetica.
+	 * @return String com os nomes dos medicamentos existentes na farmacia
+	 *         ordenados segundo o parametro de ordenacao solicitado.
+	 * @throws ConsultaMedicamentoException
+	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
+	 *             preco ou ordem alfabética.
+	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 		return comite.getEstoqueFarmacia(ordenacao);
 	}
 
+	/**
+	 * Metodo que consulta o atributo escolhido do medicamento escolhido.
+	 * 
+	 * @param atributoDoMedicamento
+	 *            String com o atributo que se deseja informacao.
+	 * @param medicamento
+	 *            Objeto que se deseja a informacao de seu atributo.
+	 * @return String contendo a informacao solicitada
+	 * @throws ConsultaMedicamentoException
+	 *             retorna excecao acaso o atributo nao exista.
+	 */
 	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
 			throws ConsultaMedicamentoException {
 		return comite.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
+	// metodos da clinica
+	
 	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
