@@ -1,6 +1,8 @@
 package medicamento;
 
-public interface TipoMedicamentoIF {
+import java.io.Serializable;
+
+public interface TipoMedicamentoIF extends Serializable{
 
 	/**
 	 * Metodo polimorfico que calcula o preco associado ao tipo de medicamento.

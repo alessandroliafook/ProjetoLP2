@@ -1,7 +1,7 @@
 package hospital;
 
 import medicamento.Medicamento;
-import admin.ComiteGestor;
+import controller.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.CadastroMedicamentoException;

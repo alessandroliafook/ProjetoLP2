@@ -1,11 +1,11 @@
-package comite;
+package controller;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import admin.ComiteGestor;
+import controller.ComiteGestor;
 
 public class ComiteGestorTest {
 
@@ -29,7 +29,7 @@ public class ComiteGestorTest {
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Data"), "2001-01-01");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Cargo"), "Diretor Geral");
 			comite.liberaSistema("c041ebf8", "joao", "02/03/2011");
-			fail();
+			fail("Nao deve lancar excecao");
 		} catch (Exception e) {
 			assertEquals("Erro ao liberar o sistema. Sistema liberado anteriormente.", e.getMessage());
 		}
@@ -37,7 +37,7 @@ public class ComiteGestorTest {
 		try {
 			ComiteGestor comiteGestor = ComiteGestor.getInstancia();
 			comiteGestor.liberaSistema("chaveErrada", "pedro", "15/07/1998");
-			fail();
+			fail("Nao deve lancar excecao");
 		} catch (Exception e) {
 			assertEquals("Erro ao liberar o sistema. Sistema liberado anteriormente.", e.getMessage());
 		}
@@ -49,6 +49,7 @@ public class ComiteGestorTest {
 
 		try {
 			comite.login("10000666", "20011201");
+			fail("Nao deve lancar excecao");
 
 		} catch (Exception e) {
 			assertEquals("Nao foi possivel realizar o login. Funcionario nao cadastrado.", e.getMessage());
@@ -63,6 +64,7 @@ public class ComiteGestorTest {
 
 		try {
 			comite.login("12016001", "20011201");
+			fail("Nao deve lancar excecao");
 
 		} catch (Exception e) {
 			assertEquals("Nao foi possivel realizar o login. Um funcionario ainda esta logado: paulo.", e.getMessage());
@@ -83,6 +85,7 @@ public class ComiteGestorTest {
 
 		try {
 			comite.logout();
+			fail("Nao deve lancar excecao");
 
 		} catch (Exception e) {
 			assertEquals("Nao foi possivel realizar o logout. Nao ha um funcionario logado.", e.getMessage());
@@ -110,6 +113,7 @@ public class ComiteGestorTest {
 			comite.logout();
 			comite.login("22016002", "20102201");
 			comite.cadastraFuncionario("Kirby", "Medico", "12/04/1087");
+			fail("Nao deve lancar excecao");
 
 		} catch (Exception e) {
 			assertEquals(

@@ -1,7 +1,14 @@
 package medicamento;
 
-public class MedicamentoGenerico implements TipoMedicamentoIF {
+import java.io.Serializable;
 
+public class MedicamentoGenerico implements TipoMedicamentoIF, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8903791003464155716L;
+	
 	public final double DESCONTO = 0.6;
 
 		/**
