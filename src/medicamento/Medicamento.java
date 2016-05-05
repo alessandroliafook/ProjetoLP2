@@ -53,8 +53,9 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 *             inteiro, menor que zero.
 	 * @throws TipoMedicamentoException
 	 */
-	public Medicamento(String nome, String tipo, double preco, int quantidade, String categorias)
-			throws NomeMedicamentoException, CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
+	public Medicamento(String nome, String tipo, double preco, int quantidade,
+			String categorias) throws NomeMedicamentoException,
+			CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
 			TipoMedicamentoException {
 
 		VerificaCadastroMedicamento.validaNomeMedicamento(nome);
@@ -86,20 +87,11 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 
 	@Override
 	/**
-	 * Metodo que implementa a comparacao entre dois objetos retornando o mais
-	 * barato como precedente ao mais caro.
+	 * Metodo que implementa a comparacao entre dois objetos retornando de acordo com a ordem alfabetica.
 	 */
 	public int compareTo(Medicamento outroMedicamento) {
 
-		if (this.preco > outroMedicamento.getPreco()) {
-			return 1;
-
-		} else if (this.preco == outroMedicamento.getPreco()) {
-			return 0;
-
-		} else {
-			return -1;
-		}
+		return this.getNome().compareTo(outroMedicamento.getNome());
 	}
 
 	/**
@@ -111,7 +103,8 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 		String preco = String.format("%.2f", getPreco());
 		String precoFormatado = preco.replace(".", ",");
 
-		String string = "Medicamento " + getTipo() + ": " + getNome() + " - Preco: R$ " + precoFormatado + " - Disponivel: "
+		String string = "Medicamento " + getTipo() + ": " + getNome()
+				+ " - Preco: R$ " + precoFormatado + " - Disponivel: "
 				+ getQuantidade() + " - Categorias: ";
 
 		StringBuilder builder = new StringBuilder(string);

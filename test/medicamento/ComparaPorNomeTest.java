@@ -16,7 +16,7 @@ public class ComparaPorNomeTest {
 			Medicamento morfina = new Medicamento("Morfina", "referencia", 150, 600, "analgesico");
 
 			// teste construtor
-			ComparaPorNome comparador = new ComparaPorNome();
+			ComparaPorPreco comparador = new ComparaPorPreco();
 			
 			// teste de comparacao
 			assertTrue(comparador.compare(valium, metamizol) > 0);

@@ -16,7 +16,7 @@ import factory.FactoryDeMedicamentos;
 
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
-import medicamento.ComparaPorNome;
+import medicamento.ComparaPorPreco;
 
 public class Farmacia implements Serializable {
 
@@ -248,7 +248,8 @@ public class Farmacia implements Serializable {
 
 		int medicamentosEncontrados = 0;
 		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
-		Collections.sort(listaDeMedicamentos);
+		ComparaPorPreco ordenaPorPreco = new ComparaPorPreco();
+		Collections.sort(listaDeMedicamentos, ordenaPorPreco);
 		List<String> listaPorCategoria = new ArrayList<String>();
 
 		for (int indice = 0; indice < listaDeMedicamentos.size(); indice++) {
@@ -313,33 +314,31 @@ public class Farmacia implements Serializable {
 	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
-		List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
-		List<String> list = new ArrayList<String>();
+		List<String> listaNomesMedicamentos = new ArrayList<String>();
 		String string = "";
 
 		switch (ordenacao.toLowerCase()) {
 
 		case "preco":
 
-			Collections.sort(listaDeMedicamentos);
+			List<Medicamento> listaDeMedicamentos = new ArrayList<Medicamento>(this.estoqueDeMedicamentos);
+			ComparaPorPreco ordenaPorPreco = new ComparaPorPreco();
+			Collections.sort(listaDeMedicamentos, ordenaPorPreco);
 
 			for (int indice = 0; indice < listaDeMedicamentos.size(); indice++) {
-				list.add(listaDeMedicamentos.get(indice).getNome());
+				listaNomesMedicamentos.add(listaDeMedicamentos.get(indice).getNome());
 			}
 
-			string = String.join(",", list);
+			string = String.join(",", listaNomesMedicamentos);
 			return string;
 
 		case "alfabetica":
 
-			ComparaPorNome comparador = new ComparaPorNome();
-			Collections.sort(listaDeMedicamentos, comparador);
-
-			for (int indice = 0; indice < listaDeMedicamentos.size(); indice++) {
-				list.add(listaDeMedicamentos.get(indice).getNome());
+			for (Medicamento medicamento : this.estoqueDeMedicamentos) {
+				listaNomesMedicamentos.add(medicamento.getNome());
 			}
 
-			string = String.join(",", list);
+			string = String.join(",", listaNomesMedicamentos);
 			return string;
 
 		default:
