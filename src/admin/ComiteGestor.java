@@ -134,7 +134,7 @@ public final class ComiteGestor {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso nao esteja seguiundo o padrao, lanca excecao
 	 */
-	public void validaMatricula(String matricula) throws Exception {
+	private void validaMatricula(String matricula) throws Exception {
 
 		boolean apenasNumeros = true;
 		boolean tamanhoCorreto = true;
@@ -165,7 +165,7 @@ public final class ComiteGestor {
 	 *             - Caso a matricula nao exista. Se existir e a senha estiver
 	 *             errada, tambem lancara excecao.
 	 */
-	public void validaLogin(String matricula, String senha) throws LoginException {
+	private void validaLogin(String matricula, String senha) throws LoginException {
 
 		String motivo = "";
 
@@ -313,6 +313,19 @@ public final class ComiteGestor {
 		}
 	}
 
+	/**
+	 * Metodo que retorna como String o atributo especificado do funcionario
+	 * 
+	 * @param matricula
+	 *            Matricula do funcionario a ter a informacao obtida
+	 * @param atributo
+	 *            Atributo a ser recuperado
+	 * @return String que contem a informacao
+	 * @throws ConsultaFuncionarioException
+	 *             Caso nao seja possivel recuperar o funcionario
+	 * @throws ConsultaFuncionarioException
+	 *             Caso o atributo a ser recuperado seja a senha
+	 */
 	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 
 		try {
