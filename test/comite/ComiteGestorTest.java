@@ -121,6 +121,22 @@ public class ComiteGestorTest {
 	
 	public void fechaSistema() {
 		
+		ComiteGestor comite = ComiteGestor.getInstancia();
+		
+		try {
+			comite.fechaSistema();
+			fail("Nao deve chegar aqui");
+		} catch(Exception e) {
+			assertEquals("Nao foi possivel fechar o sistema. Um funcionario ainda esta logado: Oiabaxogum.", e.getMessage() );
+		}
+		
+		try {
+			comite.logout();
+			comite.fechaSistema();
+		} catch(Exception e) {
+			fail("Nao deve lancar excecao aqui");
+		}
+		
 	}
 
 }
