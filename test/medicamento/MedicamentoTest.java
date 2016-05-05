@@ -37,10 +37,10 @@ public class MedicamentoTest {
 
 			
 			// testando toString
-			String string = "Medicamento Generico: Valium - Preco: R$ 12.90 - Disponivel: 45 - Categorias: analgesico";
+			String string = "Medicamento Generico: Valium - Preco: R$ 12,90 - Disponivel: 45 - Categorias: analgesico";
 			assertEquals(string, valium.informacoes());
 
-			String string2 = "Medicamento de Referencia: Metamizol - Preco: R$ 58.30 - Disponivel: 466 - Categorias: analgesico,antitermico";
+			String string2 = "Medicamento de Referencia: Metamizol - Preco: R$ 58,30 - Disponivel: 466 - Categorias: analgesico,antitermico";
 			assertEquals(string2, metamizol.informacoes());
 
 		} catch (Exception e) {
