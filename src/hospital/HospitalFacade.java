@@ -284,7 +284,7 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
 	 *             estoque.
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento) throws Exception {
+	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 		return comite.forneceMedicamento(nomeMedicamento);
 	}
 

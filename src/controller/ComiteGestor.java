@@ -594,9 +594,9 @@ public final class ComiteGestor {
 	 * @throws CadastroFuncionarioException
 	 *             Caso nao tenha permissao
 	 */
-	private void validaPermissao() throws RealizaProcedimentoException {
+	private void validaPermissao() throws CadastroFuncionarioException {
 		if (diretorGeral != null && !isAutorizado()) {
-			throw new RealizaProcedimentoException(
+			throw new CadastroFuncionarioException(
 					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
 		}
 	}
@@ -724,7 +724,7 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
 	 *             estoque.
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento) throws Exception {
+	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 
 		if (!isDiretorOuTecnico()) {
 			throw new Exception(

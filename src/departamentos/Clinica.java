@@ -23,7 +23,7 @@ public class Clinica implements Serializable {
 		this.prontuarios = new TreeSet<Prontuario>();
 		pacienteFactory = new FactoryDePessoa();
 	}
-
+	
 	/**
 	 * Metodo que tenta cadastrar um Paciente no sistema
 	 * 
@@ -67,7 +67,7 @@ public class Clinica implements Serializable {
 	/**
 	 * Retorna o numero de cadastros ja realizados
 	 * 
-	 * @return O numero de pacientes ja cadastrados
+	 * @return O numero de pacientes ja cadastradosbuscaPaciente
 	 */
 	public int getNumeroCadastros() {
 		return prontuarios.size();
