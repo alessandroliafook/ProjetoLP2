@@ -2,12 +2,14 @@ package controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import medicamento.Medicamento;
 import departamentos.Clinica;
 import departamentos.Farmacia;
+import util.VerificaAutorizacaoClinica;
 import util.VerificacaoLiberaSistema;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
@@ -23,6 +25,7 @@ import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.RealizaProcedimentoException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import pessoal.Funcionario;
@@ -591,9 +594,9 @@ public final class ComiteGestor {
 	 * @throws CadastroFuncionarioException
 	 *             Caso nao tenha permissao
 	 */
-	private void validaPermissao() throws CadastroFuncionarioException {
+	private void validaPermissao() throws RealizaProcedimentoException {
 		if (diretorGeral != null && !isAutorizado()) {
-			throw new CadastroFuncionarioException(
+			throw new RealizaProcedimentoException(
 					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
 		}
 	}
@@ -892,4 +895,25 @@ public final class ComiteGestor {
 		return clinica.getProntuario(posicao);
 	}
 
+	/**
+	 * Metodo que registra um procedimento medito no prontuario do paciente.
+	 * @param nomeDoPaciente Nome do pacimente titular do prontuario onde sera registrado o procedimento.
+	 * @param nomeDoProcedimento Nome do procedimento a ser registrado
+	 * @param listaDeMedicamentos Lista com nomes dos medicamentos necessarios ao procedimento
+	 * @return O nome do procedimento registrado com sucesso.
+	 * @throws CadastroFuncionarioException
+	 * @throws ConsultaMedicamentoException
+	 */
+	public String realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, List<String> listaDeMedicamentos) throws CadastroFuncionarioException, ConsultaMedicamentoException{
+		
+		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
+		double gastosComMedicamento = 0.0;
+		
+		for(String nomeMedicamento : listaDeMedicamentos){
+			gastosComMedicamento += farmacia.forneceMedicamento(nomeMedicamento);
+		}
+		
+		return clinica.realizaProcedimento(idDoPaciente, nomeDoProcedimento, gastosComMedicamento);
+	}
+	
 }
