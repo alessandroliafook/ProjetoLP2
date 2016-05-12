@@ -22,6 +22,7 @@ public class BancoDeOrgaos {
 	 *            Nome do orgao a ser adicionado
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao ser adicionado
+	 * 
 	 * @throws Exception
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
@@ -45,7 +46,30 @@ public class BancoDeOrgaos {
 		}
 	}
 
-	public void removeOrgao() {
+	/**
+	 * Metodo que remove um orgao do banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser removido
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser removido
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
+	 *             orgaos desse tipo no banco de orgaos
+	 */
+	public void removeOrgao(String nome, String tipoSanguineo) throws Exception {
+
+		Orgao orgaoRemover = facOrgao.criaOrgao(nome, tipoSanguineo);
+
+		if (bancoDeOrgaos.get(orgaoRemover) < 1) {
+			throw new Exception("Nao ha mais orgaos desse tipo");
+		}
+
+		for (Orgao orgao : bancoDeOrgaos.keySet()) {
+			if (orgaoRemover.equals(orgao)) {
+				bancoDeOrgaos.put(orgao, bancoDeOrgaos.get(orgao) - 1);
+			}
+		}
 	}
 
 	/**
