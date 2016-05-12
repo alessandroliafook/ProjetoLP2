@@ -1,4 +1,4 @@
-package departamentos;
+package bancoDeOrgaos;
 
 public class Orgao {
 

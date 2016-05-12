@@ -1,4 +1,4 @@
-package departamentos;
+package bancoDeOrgaos;
 
 import java.util.HashMap;
 import java.util.Map;

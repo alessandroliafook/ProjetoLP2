@@ -259,22 +259,6 @@ public class HospitalFacade {
 	}
 
 	/**
-	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome,
-	 * reduzindo a quantidade pedida do total existente.
-	 * 
-	 * @param nomeMedicamento
-	 *            String contendo o nome do medicamento a ser entregue.
-	 * @param quantidadeFornecida
-	 *            Inteiro referente a quantidade de medicamentos a serem
-	 *            fornecidas.
-	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
-	 * @throws Exception - retorna excecao acaso a quantidade solicitada seja maior que a existente no estoque.
-	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento, int quantidadeSolicitada) throws Exception {
-		return comite.forneceMedicamento(nomeMedicamento, quantidadeSolicitada);
-	}
-
-	/**
 	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome.
 	 * 
 	 * @param nomeMedicamento

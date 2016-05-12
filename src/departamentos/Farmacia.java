@@ -5,15 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import java.io.Serializable;
 
 import exceptions.AtualizaMedicamentoException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
-
 import factory.FactoryDeMedicamentos;
-
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
 import medicamento.ComparaPorPreco;
@@ -165,45 +162,35 @@ public class Farmacia implements Serializable {
 	}
 
 	/**
-	 * Metodo que fornece um objeto do tipo medicamento solicitado pelo nome,
-	 * reduzindo a quantidade pedida do total existente.
+	 * Metodo que verifica se a lista de medicamentos existe no estoque.
 	 * 
-	 * @param nomeMedicamento
-	 *            String contendo o nome do medicamento a ser entregue.
-	 * @param quantidadeFornecida
-	 *            Inteiro referente a quantidade de medicamentos a serem
-	 *            fornecidas.
-	 * @return Objeto do tipo Medicamento com a quantidade solicitada.
+	 * @param listaDeMedicamentos
+	 *            List com os nomes dos medicamentos que se deseja verificar
+	 * @return boolean com true se a lista inteira existir.
 	 * @throws Exception
-	 *             - retorna excecao acaso a quantidade solicitada seja maior
-	 *             que a existente no estoque.
+	 *             - Lanca excecao acaso nao tenha quantidade suficiente para o
+	 *             fornecimento ou acaso o medicamento nao exista no estoque.
 	 */
-	public Medicamento forneceMedicamento(String nomeMedicamento,
-			int quantidadeSolicitada) throws Exception {
+	public boolean verificaEstoque(List<String> listaDeMedicamentos)
+			throws ConsultaMedicamentoException {
 
-		for (Medicamento medicamento : estoqueDeMedicamentos) {
+		for (String nomeDoMedicamento : listaDeMedicamentos) {
+			boolean contem = false;
 
-			if (medicamento.getNome().equalsIgnoreCase(nomeMedicamento)) {
+			for (Medicamento medicamento : estoqueDeMedicamentos) {
 
-				if (medicamento.getQuantidade() >= quantidadeSolicitada) {
-
-					int total = medicamento.getQuantidade()
-							- quantidadeSolicitada;
-					medicamento.setQuantidade(total);
-
-					return medicamento;
+				if (medicamento.getNome().equalsIgnoreCase(nomeDoMedicamento)
+						&& medicamento.getQuantidade() > 0) {
+					contem = true;
 				}
-
-				throw new Exception("quantidade de medicamento solicitada"
-						+ "existe apenas" + medicamento.getQuantidade()
-						+ "no estoque");
 			}
 
+			if (!contem) {
+				throw new ConsultaMedicamentoException(
+						"Medicamento solicitado nao existe no estoque.");
+			}
 		}
-
-		throw new ConsultaMedicamentoException(
-				"Medicamento solicitado nao existe no estoque.");
-
+		return true;
 	}
 
 	/**
@@ -224,26 +211,14 @@ public class Farmacia implements Serializable {
 
 			if (medicamento.getNome().equalsIgnoreCase(nomeMedicamento)) {
 
-				verificaQuantidade(medicamento);
 				int total = medicamento.getQuantidade() - 1;
 				medicamento.setQuantidade(total);
 				return medicamento.getPreco();
 
 			}
-
 		}
 
 		throw new ConsultaMedicamentoException("Medicamento nao cadastrado");
-
-	}
-
-	private void verificaQuantidade(Medicamento medicamento)
-			throws ConsultaMedicamentoException {
-		if (medicamento.getQuantidade() < 0) {
-
-			throw new ConsultaMedicamentoException(
-					"Medicamento indisponivel no estoque.");
-		}
 	}
 
 	/**

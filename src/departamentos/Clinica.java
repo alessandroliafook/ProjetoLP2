@@ -1,10 +1,14 @@
 package departamentos;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import bancoDeOrgaos.BancoDeOrgaos;
+import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
+import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
@@ -18,10 +22,12 @@ public class Clinica implements Serializable {
 	private static final long serialVersionUID = -1274054963107375989L;
 	private Set<Prontuario> prontuarios;
 	private FactoryDePessoa pacienteFactory;
+	private BancoDeOrgaos bancoDeOrgaos;
 
 	public Clinica() {
 		this.prontuarios = new TreeSet<Prontuario>();
 		pacienteFactory = new FactoryDePessoa();
+		bancoDeOrgaos = new BancoDeOrgaos();
 	}
 	
 	/**
@@ -143,6 +149,24 @@ public class Clinica implements Serializable {
 	}
 
 	/**
+	 * Busca um prontuario no sistema atraves do ID do paciente associado
+	 * 
+	 * @param id
+	 *            ID do paciente a ser buscado
+	 * @return Objeto do tipo Paciente com o ID especificado
+	 * @throws Exception 
+	 */
+	private Prontuario buscaProntuario(int id) throws Exception {
+		for (Prontuario prontuario : this.prontuarios) {
+			if (prontuario.getPaciente().getID() == id) {
+				return prontuario;
+			}
+		}
+		throw new Exception("Paciente nao cadastrado.");
+	}
+
+	
+	/**
 	 * Obtem as informacoes do prontuario de um paciente cadastrado no sistema
 	 * 
 	 * @param posicao
@@ -164,4 +188,27 @@ public class Clinica implements Serializable {
 		return prontuarioSolicitado.getPaciente().getID();
 	}
 
+	/**
+	 * Metodo que registra um procedimento medito no prontuario do paciente.
+	 * 
+	 * @param nomeDoPaciente
+	 *            Nome do pacimente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param listaDeMedicamentos
+	 *            Lista com nomes dos medicamentos necessarios ao procedimento
+	 * @return O nome do procedimento registrado com sucesso.
+	 * @throws Exception 
+	 * @throws CadastroFuncionarioException
+	 * @throws ConsultaMedicamentoException
+	 */
+	public String realizaProcedimento(int idDoPaciente,
+			String nomeDoProcedimento, double gastosComMedimentos) throws Exception{
+		
+		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
+				
+		return prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
+	}
+	
 }

@@ -15,6 +15,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	private String sexo;
 	private String genero;
 	private int id;
+	private double saldo;
 
 	/**
 	 * Cria um novo objeto Funcionario com os parametros especificados
@@ -56,6 +57,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		setSexo(sexo);
 		setGenero(genero);
 		setId(id);
+		setSaldo(0);
 	}
 
 	public int getID() {
@@ -78,11 +80,15 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		return genero;
 	}
 
+	public double getSaldo(){
+		return this.saldo;
+	}
+	
 	private void setId(int id) {
 		this.id = id;
 	}
 
-	private void setGenero(String genero) {
+	public void setGenero(String genero) {
 		this.genero = genero;
 	}
 
@@ -94,10 +100,14 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		this.tipoSanguineo = tipoSanguineo;
 	}
 
-	private void setPeso(double peso) {
-		this.peso = peso;
+	public void setPeso(double novoPeso) {
+		this.peso = novoPeso;
 	}
 
+	public void setSaldo(double valor){
+		this.saldo = valor;
+	}
+	
 	/**
 	 * Pacientes sao comparados pelo nome
 	 */

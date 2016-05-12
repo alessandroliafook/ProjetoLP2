@@ -1,7 +1,7 @@
 package factory;
 
+import bancoDeOrgaos.Orgao;
 import util.VerificaOrgao;
-import departamentos.Orgao;
 
 public class FactoryDeOrgao {
 

@@ -2,9 +2,10 @@ package procedimentos;
 
 import pessoal.Paciente;
 
-public class ConsultaClinica implements ProcedimentoIF{
+public class TransplanteDeOrgaos implements ProcedimentoIF{
 
-	private final double PRECO = 350.00;
+	
+	private final double PRECO = 12500.00;
 
 	/**
 	 * Metodo que recebe 
@@ -13,5 +14,6 @@ public class ConsultaClinica implements ProcedimentoIF{
 				
 		return this.PRECO;
 	}
+
 	
 }

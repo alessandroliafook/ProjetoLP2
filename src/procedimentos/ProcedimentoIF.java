@@ -4,6 +4,6 @@ import pessoal.Paciente;
 
 public interface ProcedimentoIF {
 
-	String realizaProcedimento(Paciente paciente);
+	double realizaProcedimento(Paciente paciente, double gastosComMedicamento);
 	
 }
