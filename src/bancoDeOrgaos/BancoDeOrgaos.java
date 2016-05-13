@@ -1,17 +1,19 @@
 package bancoDeOrgaos;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import exceptions.BancoDeOrgaosException;
 import factory.FactoryDeOrgao;
 
 public class BancoDeOrgaos {
 
 	private FactoryDeOrgao facOrgao;
-	private Map<Orgao, Integer> bancoDeOrgaos;
+	private ArrayList<Orgao> bancoDeOrgaos;
 
 	public BancoDeOrgaos() {
-		bancoDeOrgaos = new HashMap<Orgao, Integer>();
+		bancoDeOrgaos = new ArrayList<Orgao>();
 		facOrgao = new FactoryDeOrgao();
 	}
 
@@ -27,23 +29,9 @@ public class BancoDeOrgaos {
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
 	public void adicionaOrgao(String nome, String tipoSanguineo)
-			throws Exception {
+			throws BancoDeOrgaosException {
 		Orgao orgao = facOrgao.criaOrgao(nome, tipoSanguineo);
-		adicionaOrgaoUtil(orgao);
-	}
-
-	/**
-	 * Metodo que atualiza o banco de orgaos ao adicionar o novo orgao
-	 * 
-	 * @param orgao
-	 *            Orgao a ser adicionado
-	 */
-	private void adicionaOrgaoUtil(Orgao orgao) {
-		if (!bancoDeOrgaos.containsKey(orgao)) {
-			bancoDeOrgaos.put(orgao, 1);
-		} else {
-			bancoDeOrgaos.put(orgao, bancoDeOrgaos.get(orgao) + 1);
-		}
+		bancoDeOrgaos.add(orgao);
 	}
 
 	/**
