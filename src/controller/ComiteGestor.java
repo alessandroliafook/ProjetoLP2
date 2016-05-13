@@ -1043,8 +1043,8 @@ public final class ComiteGestor {
 	 * 
 	 * @return A quantidade total de orgaos no banco de orgaos
 	 */
-	public int getQuantidadeTotal() {
-		return clinica.getQuantidadeTotal();
+	public int totalOrgaosDisponiveis() {
+		return clinica.totalOrgaosDisponiveis();
 	}
 	
 	

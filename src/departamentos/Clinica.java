@@ -308,8 +308,8 @@ public class Clinica implements Serializable {
 	 * 
 	 * @return A quantidade total de orgaos no banco de orgaos
 	 */
-	public int getQuantidadeTotal() {
-		return bancoDeOrgaos.getQuantidadeTotal();
+	public int totalOrgaosDisponiveis() {
+		return bancoDeOrgaos.totalOrgaosDisponiveis();
 	}
 
 }

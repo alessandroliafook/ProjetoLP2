@@ -497,8 +497,8 @@ public class HospitalFacade {
 	 * 
 	 * @return A quantidade total de orgaos no banco de orgaos
 	 */
-	public int getQuantidadeTotal() {
-		return comite.getQuantidadeTotal();
+	public int totalOrgaosDisponiveis() {
+		return comite.totalOrgaosDisponiveis();
 	}
 
 }

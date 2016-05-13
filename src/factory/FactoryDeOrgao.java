@@ -17,7 +17,7 @@ public class FactoryDeOrgao {
 	 * @throws Exception
 	 *             Caso o nome ou o tipo sanguineo estejam vazios
 	 */
-	public Orgao criaOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+	public Orgao criaOrgao(String nome, String tipoSanguineo) throws Exception {
 
 		VerificaOrgao.validaNome(nome);
 		VerificaOrgao.validaTipoSanguineo(tipoSanguineo);
