@@ -13,6 +13,7 @@ import util.VerificaAutorizacaoClinica;
 import util.VerificacaoLiberaSistema;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
+import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
@@ -26,6 +27,7 @@ import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
 import exceptions.RealizaProcedimentoException;
+import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import pessoal.Funcionario;
@@ -943,5 +945,107 @@ public final class ComiteGestor {
 		return clinica.realizaProcedimento(idDoPaciente, nomeDoProcedimento,
 				gastosComMedicamento);
 	}
+	
+	//METODOS DO BANCO DE ORGAOS
+	
 
+	/**
+	 * Metodo que adiciona um novo orgao ao banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser adicionado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao ser adicionado
+	 * 
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
+	 */
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+		clinica.cadastraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo todos os orgaos compativeis com o
+	 * tipo sanguineo especificado
+	 * 
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo a ser pesquisado
+	 * @return Uma String contendo todos os orgaos compativeis com o tipo
+	 *         sanguineo especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo sanguineo seja invalido
+	 */
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+		return clinica.buscaOrgPorSangue(tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo os tipos sanguineos compativeis
+	 * com o o orgao especificado
+	 * 
+	 * @param nomeOrgao
+	 *            Orgao a ser pesquisado
+	 * @return Uma String contendo os tipos sanguineos compativeis com o o orgao
+	 *         especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
+	 *             cadastrados com o nome especificados
+	 */
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+		return clinica.buscaOrgPorNome(nomeOrgao);
+	}
+
+	/**
+	 * Metodo que procura saber se ha um orgao compativel com tal tipo sanguineo
+	 * 
+	 * @param nomeOrgao
+	 *            Nome do orgao a ser pesquisado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser pesquisado
+	 * @return True caso haja
+	 * @throws BancoDeOrgaosException
+	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
+	 */
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+		return clinica.buscaOrgao(nomeOrgao, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que remove um orgao do banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser removido
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser removido
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
+	 *             orgaos desse tipo no banco de orgaos
+	 */
+	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+		clinica.retiraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna a quantidade de orgaos com o nome especificado
+	 * 
+	 * @param nome
+	 *            Nome do orgao
+	 * @return Quantidade de orgaos com o nome especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso nao exista algum orgao com o nome especificado
+	 */
+	public int qtdOrgaos(String nome) throws BancoDeOrgaosException {
+		return clinica.qtdOrgaos(nome);
+	}
+
+	/**
+	 * Medoto que retorna a quantidade de orgaos totais no banco de orgaos
+	 * 
+	 * @return A quantidade total de orgaos no banco de orgaos
+	 */
+	public int getQuantidadeTotal() {
+		return clinica.getQuantidadeTotal();
+	}
+	
+	
 }

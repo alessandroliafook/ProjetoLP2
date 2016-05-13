@@ -1,6 +1,7 @@
 package factory;
 
-import bancoDeOrgaos.Orgao;
+import clinica.Orgao;
+import exceptions.BancoDeOrgaosException;
 import util.VerificaOrgao;
 
 public class FactoryDeOrgao {
@@ -16,7 +17,7 @@ public class FactoryDeOrgao {
 	 * @throws Exception
 	 *             Caso o nome ou o tipo sanguineo estejam vazios
 	 */
-	public Orgao criaOrgao(String nome, String tipoSanguineo) throws Exception {
+	public Orgao criaOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 
 		VerificaOrgao.validaNome(nome);
 		VerificaOrgao.validaTipoSanguineo(tipoSanguineo);

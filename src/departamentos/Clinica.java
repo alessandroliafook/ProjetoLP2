@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import bancoDeOrgaos.BancoDeOrgaos;
+import clinica.BancoDeOrgaos;
+import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
+import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
 import prontuario.Prontuario;
@@ -29,7 +31,7 @@ public class Clinica implements Serializable {
 		pacienteFactory = new FactoryDePessoa();
 		bancoDeOrgaos = new BancoDeOrgaos();
 	}
-	
+
 	/**
 	 * Metodo que tenta cadastrar um Paciente no sistema
 	 * 
@@ -154,7 +156,7 @@ public class Clinica implements Serializable {
 	 * @param id
 	 *            ID do paciente a ser buscado
 	 * @return Objeto do tipo Paciente com o ID especificado
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	private Prontuario buscaProntuario(int id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
@@ -165,7 +167,6 @@ public class Clinica implements Serializable {
 		throw new Exception("Paciente nao cadastrado.");
 	}
 
-	
 	/**
 	 * Obtem as informacoes do prontuario de um paciente cadastrado no sistema
 	 * 
@@ -199,16 +200,116 @@ public class Clinica implements Serializable {
 	 * @param listaDeMedicamentos
 	 *            Lista com nomes dos medicamentos necessarios ao procedimento
 	 * @return O nome do procedimento registrado com sucesso.
-	 * @throws Exception 
+	 * @throws Exception
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public String realizaProcedimento(int idDoPaciente,
-			String nomeDoProcedimento, double gastosComMedimentos) throws Exception{
-		
+	public String realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, double gastosComMedimentos)
+			throws Exception {
+
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
-				
+
 		return prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
 	}
-	
+
+	// METODOS DELEGADOS AO BANCO DE ORGAOS
+
+	/**
+	 * Metodo que adiciona um novo orgao ao banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser adicionado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao ser adicionado
+	 * 
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
+	 */
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+		bancoDeOrgaos.cadastraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo todos os orgaos compativeis com o
+	 * tipo sanguineo especificado
+	 * 
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo a ser pesquisado
+	 * @return Uma String contendo todos os orgaos compativeis com o tipo
+	 *         sanguineo especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo sanguineo seja invalido
+	 */
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+		return bancoDeOrgaos.buscaOrgPorSangue(tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo os tipos sanguineos compativeis
+	 * com o o orgao especificado
+	 * 
+	 * @param nomeOrgao
+	 *            Orgao a ser pesquisado
+	 * @return Uma String contendo os tipos sanguineos compativeis com o o orgao
+	 *         especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
+	 *             cadastrados com o nome especificados
+	 */
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+		return bancoDeOrgaos.buscaOrgPorNome(nomeOrgao);
+	}
+
+	/**
+	 * Metodo que procura saber se ha um orgao compativel com tal tipo sanguineo
+	 * 
+	 * @param nomeOrgao
+	 *            Nome do orgao a ser pesquisado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser pesquisado
+	 * @return True caso haja
+	 * @throws BancoDeOrgaosException
+	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
+	 */
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+		return bancoDeOrgaos.buscaOrgao(nomeOrgao, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que remove um orgao do banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser removido
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser removido
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
+	 *             orgaos desse tipo no banco de orgaos
+	 */
+	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+		bancoDeOrgaos.retiraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna a quantidade de orgaos com o nome especificado
+	 * 
+	 * @param nome
+	 *            Nome do orgao
+	 * @return Quantidade de orgaos com o nome especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso nao exista algum orgao com o nome especificado
+	 */
+	public int qtdOrgaos(String nome) throws BancoDeOrgaosException {
+		return bancoDeOrgaos.qtdOrgaos(nome);
+	}
+
+	/**
+	 * Medoto que retorna a quantidade de orgaos totais no banco de orgaos
+	 * 
+	 * @return A quantidade total de orgaos no banco de orgaos
+	 */
+	public int getQuantidadeTotal() {
+		return bancoDeOrgaos.getQuantidadeTotal();
+	}
+
 }

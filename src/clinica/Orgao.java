@@ -1,4 +1,4 @@
-package bancoDeOrgaos;
+package clinica;
 
 public class Orgao {
 

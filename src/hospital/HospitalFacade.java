@@ -4,6 +4,7 @@ import medicamento.Medicamento;
 import controller.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
+import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
@@ -15,6 +16,7 @@ import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 
 public class HospitalFacade {
@@ -174,7 +176,7 @@ public class HospitalFacade {
 	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 		comite.excluiFuncionario(matricula, senha);
 	}
-	
+
 	/**
 	 * Metodo que atualiza a senha de um funcionario. E necessario que o
 	 * funcionario confirme sua senha antes de realizar a troca
@@ -189,7 +191,7 @@ public class HospitalFacade {
 	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
 		comite.atualizaSenha(senhaAntiga, novaSenha);
 	}
-	
+
 	/**
 	 * Metodo que fecha o sistema
 	 * 
@@ -201,7 +203,7 @@ public class HospitalFacade {
 	}
 
 	// metodos da farmacia
-	
+
 	/**
 	 * Metodo que cadastra um medicamento no estoque da farmacia. Acaso o
 	 * medicamento ja exista na farmacia, apenas adiciona a quantidade informada
@@ -223,7 +225,8 @@ public class HospitalFacade {
 	 * @param categorias
 	 *            Conjunto de Strings com os nomes das categorias associadas ao
 	 *            medicamento.
-	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha sido realizada com sucesso.
+	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha
+	 *         sido realizada com sucesso.
 	 * @throws StringInvalidaException
 	 *             Lanca excecao personalizada acaso qualques das String
 	 *             informadas seja vazia ou igual a null.
@@ -337,7 +340,7 @@ public class HospitalFacade {
 	}
 
 	// metodos da clinica
-	
+
 	/**
 	 * Metodo que tenta cadastrar um Paciente no sistema
 	 * 
@@ -370,7 +373,7 @@ public class HospitalFacade {
 	public int getNumeroCadastros() {
 		return comite.getNumeroCadastros();
 	}
-	
+
 	/**
 	 * Retorna a informacao solicitada do paciente especificado
 	 * 
@@ -396,6 +399,106 @@ public class HospitalFacade {
 	 */
 	public int getProntuario(int posicao) throws ConsultaProntuarioException {
 		return comite.getProntuario(posicao);
+	}
+
+	// METODOS DO BANCO DE ORGAOS
+
+	/**
+	 * Metodo que adiciona um novo orgao ao banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser adicionado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao ser adicionado
+	 * 
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
+	 */
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+		comite.cadastraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo todos os orgaos compativeis com o
+	 * tipo sanguineo especificado
+	 * 
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo a ser pesquisado
+	 * @return Uma String contendo todos os orgaos compativeis com o tipo
+	 *         sanguineo especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo sanguineo seja invalido
+	 */
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+		return comite.buscaOrgPorSangue(tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna uma String contendo os tipos sanguineos compativeis
+	 * com o o orgao especificado
+	 * 
+	 * @param nomeOrgao
+	 *            Orgao a ser pesquisado
+	 * @return Uma String contendo os tipos sanguineos compativeis com o o orgao
+	 *         especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
+	 *             cadastrados com o nome especificados
+	 */
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+		return comite.buscaOrgPorNome(nomeOrgao);
+	}
+
+	/**
+	 * Metodo que procura saber se ha um orgao compativel com tal tipo sanguineo
+	 * 
+	 * @param nomeOrgao
+	 *            Nome do orgao a ser pesquisado
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser pesquisado
+	 * @return True caso haja
+	 * @throws BancoDeOrgaosException
+	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
+	 */
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+		return comite.buscaOrgao(nomeOrgao, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que remove um orgao do banco de orgaos
+	 * 
+	 * @param nome
+	 *            Nome do orgao a ser removido
+	 * @param tipoSanguineo
+	 *            Tipo sanguineo do orgao a ser removido
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
+	 *             orgaos desse tipo no banco de orgaos
+	 */
+	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+		comite.retiraOrgao(nome, tipoSanguineo);
+	}
+
+	/**
+	 * Metodo que retorna a quantidade de orgaos com o nome especificado
+	 * 
+	 * @param nome
+	 *            Nome do orgao
+	 * @return Quantidade de orgaos com o nome especificado
+	 * @throws BancoDeOrgaosException
+	 *             Caso nao exista algum orgao com o nome especificado
+	 */
+	public int qtdOrgaos(String nome) throws BancoDeOrgaosException {
+		return comite.qtdOrgaos(nome);
+	}
+
+	/**
+	 * Medoto que retorna a quantidade de orgaos totais no banco de orgaos
+	 * 
+	 * @return A quantidade total de orgaos no banco de orgaos
+	 */
+	public int getQuantidadeTotal() {
+		return comite.getQuantidadeTotal();
 	}
 
 }
