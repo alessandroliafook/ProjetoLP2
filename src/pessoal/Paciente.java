@@ -59,7 +59,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		setSexo(sexo);
 		setGenero(genero);
 		setId(id);
-		setSaldo(0);
+		setSaldo(0.0);
 	}
 
 	public String getID() {

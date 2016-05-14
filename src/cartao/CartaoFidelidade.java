@@ -33,6 +33,7 @@ public class CartaoFidelidade {
 	 *            Pontos ganhos de fidelidade ganhos por procedimentos
 	 */
 	public void adicionaPontosFidelidade(int pontosGanhos) {
+		pontosFidelidade += pontosGanhos;
 		pontosFidelidade += this.tipoCartao.getPontosBonus(pontosGanhos);
 		realizaUpgradeCartao();
 	}

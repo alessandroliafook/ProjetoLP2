@@ -19,7 +19,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	private static final long serialVersionUID = -1342099551666299695L;
 	private Paciente paciente;
 	private factoryDeProcedimentos tabelaDeProcedimentos;
-	private List<ProcedimentoIF> procedimentos; // Para uso futuro
+	private List<ProcedimentoIF> procedimentos;
 
 	/**
 	 * Cria um novo Prontuario para o Paciente especificado
@@ -58,14 +58,14 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		double custoProcedimento = procedimento.realizaProcedimento(this.paciente, gastosComMedicamento);
 		double totalGasto = custoProcedimento + gastosComMedicamento;
 		
-		totalGasto -= paciente.getDesconto(totalGasto);
-		double novoSaldo = paciente.getSaldo() + totalGasto;
+		totalGasto -= this.paciente.getDesconto(totalGasto);
+		double novoSaldo = this.paciente.getSaldo() + totalGasto;
 
 		int pontosFidelidadeGanhos = procedimento.getPontosBonus();
-		paciente.adicionaPontosFidelidade(pontosFidelidadeGanhos);
+		this.paciente.adicionaPontosFidelidade(pontosFidelidadeGanhos);
 		
-		paciente.setSaldo(novoSaldo);
-		procedimentos.add(procedimento);
+		this.paciente.setSaldo(novoSaldo);
+		this.procedimentos.add(procedimento);
 
 		return nomeDoProcedimento;
 

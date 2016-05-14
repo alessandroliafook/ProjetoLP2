@@ -969,6 +969,22 @@ public final class ComiteGestor {
 
 	}
 
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
+
+		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
+
+		try {
+
+			VerificaPessoa.validaIdPaciente(idDoPaciente);
+			
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
+			
+		} catch (Exception e) {
+			throw new RealizaProcedimentoException(e.getMessage());
+		}
+
+	}
+
 	/**
 	 * Busca um paciente no sistema atraves do seu nome
 	 * 
