@@ -21,7 +21,7 @@ public class factoryDeProcedimentos {
 		case "redesignacao sexual":
 			return new RedesignacaoSexual();
 			
-		case "":
+		case "transplante de orgaos":
 			return new TransplanteDeOrgaos();
 			
 		default:

@@ -12,7 +12,7 @@ public class ClinicaTest {
 		try {
 			Clinica clinica = new Clinica();
 			assertEquals(0, clinica.getNumeroCadastros());
-			int id1 = clinica.cadastraPaciente("pedro", "15/09/1978", 45.9, "masculino", "masculino", "AB-");
+			String id1 = clinica.cadastraPaciente("pedro", "15/09/1978", 45.9, "masculino", "masculino", "AB-");
 			assertEquals(1, clinica.getNumeroCadastros());
 			assertEquals("pedro", clinica.getInfoPaciente(id1, "Nome"));
 			assertEquals("1978-09-15", clinica.getInfoPaciente(id1, "Data"));
@@ -26,7 +26,7 @@ public class ClinicaTest {
 		 */
 		try {
 			Clinica clinica = new Clinica();
-			int id1 = clinica.cadastraPaciente("", "15/09/1978", 45.9, "masculino", "masculino", "AB-");
+			String id1 = clinica.cadastraPaciente("", "15/09/1978", 45.9, "masculino", "masculino", "AB-");
 			fail();
 		} catch (Exception e) {
 			assertEquals("Nao foi possivel cadastrar o paciente. Nome do paciente nao pode ser vazio.", e.getMessage());

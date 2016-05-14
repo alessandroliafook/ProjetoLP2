@@ -41,7 +41,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(int id) throws Exception {
+	public double getGastosPaciente(String id) throws Exception {
 		Prontuario prontuario = buscaProntuario(id);
 		return prontuario.getGastos();
 	}
@@ -56,7 +56,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso nao exista o paciente com o ID repassado
 	 */
-	public int getPontosFidelidade(int id) throws Exception {
+	public int getPontosFidelidade(String id) throws Exception {
 		Prontuario prontuario = buscaProntuario(id);
 		return prontuario.getPontosFidelidade();
 	}
@@ -131,7 +131,7 @@ public class Clinica implements Serializable {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) throws Exception {
+	public String getInfoPaciente(String id, String atributo) throws Exception {
 		String retorno = "";
 		Prontuario prontuario = buscaProntuario(id);
 
@@ -192,9 +192,9 @@ public class Clinica implements Serializable {
 	 * @return Objeto do tipo Paciente com o ID especificado
 	 * @throws Exception
 	 */
-	private Prontuario buscaProntuario(int id) throws Exception {
+	private Prontuario buscaProntuario(String id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
-			if (Integer.parseInt(prontuario.getID()) == id) {
+			if (prontuario.getID().equals(id)) {
 				return prontuario;
 			}
 		}
@@ -238,7 +238,7 @@ public class Clinica implements Serializable {
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, int idDoPaciente, double gastosComMedimentos)
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, double gastosComMedimentos)
 			throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);

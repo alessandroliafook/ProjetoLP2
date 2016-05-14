@@ -73,7 +73,7 @@ public final class ComiteGestor {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(int id) throws Exception {
+	public double getGastosPaciente(String id) throws Exception {
 		return clinica.getGastosPaciente(id);
 	}
 
@@ -87,7 +87,7 @@ public final class ComiteGestor {
 	 * @throws Exception
 	 *             Caso nao exista o paciente com o ID repassado
 	 */
-	public int getPontosFidelidade(int id) throws Exception {
+	public int getPontosFidelidade(String id) throws Exception {
 		return clinica.getPontosFidelidade(id);
 	}
 
@@ -891,7 +891,7 @@ public final class ComiteGestor {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) throws Exception {
+	public String getInfoPaciente(String id, String atributo) throws Exception {
 		return clinica.getInfoPaciente(id, atributo);
 	}
 
@@ -927,11 +927,10 @@ public final class ComiteGestor {
 		try {
 
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
-			int idInteiroDoPaciente = Integer.parseInt(idDoPaciente);
-
+			
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idInteiroDoPaciente, gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -950,9 +949,8 @@ public final class ComiteGestor {
 		try {
 
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
-			int idInteiroDoPaciente = Integer.parseInt(idDoPaciente);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idInteiroDoPaciente, 0);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
 
 		} catch (Exception e) {
 			throw new RealizaProcedimentoException(e.getMessage());

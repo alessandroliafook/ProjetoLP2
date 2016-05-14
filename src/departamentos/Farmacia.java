@@ -16,6 +16,7 @@ import exceptions.VerificaEstoqueException;
 import factory.FactoryDeMedicamentos;
 import medicamento.CategoriasEnum;
 import medicamento.Medicamento;
+import util.VerificaCadastroMedicamento;
 import medicamento.ComparaPorPreco;
 
 public class Farmacia implements Serializable {
@@ -168,7 +169,9 @@ public class Farmacia implements Serializable {
 	 *             - Lanca excecao acaso nao tenha quantidade suficiente para o
 	 *             fornecimento ou acaso o medicamento nao exista no estoque.
 	 */
-	public double verificaEstoque(String nomeMedicamentos) throws VerificaEstoqueException {
+	public double verificaEstoque(String nomeMedicamentos) throws Exception {
+		
+		VerificaCadastroMedicamento.validaNomeMedicamento(nomeMedicamentos);
 
 		String[] listaDeMedicamentos = nomeMedicamentos.split(",");
 		
@@ -204,6 +207,7 @@ public class Farmacia implements Serializable {
 				throw new VerificaEstoqueException();
 			}
 		}
+		
 		return gastosComMedicamentos;
 	}
 

@@ -56,7 +56,7 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(int id) throws Exception {
+	public double getGastosPaciente(String id) throws Exception {
 		return comite.getGastosPaciente(id);
 	}
 
@@ -71,7 +71,7 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso nao exista o paciente com o ID repassado
 	 */
-	public int getPontosFidelidade(int id) throws Exception {
+	public int getPontosFidelidade(String id) throws Exception {
 		return comite.getPontosFidelidade(id);
 	}
 
@@ -427,7 +427,7 @@ public class HospitalFacade {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) throws Exception {
+	public String getInfoPaciente(String id, String atributo) throws Exception {
 		return comite.getInfoPaciente(id, atributo);
 	}
 
