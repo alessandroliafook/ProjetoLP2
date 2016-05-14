@@ -10,6 +10,7 @@ import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
+import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
@@ -249,6 +250,7 @@ public class Clinica implements Serializable {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
+		prontuario.adicionaProcedimento(nomeDoProcedimento);
 
 	}
 
@@ -272,16 +274,29 @@ public class Clinica implements Serializable {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		String tipoSanguineo = prontuario.getTipoSanguineo();
-	
+		boolean existeOrgao = false;
+
 		try {
-			if (bancoDeOrgaos.buscaOrgao(nomeDoOrgao, tipoSanguineo)) {
-				prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
-			}
+			existeOrgao = bancoDeOrgaos.buscaOrgao(nomeDoOrgao, tipoSanguineo);
+
+		} catch (Exception e) {
+			throw new Exception(
+					e.getMessage().replace("O banco de orgaos apresentou um erro. ", ""));
+		}
+
+		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
+
+		if (!existeOrgao) {
+			throw new Exception("Banco nao possui o orgao especificado.");
+		}
+
+		try {
+			bancoDeOrgaos.retiraOrgao(nomeDoOrgao, tipoSanguineo);
 		} catch (Exception e) {
 
 		}
-
-		bancoDeOrgaos.retiraOrgao(nomeDoOrgao, tipoSanguineo);
+		
+		prontuario.adicionaProcedimento(nomeDoProcedimento);
 
 	}
 
@@ -310,9 +325,10 @@ public class Clinica implements Serializable {
 	 *            Tipo sanguineo a ser pesquisado
 	 * @return Uma String contendo todos os orgaos compativeis com o tipo
 	 *         sanguineo especificado
-	 * @throws Exception  Caso o tipo sanguineo seja invalido 
+	 * @throws Exception
+	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException  {
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -324,7 +340,7 @@ public class Clinica implements Serializable {
 	 *            Orgao a ser pesquisado
 	 * @return Uma String contendo os tipos sanguineos compativeis com o o orgao
 	 *         especificado
-	 * @throws Exception 
+	 * @throws Exception
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */

@@ -63,7 +63,7 @@ public final class ComiteGestor {
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
-	
+
 	public int getTotalProcedimento(String id) throws Exception {
 		return clinica.getTotalProcedimento(id);
 	}
@@ -858,8 +858,8 @@ public final class ComiteGestor {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
-			throws CadastroPacienteException {
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
+			String tipoSanguineo) throws CadastroPacienteException {
 
 		if (!isDiretorOuTecnico()) {
 			throw new CadastroPacienteException(
@@ -931,10 +931,48 @@ public final class ComiteGestor {
 		try {
 
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
-			
+
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
 			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento);
+
+			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
+				farmacia.forneceMedicamento(nomeMedicamento);
+			}
+
+		} catch (Exception e) {
+			throw new RealizaProcedimentoException(e.getMessage());
+		}
+
+	}
+
+	/**
+	 * Metodo que registra um procedimento medito no prontuario do paciente,
+	 * onde eh necessario realizar a disponibilizacao de um orgao existente no
+	 * banco do hospital.
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @param listaDeMedicamentos
+	 *            String com nomes dos medicamentos necessarios ao procedimento
+	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
+	 */
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
+			String listaDeMedicamentos) throws Exception {
+
+		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
+
+		try {
+
+			VerificaPessoa.validaIdPaciente(idDoPaciente);
+
+			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
+
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);

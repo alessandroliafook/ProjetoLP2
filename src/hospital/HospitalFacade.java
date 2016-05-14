@@ -82,6 +82,12 @@ public class HospitalFacade {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao, String listaDeMedicamentos)
+			throws Exception {
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
+	}
+
+	
 	/**
 	 * Metodo que retorna como String o atributo especificado do funcionario
 	 * 

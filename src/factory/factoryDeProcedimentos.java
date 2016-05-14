@@ -25,7 +25,7 @@ public class factoryDeProcedimentos {
 			return new TransplanteDeOrgaos();
 			
 		default:
-			throw new Exception("Erro no procedimento. Procedimento inexistente.");
+			throw new Exception("Procedimento invalido.");
 		}
 		
 	}

@@ -19,7 +19,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	private static final long serialVersionUID = -1342099551666299695L;
 	private Paciente paciente;
 	private factoryDeProcedimentos tabelaDeProcedimentos;
-	private List<ProcedimentoIF> procedimentos;
+	private List<String> procedimentos;
 
 	/**
 	 * Cria um novo Prontuario para o Paciente especificado
@@ -30,7 +30,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	public Prontuario(Paciente paciente) {
 		this.paciente = paciente;
 		this.tabelaDeProcedimentos = new factoryDeProcedimentos();
-		this.procedimentos = new ArrayList<ProcedimentoIF>();
+		this.procedimentos = new ArrayList<String>();
 	}
 
 	public Paciente getPaciente() {
@@ -65,12 +65,18 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		this.paciente.adicionaPontosFidelidade(pontosFidelidadeGanhos);
 		
 		this.paciente.setSaldo(novoSaldo);
-		this.procedimentos.add(procedimento);
 
 		return nomeDoProcedimento;
 
 	}
 
+	
+	public void adicionaProcedimento(String nomeDoProcedimento){
+
+		this.procedimentos.add(nomeDoProcedimento);
+
+		
+	}
 	
 	public int getTotalProcedimento() {
 		return procedimentos.size();
@@ -96,6 +102,10 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		paciente.setData(data);
 	}
 
+	public List<String> getProcedimentos(){
+		return procedimentos;
+	}
+	
 	public String getID() {
 		return paciente.getID();
 	}
