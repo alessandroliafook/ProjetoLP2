@@ -160,7 +160,7 @@ public class ClinicaTest {
 			clinica.getProntuario(5);
 			fail();
 		} catch (Exception e) {
-			assertEquals("Erro ao consultar prontuario. Nao ha prontuarios suficientes (max = 4).", e.getMessage());
+			assertEquals("Erro ao consultar prontuario. Nao ha prontuarios suficientes (max = 3).", e.getMessage());
 		}
 	}
 }
