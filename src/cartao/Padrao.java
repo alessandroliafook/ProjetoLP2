@@ -11,7 +11,8 @@ public class Padrao implements Fidelidade {
 	}
 
 	@Override
-	public int getCreditoBonus(int creditoGanho) {
+	public int getPontosBonus(int creditoGanho) {
 		return (int)PORCENTAGEM_CREDITO_BONUS * creditoGanho;
 	}
+
 }

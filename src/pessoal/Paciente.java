@@ -62,8 +62,8 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		setSaldo(0);
 	}
 
-	public int getID() {
-		return this.id;
+	public String getID() {
+		return String.valueOf(this.id);
 	}
 
 	public double getPeso() {
@@ -82,18 +82,30 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		return genero;
 	}
 
-	public double getSaldo(){
+	public double getSaldo() {
 		return this.saldo;
 	}
-	
-	public int getPontosFidelidade(){
+
+	public int getPontosFidelidade() {
 		return this.cartaoFidelidade.getPontosFidelidade();
 	}
-	
-	public double getGastos(){
+
+	public double getGastos() {
 		return this.saldo;
 	}
-	
+
+	/**
+	 * Da desconto em servicos ao paciente de acordo com o tipo de seu cartao
+	 * fidelidade
+	 * 
+	 * @param preco
+	 *            Preco total dos servicos prestados
+	 * @return O desconto sobre o preco total do servico
+	 */
+	public double getDesconto(double preco) {
+		return this.cartaoFidelidade.getDesconto(preco);
+	}
+
 	private void setId(int id) {
 		this.id = id;
 	}
@@ -114,10 +126,14 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		this.peso = novoPeso;
 	}
 
-	public void setSaldo(double valor){
+	public void setSaldo(double valor) {
 		this.saldo = valor;
 	}
 	
+	public void adicionaPontosFidelidade(int pontosGanhos) {
+		this.cartaoFidelidade.adicionaPontosFidelidade(pontosGanhos);
+	}
+
 	/**
 	 * Pacientes sao comparados pelo nome
 	 */
@@ -141,7 +157,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	public boolean equals(Object obj) {
 		if (obj instanceof Paciente) {
 			Paciente outroPaciente = (Paciente) obj;
-			return this.id == outroPaciente.getID();
+			return this.id == Integer.parseInt(outroPaciente.getID());
 		}
 		return false;
 	}

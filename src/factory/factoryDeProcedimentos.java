@@ -9,16 +9,16 @@ import procedimentos.TransplanteDeOrgaos;
 public class factoryDeProcedimentos {
 
 	public ProcedimentoIF selecionaProcedimento(String nomeDoProcedimento) throws Exception{
-		
+
 		switch(nomeDoProcedimento.toLowerCase()){
-		
-		case "consultaclinica":
+			
+		case "consulta clinica":
 			return new ConsultaClinica();
 			
-		case "cirurgiabariatrica":
+		case "cirurgia bariatrica":
 			return new CirurgiaBariatrica();
 		
-		case "redesignacaosexual":
+		case "redesignacao sexual":
 			return new RedesignacaoSexual();
 			
 		case "":

@@ -55,8 +55,13 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		ProcedimentoIF procedimento = tabelaDeProcedimentos.selecionaProcedimento(nomeDoProcedimento);
 		double custoProcedimento = procedimento.realizaProcedimento(this.paciente, gastosComMedicamento);
 		double totalGasto = custoProcedimento + gastosComMedicamento;
+		
+		totalGasto -= paciente.getDesconto(totalGasto);
 		double novoSaldo = paciente.getSaldo() + totalGasto;
 
+		int pontosFidelidadeGanhos = procedimento.getPontosBonus();
+		paciente.adicionaPontosFidelidade(pontosFidelidadeGanhos);
+		
 		paciente.setSaldo(novoSaldo);
 		procedimentos.add(procedimento);
 
@@ -84,7 +89,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		paciente.setData(data);
 	}
 
-	public int getID() {
+	public String getID() {
 		return paciente.getID();
 	}
 
@@ -140,9 +145,9 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	/**
 	 * Metodo que procura a ID do paciente
 	 * 
-	 * @return int contendo a ID do paciente
+	 * @return String contendo a ID do paciente
 	 */
-	public int getPacienteID() {
+	public String getPacienteID() {
 		return this.paciente.getID();
 	}
 

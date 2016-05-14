@@ -28,6 +28,14 @@ public class VerificaPessoa {
 
 	}
 	
+	public static void validaIdPaciente(String id) throws Exception{
+		try{
+			Integer.parseInt(id);
+		} catch(Exception e){
+			throw new NomePacienteVazioException();
+		}
+	}
+	
 	public static void validaPeso(double peso) throws PesoInvalidoException {
 		if(peso < 0) throw new PesoInvalidoException();
 	}

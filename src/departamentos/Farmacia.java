@@ -161,15 +161,17 @@ public class Farmacia implements Serializable {
 	/**
 	 * Metodo que verifica se a lista de medicamentos existe no estoque.
 	 * 
-	 * @param listaDeMedicamentos
-	 *            List com os nomes dos medicamentos que se deseja verificar
+	 * @param nomeMedicamentos
+	 *            String com os nomes dos medicamentos que se deseja verificar
 	 * @return boolean com true se a lista inteira existir.
 	 * @throws VerificaEstoqueException
 	 *             - Lanca excecao acaso nao tenha quantidade suficiente para o
 	 *             fornecimento ou acaso o medicamento nao exista no estoque.
 	 */
-	public double verificaEstoque(List<String> listaDeMedicamentos) throws VerificaEstoqueException {
+	public double verificaEstoque(String nomeMedicamentos) throws VerificaEstoqueException {
 
+		String[] listaDeMedicamentos = nomeMedicamentos.split(",");
+		
 		Map<String, Integer> medicamentos = new TreeMap<String, Integer>();
 
 		for (String nomeDoMedicamento : listaDeMedicamentos) {

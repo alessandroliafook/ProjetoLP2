@@ -10,6 +10,7 @@ import medicamento.Medicamento;
 import departamentos.Clinica;
 import departamentos.Farmacia;
 import util.VerificaAutorizacaoClinica;
+import util.VerificaPessoa;
 import util.VerificacaoLiberaSistema;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
@@ -27,6 +28,7 @@ import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.NomePacienteVazioException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
@@ -60,6 +62,33 @@ public final class ComiteGestor {
 		this.corpoProfissional = new HashSet<Funcionario>();
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
+	}
+
+	/**
+	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de gastos do paciente
+	 * @throws Exception
+	 *             Caso nao exista paciente com o ID repassado
+	 */
+	public double getGastosPaciente(int id) throws Exception {
+		return clinica.getGastosPaciente(id);
+	}
+
+	/**
+	 * Busca o paciente com ID especificado e retorna o total de pontos
+	 * fidelidade do mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de pontos de fidelidade que o paciente tem no momento
+	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID repassado
+	 */
+	public int getPontosFidelidade(int id) throws Exception {
+		return clinica.getPontosFidelidade(id);
 	}
 
 	public void iniciaSistema() {
@@ -825,7 +854,7 @@ public final class ComiteGestor {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 
 		if (!isDiretorOuTecnico()) {
@@ -862,7 +891,7 @@ public final class ComiteGestor {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) throws Exception{
+	public String getInfoPaciente(int id, String atributo) throws Exception {
 		return clinica.getInfoPaciente(id, atributo);
 	}
 
@@ -873,37 +902,57 @@ public final class ComiteGestor {
 	 *            Objeto Prontuario a ser verificado
 	 * @return True caso o objeto ja exista no sistema, False caso contrario
 	 */
-	public int getProntuario(int posicao) throws ConsultaProntuarioException {
+	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		return clinica.getProntuario(posicao);
 	}
 
 	/**
 	 * Metodo que registra um procedimento medito no prontuario do paciente.
 	 * 
-	 * @param nomeDoPaciente
-	 *            Nome do pacimente titular do prontuario onde sera registrado o
-	 *            procedimento.
 	 * @param nomeDoProcedimento
 	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
 	 * @param listaDeMedicamentos
-	 *            Lista com nomes dos medicamentos necessarios ao procedimento
-	 * @return O nome do procedimento registrado com sucesso.
+	 *            String com nomes dos medicamentos necessarios ao procedimento
 	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, List<String> listaDeMedicamentos)
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
 			throws Exception {
 
 		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
 
 		try {
 
+			VerificaPessoa.validaIdPaciente(idDoPaciente);
+			int idInteiroDoPaciente = Integer.parseInt(idDoPaciente);
+
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(idDoPaciente, nomeDoProcedimento, gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idInteiroDoPaciente, gastosComMedicamento);
 
-			for (String nomeMedicamento : listaDeMedicamentos) {
+			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
 			}
+
+		} catch (Exception e) {
+			throw new RealizaProcedimentoException(e.getMessage());
+		}
+
+	}
+
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
+
+		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
+
+		try {
+
+			VerificaPessoa.validaIdPaciente(idDoPaciente);
+			int idInteiroDoPaciente = Integer.parseInt(idDoPaciente);
+
+			clinica.realizaProcedimento(nomeDoProcedimento, idInteiroDoPaciente, 0);
 
 		} catch (Exception e) {
 			throw new RealizaProcedimentoException(e.getMessage());
@@ -921,7 +970,7 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso o nome seja vazio, ou o paciente nao
 	 *             esteja cadastrado no sistema.
 	 */
-	public int getPacienteID(String nome) throws Exception {
+	public String getPacienteID(String nome) throws Exception {
 		return clinica.getPacienteID(nome);
 	}
 

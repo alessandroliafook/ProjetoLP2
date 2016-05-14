@@ -1,6 +1,9 @@
 package hospital;
 
 import medicamento.Medicamento;
+
+import java.util.List;
+
 import controller.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
@@ -41,6 +44,45 @@ public class HospitalFacade {
 	 */
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 		return comite.liberaSistema(chave, nome, dataNascimento);
+	}
+
+	
+	/**
+	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de gastos do paciente
+	 * @throws Exception
+	 *             Caso nao exista paciente com o ID repassado
+	 */
+	public double getGastosPaciente(int id) throws Exception {
+		return comite.getGastosPaciente(id);
+	}
+
+	
+	/**
+	 * Busca o paciente com ID especificado e retorna o total de pontos
+	 * fidelidade do mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de pontos de fidelidade que o paciente tem no momento
+	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID repassado
+	 */
+	public int getPontosFidelidade(int id) throws Exception {
+		return comite.getPontosFidelidade(id);
+	}
+
+	
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception{
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
+	}
+	
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
+			throws Exception {
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
 	/**
@@ -361,7 +403,7 @@ public class HospitalFacade {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
@@ -398,7 +440,7 @@ public class HospitalFacade {
 	 * @throws ConsultaProntuarioException
 	 *             Caso a posicao seja invalida
 	 */
-	public int getProntuario(int posicao) throws ConsultaProntuarioException {
+	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		return comite.getProntuario(posicao);
 	}
 
@@ -412,7 +454,7 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o paciente pesquisado nao esteja
 	 *             cadastrado no sistema
 	 */
-	public int getPacienteID(String nome) throws Exception {
+	public String getPacienteID(String nome) throws Exception {
 		return comite.getPacienteID(nome);
 	}
 

@@ -33,6 +33,35 @@ public class Clinica implements Serializable {
 	}
 
 	/**
+	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de gastos do paciente
+	 * @throws Exception
+	 *             Caso nao exista paciente com o ID repassado
+	 */
+	public double getGastosPaciente(int id) throws Exception {
+		Prontuario prontuario = buscaProntuario(id);
+		return prontuario.getGastos();
+	}
+
+	/**
+	 * Busca o paciente com ID especificado e retorna o total de pontos
+	 * fidelidade do mesmo
+	 * 
+	 * @param id
+	 *            ID do paciente a ser verificado
+	 * @return O total de pontos de fidelidade que o paciente tem no momento
+	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID repassado
+	 */
+	public int getPontosFidelidade(int id) throws Exception {
+		Prontuario prontuario = buscaProntuario(id);
+		return prontuario.getPontosFidelidade();
+	}
+
+	/**
 	 * Metodo que tenta cadastrar um Paciente no sistema
 	 * 
 	 * @param nome
@@ -51,7 +80,7 @@ public class Clinica implements Serializable {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 
 		try {
@@ -102,7 +131,7 @@ public class Clinica implements Serializable {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) throws Exception{
+	public String getInfoPaciente(int id, String atributo) throws Exception {
 		String retorno = "";
 		Prontuario prontuario = buscaProntuario(id);
 
@@ -143,7 +172,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Lanca excecao acaso o nome seja vazio
 	 */
-	public int getPacienteID(String nome) throws Exception {
+	public String getPacienteID(String nome) throws Exception {
 
 		VerificaPessoa.validaNome(nome, true);
 
@@ -165,7 +194,7 @@ public class Clinica implements Serializable {
 	 */
 	private Prontuario buscaProntuario(int id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
-			if (prontuario.getID() == id) {
+			if (Integer.parseInt(prontuario.getID()) == id) {
 				return prontuario;
 			}
 		}
@@ -181,7 +210,7 @@ public class Clinica implements Serializable {
 	 * @throws ConsultaProntuarioException
 	 *             Caso a posicao seja invalida
 	 */
-	public int getProntuario(int posicao) throws ConsultaProntuarioException {
+	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		if (posicao < 0) {
 			throw new ConsultaProntuarioException("Indice do prontuario nao pode ser negativo.");
 		} else if (posicao >= prontuarios.size()) {
@@ -209,13 +238,14 @@ public class Clinica implements Serializable {
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public void realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, double gastosComMedimentos)
+	public void realizaProcedimento(String nomeDoProcedimento, int idDoPaciente, double gastosComMedimentos)
 			throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
 	}
+
 
 	// METODOS DELEGADOS AO BANCO DE ORGAOS
 
