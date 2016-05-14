@@ -1,6 +1,7 @@
 package prontuario;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import exceptions.CadastroFuncionarioException;
@@ -18,7 +19,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	private static final long serialVersionUID = -1342099551666299695L;
 	private Paciente paciente;
 	private factoryDeProcedimentos tabelaDeProcedimentos;
-	private List<Object> procedimentos; // Para uso futuro
+	private List<ProcedimentoIF> procedimentos; // Para uso futuro
 
 	/**
 	 * Cria um novo Prontuario para o Paciente especificado
@@ -29,6 +30,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	public Prontuario(Paciente paciente) {
 		this.paciente = paciente;
 		this.tabelaDeProcedimentos = new factoryDeProcedimentos();
+		this.procedimentos = new ArrayList<ProcedimentoIF>();
 	}
 
 	public Paciente getPaciente() {
@@ -67,6 +69,11 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 
 		return nomeDoProcedimento;
 
+	}
+	
+
+	public int getTotalProcedimento() {
+		return procedimentos.size();
 	}
 
 	public int getIdade() {

@@ -46,7 +46,6 @@ public class HospitalFacade {
 		return comite.liberaSistema(chave, nome, dataNascimento);
 	}
 
-	
 	/**
 	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
 	 * 
@@ -60,7 +59,6 @@ public class HospitalFacade {
 		return comite.getGastosPaciente(id);
 	}
 
-	
 	/**
 	 * Busca o paciente com ID especificado e retorna o total de pontos
 	 * fidelidade do mesmo
@@ -75,11 +73,10 @@ public class HospitalFacade {
 		return comite.getPontosFidelidade(id);
 	}
 
-	
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception{
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
 	}
-	
+
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
 			throws Exception {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
@@ -403,8 +400,8 @@ public class HospitalFacade {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
-			throws CadastroPacienteException {
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
+			String tipoSanguineo) throws CadastroPacienteException {
 		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
@@ -442,6 +439,10 @@ public class HospitalFacade {
 	 */
 	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		return comite.getProntuario(posicao);
+	}
+
+	public int getTotalProcedimento(String id) throws Exception {
+		return comite.getTotalProcedimento(id);
 	}
 
 	/**

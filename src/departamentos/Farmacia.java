@@ -207,7 +207,6 @@ public class Farmacia implements Serializable {
 				throw new VerificaEstoqueException();
 			}
 		}
-		
 		return gastosComMedicamentos;
 	}
 

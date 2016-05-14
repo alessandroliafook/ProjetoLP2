@@ -31,6 +31,11 @@ public class Clinica implements Serializable {
 		pacienteFactory = new FactoryDePessoa();
 		bancoDeOrgaos = new BancoDeOrgaos();
 	}
+	
+	public int getTotalProcedimento(String id) throws Exception {
+		Prontuario prontuario = buscaProntuario(id);
+		return prontuario.getTotalProcedimento();
+	}
 
 	/**
 	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
@@ -181,6 +186,7 @@ public class Clinica implements Serializable {
 				return prontuario.getPacienteID();
 			}
 		}
+		
 		throw new Exception("Paciente nao cadastrado no sistema.");
 	}
 

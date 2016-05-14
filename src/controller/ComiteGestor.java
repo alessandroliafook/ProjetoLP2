@@ -63,6 +63,10 @@ public final class ComiteGestor {
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
+	
+	public int getTotalProcedimento(String id) throws Exception {
+		return clinica.getTotalProcedimento(id);
+	}
 
 	/**
 	 * Busca o paciente com ID especificado e retorna o total gasto pelo mesmo
