@@ -1,7 +1,6 @@
 package departamentos;
 
 import java.io.Serializable;
-import java.text.DecimalFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -11,7 +10,6 @@ import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
-import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
@@ -28,12 +26,25 @@ public class Clinica implements Serializable {
 	private FactoryDePessoa pacienteFactory;
 	private BancoDeOrgaos bancoDeOrgaos;
 
+	/**
+	 * Cria uma nova clinica para gerenciamento dos pacientes
+	 */
 	public Clinica() {
 		this.prontuarios = new TreeSet<Prontuario>();
 		pacienteFactory = new FactoryDePessoa();
 		bancoDeOrgaos = new BancoDeOrgaos();
 	}
 
+	/**
+	 * Verifica o numero de procedimentos realizados pelo paciente com a ID
+	 * especificada
+	 * 
+	 * @param id
+	 *            ID do paciente a ser consultado
+	 * @return O total de procidementos a qual o paciente foi submetido
+	 * @throws Exception
+	 *             Caso nao exista paciente com o ID especificado
+	 */
 	public int getTotalProcedimento(String id) throws Exception {
 		Prontuario prontuario = buscaProntuario(id);
 		return prontuario.getTotalProcedimento();
@@ -132,43 +143,43 @@ public class Clinica implements Serializable {
 	/**
 	 * Retorna a informacao solicitada do paciente especificado
 	 * 
-	 * @param paciente
-	 *            Objeto Paciente do qual sera retirada a informacao solicitada
+	 * @param id
+	 *            ID do paciente que se deseja verificar algum dado
 	 * @param atributo
 	 *            Descricao da informacao
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
 	public String getInfoPaciente(String id, String atributo) throws Exception {
-		String retorno = "";
+		String informacaoSolicitada = "";
 		Prontuario prontuario = buscaProntuario(id);
 
 		switch (atributo) {
 		case "Nome":
-			retorno = prontuario.getNome();
+			informacaoSolicitada = prontuario.getNome();
 			break;
 		case "Data":
-			retorno = prontuario.getData();
+			informacaoSolicitada = prontuario.getData();
 			break;
 		case "Sexo":
-			retorno = prontuario.getSexo();
+			informacaoSolicitada = prontuario.getSexo();
 			break;
 		case "Genero":
-			retorno = prontuario.getGenero();
+			informacaoSolicitada = prontuario.getGenero();
 			break;
 		case "TipoSanguineo":
-			retorno = prontuario.getTipoSanguineo();
+			informacaoSolicitada = prontuario.getTipoSanguineo();
 			break;
 		case "Peso":
-			retorno = String.valueOf(prontuario.getPeso());
+			informacaoSolicitada = String.valueOf(prontuario.getPeso());
 			break;
 		case "Idade":
-			retorno = String.valueOf(prontuario.getIdade());
+			informacaoSolicitada = String.valueOf(prontuario.getIdade());
 		default:
 			break;
 		}
 
-		return retorno;
+		return informacaoSolicitada;
 	}
 
 	/**
@@ -178,7 +189,7 @@ public class Clinica implements Serializable {
 	 *            Nome do paciente
 	 * @return O ID do primeiro paciente com o nome especificado
 	 * @throws Exception
-	 *             Lanca excecao acaso o nome seja vazio
+	 *             Caso o nome seja vazio
 	 */
 	public String getPacienteID(String nome) throws Exception {
 
@@ -198,8 +209,9 @@ public class Clinica implements Serializable {
 	 * 
 	 * @param id
 	 *            ID do paciente a ser buscado
-	 * @return Objeto do tipo Paciente com o ID especificado
+	 * @return O prontuario do paciente com o ID especificado
 	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID especificado
 	 */
 	private Prontuario buscaProntuario(String id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
@@ -215,7 +227,7 @@ public class Clinica implements Serializable {
 	 * 
 	 * @param posicao
 	 *            A posicao em que o prontuario esta armazenado no sistema
-	 * @return Id do Paciente retirado do Prontuario na posicao especificada
+	 * @return Id do Paciente referente ao Prontuario na posicao especificada
 	 * @throws ConsultaProntuarioException
 	 *             Caso a posicao seja invalida
 	 */
@@ -233,7 +245,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
-	 * Metodo que registra um procedimento medito no prontuario do paciente.
+	 * Metodo que registra um procedimento medico no prontuario do paciente.
 	 * 
 	 * @param nomeDoPaciente
 	 *            Nome do pacimente titular do prontuario onde sera registrado o
@@ -257,7 +269,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
-	 * Metodo que registra um procedimento medito no prontuario do paciente.
+	 * Metodo que registra um procedimento medico no prontuario do paciente.
 	 * 
 	 * @param nomeDoPaciente
 	 *            Nome do pacimente titular do prontuario onde sera registrado o
