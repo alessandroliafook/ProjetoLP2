@@ -20,6 +20,7 @@ import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
+import exceptions.ConsultaPacienteException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
@@ -90,8 +91,7 @@ public final class ComiteGestor {
 	 * @throws StringInvalidaException
 	 *             caso a chave seja invalida
 	 */
-	public String liberaSistema(String chave, String nome, String dataNascimento)
-			throws Exception {
+	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 
 		VerificacaoLiberaSistema.validaAcesso(this.primeiroAcesso);
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
@@ -171,14 +171,12 @@ public final class ComiteGestor {
 	 *             - Caso a matricula nao exista. Se existir e a senha estiver
 	 *             errada, tambem lancara excecao.
 	 */
-	private void validaLogin(String matricula, String senha)
-			throws LoginException {
+	private void validaLogin(String matricula, String senha) throws LoginException {
 
 		String motivo = "";
 
 		if (funcLogado != null) {
-			motivo = "Um funcionario ainda esta logado: "
-					+ funcLogado.getNome() + ".";
+			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome() + ".";
 			throw new LoginException(motivo);
 		}
 
@@ -283,8 +281,7 @@ public final class ComiteGestor {
 	 *             - Caso o cargo do funcionario a ser criada esteja vazio ou
 	 *             nao exista
 	 */
-	public String cadastraFuncionario(String nome, String cargo,
-			String dataNascimento) throws Exception {
+	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 
 		cargo = cargo.toLowerCase();
 
@@ -293,8 +290,7 @@ public final class ComiteGestor {
 
 		try {
 
-			Funcionario func = facFuncionario.criaFuncionario(nome,
-					dataNascimento, cargo, this.numeroMatriculas);
+			Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
 			String mat = func.getMatricula();
 
 			switch (cargo) {
@@ -336,8 +332,7 @@ public final class ComiteGestor {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso o atributo a ser recuperado seja a senha
 	 */
-	public String getInfoFuncionario(String matricula, String atributo)
-			throws Exception {
+	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 
 		try {
 			validaMatricula(matricula);
@@ -346,8 +341,7 @@ public final class ComiteGestor {
 		}
 
 		if (!isMatriculado(matricula)) {
-			throw new ConsultaFuncionarioException(
-					"Funcionario nao cadastrado.");
+			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
 		}
 
 		Funcionario func = getFuncionario(matricula);
@@ -364,8 +358,7 @@ public final class ComiteGestor {
 			ret = func.getCargo();
 			break;
 		case "Senha":
-			throw new ConsultaFuncionarioException(
-					"A senha do funcionario eh protegida.");
+			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
 		}
 
 		return ret;
@@ -392,16 +385,15 @@ public final class ComiteGestor {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String matricula, String atributo,
-			String novoValor) throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
+			throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
 		// verifica se eh o diretor que esta tentando atualizar alguem
 		if (!isAutorizado()) {
-			throw new AtualizaFuncionarioException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para excluir funcionarios.");
+			throw new AtualizaFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
 		}
 
 		// verifica se essa matricula eh valida
@@ -413,8 +405,7 @@ public final class ComiteGestor {
 
 		// sendo valida a matricula, verifica se ela realmente existe no sistema
 		if (!isMatriculado(matricula)) {
-			throw new AtualizaFuncionarioException(
-					"Funcionario nao cadastrado.");
+			throw new AtualizaFuncionarioException("Funcionario nao cadastrado.");
 		}
 
 		Funcionario func = getFuncionario(matricula);
@@ -449,8 +440,7 @@ public final class ComiteGestor {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String atributo, String novoValor)
-			throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
@@ -485,13 +475,11 @@ public final class ComiteGestor {
 	 * @throws ExclusaoFuncionarioException
 	 *             Caso o funcionario logado nao tenha permissao para exlcuir
 	 */
-	public void excluiFuncionario(String matricula, String senha)
-			throws ExclusaoFuncionarioException {
+	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 
 		if (!isAutorizado()) {
-			throw new ExclusaoFuncionarioException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para excluir funcionarios.");
+			throw new ExclusaoFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
 		}
 
 		if (!confirmaDiretor(senha)) {
@@ -505,8 +493,7 @@ public final class ComiteGestor {
 		}
 
 		if (!isMatriculado(matricula)) {
-			throw new ExclusaoFuncionarioException(
-					"Funcionario nao cadastrado.");
+			throw new ExclusaoFuncionarioException("Funcionario nao cadastrado.");
 		}
 
 		excluiFuncionarioUtil(getFuncionario(matricula));
@@ -543,8 +530,7 @@ public final class ComiteGestor {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
-	public void atualizaSenha(String senhaAntiga, String novaSenha)
-			throws AtualizaFuncionarioException {
+	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
 		confirmaSenha(senhaAntiga);
 		validaSenha(novaSenha);
 		funcLogado.setSenha(novaSenha);
@@ -559,22 +545,19 @@ public final class ComiteGestor {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso a senha nao siga o padrao estabelecido
 	 */
-	private void validaSenha(String novaSenha)
-			throws AtualizaFuncionarioException {
+	private void validaSenha(String novaSenha) throws AtualizaFuncionarioException {
 		// A nova senha deve ter entre 8 - 12 caracteres alfanumericos.
 		boolean tamanho = (novaSenha.length() >= 8 && novaSenha.length() <= 12);
 		boolean alfanum = true;
 
 		for (Character caractere : novaSenha.toCharArray()) {
-			if (!Character.isAlphabetic(caractere)
-					&& !Character.isDigit(caractere)) {
+			if (!Character.isAlphabetic(caractere) && !Character.isDigit(caractere)) {
 				alfanum = false;
 			}
 		}
 
 		if (!(tamanho && alfanum)) {
-			throw new AtualizaFuncionarioException(
-					"A nova senha deve ter entre 8 - 12 caracteres alfanumericos.");
+			throw new AtualizaFuncionarioException("A nova senha deve ter entre 8 - 12 caracteres alfanumericos.");
 		}
 	}
 
@@ -586,8 +569,7 @@ public final class ComiteGestor {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso a senha nao seja confirmada
 	 */
-	private void confirmaSenha(String senhaAntiga)
-			throws AtualizaFuncionarioException {
+	private void confirmaSenha(String senhaAntiga) throws AtualizaFuncionarioException {
 		if (!cadastros.get(funcLogado.getMatricula()).equals(senhaAntiga)) {
 			throw new AtualizaFuncionarioException("Senha invalida.");
 		}
@@ -602,11 +584,9 @@ public final class ComiteGestor {
 	 * @throws MaisDeUmDiretorException
 	 *             Caso haja um diretor ja criado
 	 */
-	private void validaDiretor(String cargo)
-			throws CadastroFuncionarioException {
+	private void validaDiretor(String cargo) throws CadastroFuncionarioException {
 		if (diretorGeral != null && cargo.equals("diretor geral")) {
-			throw new CadastroFuncionarioException(
-					"Nao eh possivel criar mais de um Diretor Geral.");
+			throw new CadastroFuncionarioException("Nao eh possivel criar mais de um Diretor Geral.");
 		}
 	}
 
@@ -619,9 +599,8 @@ public final class ComiteGestor {
 	 */
 	private void validaPermissao() throws CadastroFuncionarioException {
 		if (diretorGeral != null && !isAutorizado()) {
-			throw new CadastroFuncionarioException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para cadastrar funcionarios.");
+			throw new CadastroFuncionarioException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
 		}
 	}
 
@@ -642,8 +621,7 @@ public final class ComiteGestor {
 	 */
 	public void fechaSistema() throws SistemaException {
 		if (funcLogado != null) {
-			throw new SistemaException("Um funcionario ainda esta logado: "
-					+ funcLogado.getNome() + ".");
+			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
@@ -679,18 +657,15 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso qualquer dos valores informados sejam
 	 *             menores que zero.
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco,
-			int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new CadastroMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para cadastrar medicamentos.");
+			throw new CadastroMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar medicamentos.");
 		}
 
-		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
-				categorias);
+		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
 	/**
@@ -710,13 +685,12 @@ public final class ComiteGestor {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo,
-			String novoValor) throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
+			throws AtualizaMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new AtualizaMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para atualizar medicamentos.");
+			throw new AtualizaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para atualizar medicamentos.");
 		}
 
 		farmacia.atualizaMedicamento(nome, atributo, novoValor);
@@ -735,8 +709,8 @@ public final class ComiteGestor {
 	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 
 		if (!isDiretorOuTecnico()) {
-			throw new Exception("O funcionario " + funcLogado.getNome()
-					+ " nao tem permissao para fornecer medicamentos.");
+			throw new Exception(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para fornecer medicamentos.");
 		}
 
 		return farmacia.forneceMedicamento(nomeMedicamento);
@@ -755,13 +729,11 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
 	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria)
-			throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para consultar medicamentos.");
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
 		}
 
 		return farmacia.consultaMedCategoria(categoria);
@@ -778,13 +750,11 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaMedNome(String nomeDoRemedio)
-			throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para consultar medicamentos.");
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
 		}
 
 		return farmacia.consultaMedNome(nomeDoRemedio);
@@ -802,13 +772,11 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
 	 *             preco ou ordem alfabética.
 	 */
-	public String getEstoqueFarmacia(String ordenacao)
-			throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para consultar medicamentos.");
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
 		}
 
 		return farmacia.getEstoqueFarmacia(ordenacao);
@@ -825,17 +793,15 @@ public final class ComiteGestor {
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento,
-			String nomeMedicamento) throws ConsultaMedicamentoException {
+	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
+			throws ConsultaMedicamentoException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para consultar medicamentos.");
+			throw new ConsultaMedicamentoException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
 		}
 
-		return farmacia.getInfoMedicamento(atributoDoMedicamento,
-				nomeMedicamento);
+		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	// metodos da clinica
@@ -859,18 +825,15 @@ public final class ComiteGestor {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public int cadastraPaciente(String nome, String data, double peso,
-			String sexo, String genero, String tipoSanguineo)
+	public int cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
 			throws CadastroPacienteException {
 
 		if (!isDiretorOuTecnico()) {
-			throw new CadastroPacienteException("O funcionario "
-					+ funcLogado.getNome()
-					+ " nao tem permissao para cadastrar pacientes.");
+			throw new CadastroPacienteException(
+					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar pacientes.");
 		}
 
-		return clinica.cadastraPaciente(nome, data, peso, sexo, genero,
-				tipoSanguineo);
+		return clinica.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
 	private boolean isDiretorOuTecnico() {
@@ -925,29 +888,44 @@ public final class ComiteGestor {
 	 * @param listaDeMedicamentos
 	 *            Lista com nomes dos medicamentos necessarios ao procedimento
 	 * @return O nome do procedimento registrado com sucesso.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
-	public String realizaProcedimento(int idDoPaciente,
-			String nomeDoProcedimento, List<String> listaDeMedicamentos)
+	public void realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, List<String> listaDeMedicamentos)
 			throws Exception {
 
 		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
-		double gastosComMedicamento = 0.0;
 
-		if (farmacia.verificaEstoque(listaDeMedicamentos)) {
+		try {
+
+			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
+
+			clinica.realizaProcedimento(idDoPaciente, nomeDoProcedimento, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos) {
-				gastosComMedicamento += farmacia
-						.forneceMedicamento(nomeMedicamento);
+				farmacia.forneceMedicamento(nomeMedicamento);
 			}
+
+		} catch (Exception e) {
+			throw new RealizaProcedimentoException(e.getMessage());
 		}
-		
-		return clinica.realizaProcedimento(idDoPaciente, nomeDoProcedimento,
-				gastosComMedicamento);
+
 	}
-	
-	//METODOS DO BANCO DE ORGAOS
-	
+
+	/**
+	 * Busca um paciente no sistema atraves do seu nome
+	 * 
+	 * @param nome
+	 *            Nome do paciente
+	 * @return O ID do primeiro paciente com o nome especificado
+	 * @throws Exception
+	 *             Lanca excecao acaso o nome seja vazio, ou o paciente nao
+	 *             esteja cadastrado no sistema.
+	 */
+	public String getPacienteID(String nome) throws Exception {
+		return clinica.getPacienteID(nome);
+	}
+
+	// METODOS DO BANCO DE ORGAOS
 
 	/**
 	 * Metodo que adiciona um novo orgao ao banco de orgaos
@@ -1046,6 +1024,5 @@ public final class ComiteGestor {
 	public int totalOrgaosDisponiveis() {
 		return clinica.totalOrgaosDisponiveis();
 	}
-	
-	
+
 }

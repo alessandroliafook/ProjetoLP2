@@ -12,7 +12,7 @@ public class RealizaProcedimentoException extends Exception{
 	 * @param motivo - Motivo que ensejou o erro de procedimento.
 	 */
 	public RealizaProcedimentoException(String motivo){
-		super("Erro de procedimento. " + motivo);
+		super("Erro na realizacao de procedimentos. " + motivo);
 	}
 	
 }

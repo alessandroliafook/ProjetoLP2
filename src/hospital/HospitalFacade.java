@@ -10,6 +10,7 @@ import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
+import exceptions.ConsultaPacienteException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
@@ -401,6 +402,20 @@ public class HospitalFacade {
 		return comite.getProntuario(posicao);
 	}
 
+	/**
+	 * Busca um paciente no sistema atraves do seu nome
+	 * 
+	 * @param nome
+	 *            Nome do paciente
+	 * @return O ID do primeiro paciente com o nome especificado
+	 * @throws ConsultaPacienteException
+	 *             Lanca excecao acaso o paciente pesquisado nao esteja
+	 *             cadastrado no sistema
+	 */
+	public int getPacienteID(String nome) throws ConsultaPacienteException{
+		return comite.getPacienteID(nome);
+	}
+	
 	// METODOS DO BANCO DE ORGAOS
 
 	/**

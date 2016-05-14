@@ -1,7 +1,6 @@
 package departamentos;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -15,6 +14,7 @@ import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
 import prontuario.Prontuario;
+import util.VerificaPessoa;
 
 public class Clinica implements Serializable {
 
@@ -151,6 +151,27 @@ public class Clinica implements Serializable {
 	}
 
 	/**
+	 * Busca um paciente no sistema atraves do seu nome
+	 * 
+	 * @param nome
+	 *            Nome do paciente
+	 * @return O ID do primeiro paciente com o nome especificado
+	 * @throws Exception
+	 *             Lanca excecao acaso o nome seja vazio
+	 */
+	public String getPacienteID(String nome) throws Exception {
+
+		VerificaPessoa.validaNome(nome, true);
+
+		for (Prontuario prontuario : this.prontuarios) {
+			if (prontuario.getNomePaciente().equalsIgnoreCase(nome)) {
+				return prontuario.getPacienteID();
+			}
+		}
+		throw new Exception("Paciente nao cadastrado no sistema.");
+	}
+
+	/**
 	 * Busca um prontuario no sistema atraves do ID do paciente associado
 	 * 
 	 * @param id
@@ -204,12 +225,12 @@ public class Clinica implements Serializable {
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public String realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, double gastosComMedimentos)
+	public void realizaProcedimento(int idDoPaciente, String nomeDoProcedimento, double gastosComMedimentos)
 			throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 
-		return prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
+		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
 	}
 
 	// METODOS DELEGADOS AO BANCO DE ORGAOS

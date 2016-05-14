@@ -45,25 +45,43 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * @param gastosComMedicamento
 	 *            double com o total gasto no fornecimento de medicamentos
 	 * @return O nome do procedimento registrado com sucesso.
-	 * @throws Exception 
+	 * @throws Exception
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public String realizaProcedimento(String nomeDoProcedimento, double gastosComMedicamento) throws Exception{
-		
-		
+	public String realizaProcedimento(String nomeDoProcedimento, double gastosComMedicamento) throws Exception {
+
 		ProcedimentoIF procedimento = tabelaDeProcedimentos.selecionaProcedimento(nomeDoProcedimento);
 		double custoProcedimento = procedimento.realizaProcedimento(this.paciente, gastosComMedicamento);
-		double totalGasto =  custoProcedimento + gastosComMedicamento;
+		double totalGasto = custoProcedimento + gastosComMedicamento;
 		double novoSaldo = paciente.getSaldo() + totalGasto;
-		
-		paciente.setSaldo(novoSaldo); 
+
+		paciente.setSaldo(novoSaldo);
 		procedimentos.add(procedimento);
-		
+
 		return nomeDoProcedimento;
-		
+
 	}
-	
+
+	/**
+	 * Metodo que procura o nome do paciente
+	 * 
+	 * @return String contendo o nome do paciente associado ao prontuario
+	 */
+	public String getNomePaciente() {
+		return paciente.getNome();
+	}
+
+	/**
+	 * Metodo que procura a ID do paciente
+	 * 
+	 * @return String contendo a ID do paciente
+	 */
+	public String getPacienteID() {
+		String id = Integer.toString(this.paciente.getID());
+		return id;
+	}
+
 	/**
 	 * Prontuarios sao comparados atraves do nome de seus pacientes
 	 */
