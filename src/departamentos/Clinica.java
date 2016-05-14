@@ -280,8 +280,7 @@ public class Clinica implements Serializable {
 			existeOrgao = bancoDeOrgaos.buscaOrgao(nomeDoOrgao, tipoSanguineo);
 
 		} catch (Exception e) {
-			throw new Exception(
-					e.getMessage().replace("O banco de orgaos apresentou um erro. ", ""));
+			throw new Exception(e.getMessage().replace("O banco de orgaos apresentou um erro. ", ""));
 		}
 
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
@@ -290,12 +289,8 @@ public class Clinica implements Serializable {
 			throw new Exception("Banco nao possui o orgao especificado.");
 		}
 
-		try {
-			bancoDeOrgaos.retiraOrgao(nomeDoOrgao, tipoSanguineo);
-		} catch (Exception e) {
+		bancoDeOrgaos.retiraOrgao(nomeDoOrgao, tipoSanguineo);
 
-		}
-		
 		prontuario.adicionaProcedimento(nomeDoProcedimento);
 
 	}
