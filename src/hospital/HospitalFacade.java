@@ -412,7 +412,7 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o paciente pesquisado nao esteja
 	 *             cadastrado no sistema
 	 */
-	public int getPacienteID(String nome) throws ConsultaPacienteException{
+	public int getPacienteID(String nome) throws Exception{
 		return comite.getPacienteID(nome);
 	}
 	

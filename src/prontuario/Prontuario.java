@@ -75,11 +75,10 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	/**
 	 * Metodo que procura a ID do paciente
 	 * 
-	 * @return String contendo a ID do paciente
+	 * @return int contendo a ID do paciente
 	 */
-	public String getPacienteID() {
-		String id = Integer.toString(this.paciente.getID());
-		return id;
+	public int getPacienteID() {
+		return this.paciente.getID();
 	}
 
 	/**

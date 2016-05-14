@@ -921,7 +921,7 @@ public final class ComiteGestor {
 	 *             Lanca excecao acaso o nome seja vazio, ou o paciente nao
 	 *             esteja cadastrado no sistema.
 	 */
-	public String getPacienteID(String nome) throws Exception {
+	public int getPacienteID(String nome) throws Exception {
 		return clinica.getPacienteID(nome);
 	}
 

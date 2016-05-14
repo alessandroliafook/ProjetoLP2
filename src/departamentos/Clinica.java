@@ -159,7 +159,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Lanca excecao acaso o nome seja vazio
 	 */
-	public String getPacienteID(String nome) throws Exception {
+	public int getPacienteID(String nome) throws Exception {
 
 		VerificaPessoa.validaNome(nome, true);
 
