@@ -64,7 +64,7 @@ public class Clinica implements Serializable {
 			}
 
 			prontuarios.add(novoProntuario);
-			return novoPaciente.getID();
+			return novoProntuario.getID();
 
 		} catch (Exception e) {
 			throw new CadastroPacienteException(e.getMessage());
@@ -102,52 +102,36 @@ public class Clinica implements Serializable {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) {
+	public String getInfoPaciente(int id, String atributo) throws Exception{
 		String retorno = "";
-		Paciente paciente = buscaPaciente(id);
+		Prontuario prontuario = buscaProntuario(id);
 
 		switch (atributo) {
 		case "Nome":
-			retorno = paciente.getNome();
+			retorno = prontuario.getNome();
 			break;
 		case "Data":
-			retorno = paciente.getData();
+			retorno = prontuario.getData();
 			break;
 		case "Sexo":
-			retorno = paciente.getSexo();
+			retorno = prontuario.getSexo();
 			break;
 		case "Genero":
-			retorno = paciente.getGenero();
+			retorno = prontuario.getGenero();
 			break;
 		case "TipoSanguineo":
-			retorno = paciente.getTipoSanguineo();
+			retorno = prontuario.getTipoSanguineo();
 			break;
 		case "Peso":
-			retorno = String.valueOf(paciente.getPeso());
+			retorno = String.valueOf(prontuario.getPeso());
 			break;
 		case "Idade":
-			retorno = String.valueOf(paciente.getIdade());
+			retorno = String.valueOf(prontuario.getIdade());
 		default:
 			break;
 		}
 
 		return retorno;
-	}
-
-	/**
-	 * Busca um paciente no sistema atraves do seu ID
-	 * 
-	 * @param id
-	 *            ID do paciente a ser buscado
-	 * @return Objeto do tipo Paciente com o ID especificado
-	 */
-	private Paciente buscaPaciente(int id) {
-		for (Prontuario prontuario : this.prontuarios) {
-			if (prontuario.getPaciente().getID() == id) {
-				return prontuario.getPaciente();
-			}
-		}
-		return null;
 	}
 
 	/**
@@ -181,7 +165,7 @@ public class Clinica implements Serializable {
 	 */
 	private Prontuario buscaProntuario(int id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
-			if (prontuario.getPaciente().getID() == id) {
+			if (prontuario.getID() == id) {
 				return prontuario;
 			}
 		}
@@ -207,7 +191,7 @@ public class Clinica implements Serializable {
 
 		Prontuario prontuarioSolicitado = (Prontuario) prontuarios.toArray()[posicao];
 
-		return prontuarioSolicitado.getPaciente().getID();
+		return prontuarioSolicitado.getID();
 	}
 
 	/**

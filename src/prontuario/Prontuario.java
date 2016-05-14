@@ -5,6 +5,7 @@ import java.util.List;
 
 import exceptions.CadastroFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
+import exceptions.DataInvalidaException;
 import factory.factoryDeProcedimentos;
 import pessoal.Paciente;
 import procedimentos.ProcedimentoIF;
@@ -61,6 +62,70 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 
 		return nomeDoProcedimento;
 
+	}
+
+	public int getIdade() {
+		return paciente.getIdade();
+	}
+
+	public String getNome() {
+		return paciente.getNome();
+	}
+
+	public String getData() {
+		return paciente.getData();
+	}
+
+	public void setNome(String nome) throws Exception {
+		paciente.setNome(nome);
+	}
+
+	public void setData(String data) throws DataInvalidaException {
+		paciente.setData(data);
+	}
+
+	public int getID() {
+		return paciente.getID();
+	}
+
+	public double getPeso() {
+		return paciente.getPeso();
+	}
+
+	public String getTipoSanguineo() {
+		return paciente.getTipoSanguineo();
+	}
+
+	public String getSexo() {
+		return paciente.getSexo();
+	}
+
+	public String getGenero() {
+		return paciente.getGenero();
+	}
+
+	public double getSaldo() {
+		return paciente.getSaldo();
+	}
+
+	public int getPontosFidelidade() {
+		return paciente.getPontosFidelidade();
+	}
+
+	public double getGastos() {
+		return paciente.getGastos();
+	}
+
+	public void setGenero(String genero) {
+		paciente.setGenero(genero);
+	}
+
+	public void setPeso(double novoPeso) {
+		paciente.setPeso(novoPeso);
+	}
+
+	public void setSaldo(double valor) {
+		paciente.setSaldo(valor);
 	}
 
 	/**

@@ -862,7 +862,7 @@ public final class ComiteGestor {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) {
+	public String getInfoPaciente(int id, String atributo) throws Exception{
 		return clinica.getInfoPaciente(id, atributo);
 	}
 

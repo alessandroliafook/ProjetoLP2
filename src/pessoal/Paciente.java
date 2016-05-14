@@ -2,6 +2,7 @@ package pessoal;
 
 import java.io.Serializable;
 
+import cartao.CartaoFidelidade;
 import util.VerificaPessoa;
 
 public class Paciente extends Pessoa implements Comparable<Paciente>, Serializable {
@@ -16,6 +17,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	private String genero;
 	private int id;
 	private double saldo;
+	private CartaoFidelidade cartaoFidelidade;
 
 	/**
 	 * Cria um novo objeto Funcionario com os parametros especificados
@@ -51,7 +53,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		// VerificaPessoa.validaSexo(sexo);
 		// VerificaPessoa.validaGenero(genero);
 		// VerificaPessoa.validaId(id);
-
+		this.cartaoFidelidade = new CartaoFidelidade();
 		setPeso(peso);
 		setTipoSanguineo(tipoSanguineo);
 		setSexo(sexo);
@@ -81,6 +83,14 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	}
 
 	public double getSaldo(){
+		return this.saldo;
+	}
+	
+	public int getPontosFidelidade(){
+		return this.cartaoFidelidade.getPontosFidelidade();
+	}
+	
+	public double getGastos(){
 		return this.saldo;
 	}
 	

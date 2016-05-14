@@ -385,7 +385,7 @@ public class HospitalFacade {
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
 	 */
-	public String getInfoPaciente(int id, String atributo) {
+	public String getInfoPaciente(int id, String atributo) throws Exception {
 		return comite.getInfoPaciente(id, atributo);
 	}
 
@@ -412,10 +412,10 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o paciente pesquisado nao esteja
 	 *             cadastrado no sistema
 	 */
-	public int getPacienteID(String nome) throws Exception{
+	public int getPacienteID(String nome) throws Exception {
 		return comite.getPacienteID(nome);
 	}
-	
+
 	// METODOS DO BANCO DE ORGAOS
 
 	/**
