@@ -63,7 +63,7 @@ public final class ComiteGestor {
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
-
+	
 	public int getTotalProcedimento(String id) throws Exception {
 		return clinica.getTotalProcedimento(id);
 	}
@@ -858,8 +858,8 @@ public final class ComiteGestor {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
-			String tipoSanguineo) throws CadastroPacienteException {
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero, String tipoSanguineo)
+			throws CadastroPacienteException {
 
 		if (!isDiretorOuTecnico()) {
 			throw new CadastroPacienteException(
@@ -931,33 +931,10 @@ public final class ComiteGestor {
 		try {
 
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
-
+			
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
 			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento);
-
-			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
-				farmacia.forneceMedicamento(nomeMedicamento);
-			}
-
-		} catch (Exception e) {
-			throw new RealizaProcedimentoException(e.getMessage());
-		}
-
-	}
-
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
-			String listaDeMedicamentos) throws Exception {
-
-		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
-
-		try {
-
-			VerificaPessoa.validaIdPaciente(idDoPaciente);
-
-			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
-
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -976,9 +953,9 @@ public final class ComiteGestor {
 		try {
 
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
-			
+
 			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
-			
+
 		} catch (Exception e) {
 			throw new RealizaProcedimentoException(e.getMessage());
 		}
@@ -1013,14 +990,7 @@ public final class ComiteGestor {
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
 	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
-
-		try {
-			clinica.cadastraOrgao(nome, tipoSanguineo);
-
-		} catch (Exception e) {
-			throw new BancoDeOrgaosException(e.getMessage());
-		}
-
+		clinica.cadastraOrgao(nome, tipoSanguineo);
 	}
 
 	/**
@@ -1035,14 +1005,7 @@ public final class ComiteGestor {
 	 *             Caso o tipo sanguineo seja invalido
 	 */
 	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
-
-		try {
-			return clinica.buscaOrgPorSangue(tipoSanguineo);
-
-		} catch (Exception e) {
-			throw new BancoDeOrgaosException(e.getMessage());
-		}
-
+		return clinica.buscaOrgPorSangue(tipoSanguineo);
 	}
 
 	/**
@@ -1058,12 +1021,7 @@ public final class ComiteGestor {
 	 *             cadastrados com o nome especificados
 	 */
 	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
-		try {
-			return clinica.buscaOrgPorNome(nomeOrgao);
-		} catch (Exception e) {
-			throw new BancoDeOrgaosException(e.getMessage());
-		}
-
+		return clinica.buscaOrgPorNome(nomeOrgao);
 	}
 
 	/**
@@ -1078,12 +1036,7 @@ public final class ComiteGestor {
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
 	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
-		try {
-			return clinica.buscaOrgao(nomeOrgao, tipoSanguineo);
-		} catch (Exception e) {
-			throw new BancoDeOrgaosException(e.getMessage());
-		}
-
+		return clinica.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
 	/**

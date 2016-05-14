@@ -298,7 +298,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo) throws Exception {
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 		bancoDeOrgaos.cadastraOrgao(nome, tipoSanguineo);
 	}
 
@@ -312,7 +312,7 @@ public class Clinica implements Serializable {
 	 *         sanguineo especificado
 	 * @throws Exception  Caso o tipo sanguineo seja invalido 
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws Exception  {
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException  {
 		return bancoDeOrgaos.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -328,7 +328,7 @@ public class Clinica implements Serializable {
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao) throws Exception {
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgPorNome(nomeOrgao);
 	}
 
@@ -343,7 +343,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws Exception {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 

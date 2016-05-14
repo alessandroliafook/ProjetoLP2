@@ -27,13 +27,17 @@ public class BancoDeOrgaos {
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao ser adicionado
 	 * 
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo) throws Exception {
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 
-		Orgao orgao = facOrgao.criaOrgao(nome, tipoSanguineo);
-		bancoDeOrgaos.add(orgao);
+		try {
+			Orgao orgao = facOrgao.criaOrgao(nome, tipoSanguineo);
+			bancoDeOrgaos.add(orgao);
+		} catch (Exception e) {
+			throw new BancoDeOrgaosException(e.getMessage());
+		}
 	}
 
 	/**
@@ -44,23 +48,29 @@ public class BancoDeOrgaos {
 	 *            Tipo sanguineo a ser pesquisado
 	 * @return Uma String contendo todos os orgaos compativeis com o tipo
 	 *         sanguineo especificado
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws Exception {
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
 
 		String saida = "";
 
-		VerificaOrgao.validaTipoSanguineo(tipoSanguineo);
+		try {
 
-		for (Orgao orgao : bancoDeOrgaos) {
-			if (orgao.getTipoSanguineo().equals(tipoSanguineo)) {
-				if (saida.equals("")) {
-					saida = orgao.getNome();
-				} else if (!saida.contains(orgao.getNome())) {
-					saida += "," + orgao.getNome();
+			VerificaOrgao.validaTipoSanguineo(tipoSanguineo);
+
+			for (Orgao orgao : bancoDeOrgaos) {
+				if (orgao.getTipoSanguineo().equals(tipoSanguineo)) {
+					if (saida.equals("")) {
+						saida = orgao.getNome();
+					} else if (!saida.contains(orgao.getNome())) {
+						saida += "," + orgao.getNome();
+					}
 				}
 			}
+
+		} catch (Exception e) {
+			throw new BancoDeOrgaosException(e.getMessage());
 		}
 
 		if (saida.equals("")) {
@@ -78,24 +88,30 @@ public class BancoDeOrgaos {
 	 *            Orgao a ser pesquisado
 	 * @return Uma String contendo os tipos sanguineos compativeis com o o orgao
 	 *         especificado
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao) throws Exception {
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
 
 		String saida = "";
 
-		VerificaOrgao.validaNome(nomeOrgao);
+		try {
 
-		for (Orgao orgao : bancoDeOrgaos) {
-			if (orgao.getNome().equals(nomeOrgao)) {
-				if (saida.equals("")) {
-					saida = orgao.getTipoSanguineo();
-				} else {
-					saida += "," + orgao.getTipoSanguineo();
+			VerificaOrgao.validaNome(nomeOrgao);
+
+			for (Orgao orgao : bancoDeOrgaos) {
+				if (orgao.getNome().equals(nomeOrgao)) {
+					if (saida.equals("")) {
+						saida = orgao.getTipoSanguineo();
+					} else {
+						saida += "," + orgao.getTipoSanguineo();
+					}
 				}
 			}
+
+		} catch (Exception e) {
+			throw new BancoDeOrgaosException(e.getMessage());
 		}
 
 		if (saida.equals("")) {
@@ -113,17 +129,21 @@ public class BancoDeOrgaos {
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser pesquisado
 	 * @return True caso haja
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws Exception {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
 
+		try {
 			VerificaOrgao.validaNome(nomeOrgao);
 			VerificaOrgao.validaTipoSanguineo(tipoSanguineo);
 			Orgao orgaoPesquisado = facOrgao.criaOrgao(nomeOrgao, tipoSanguineo);
 
 			return bancoDeOrgaos.contains(orgaoPesquisado);
 
+		} catch (Exception e) {
+			throw new BancoDeOrgaosException(e.getMessage());
+		}
 
 	}
 
@@ -134,33 +154,34 @@ public class BancoDeOrgaos {
 	 *            Nome do orgao a ser removido
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser removido
-	 * @throws @throws
-	 *             Exception Caso o nome ou o tipo sanguineo estejam vazios ou
-	 *             nao haja orgaos desse tipo no banco de orgaos
+	 * @throws  
+	 * @throws Exception
+	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
+	 *             orgaos desse tipo no banco de orgaos
 	 */
 	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
-
+		
 		removeOrgaoUtil(nome, tipoSanguineo);
-
+		
 		try {
 			Orgao orgaoRemover = facOrgao.criaOrgao(nome, tipoSanguineo);
 			bancoDeOrgaos.remove(orgaoRemover);
-		} catch (Exception e) {
+		} catch(Exception e) {
 			throw new RemoveOrgaoException(e.getMessage());
 		}
-
+		
 	}
 
 	private void removeOrgaoUtil(String nome, String tipoSanguineo) throws RemoveOrgaoException {
-		boolean temOrgao = false;
-
+		boolean temOrgao = false; 
+		
 		try {
 			temOrgao = buscaOrgao(nome, tipoSanguineo);
-		} catch (BancoDeOrgaosException e) {
+		} catch(BancoDeOrgaosException e) {
 			throw new RemoveOrgaoException(e.getMessage().replace("O banco de orgaos apresentou um erro. ", ""));
 		}
-
-		if (!temOrgao) {
+		
+		if(!temOrgao) {
 			throw new RemoveOrgaoException("Orgao nao cadastrado.");
 		}
 	}
