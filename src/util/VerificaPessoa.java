@@ -32,7 +32,7 @@ public class VerificaPessoa {
 		try{
 			Integer.parseInt(id);
 		} catch(Exception e){
-			throw new NomePacienteVazioException();
+			throw new IDVazioException();
 		}
 	}
 	

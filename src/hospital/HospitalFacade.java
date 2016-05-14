@@ -55,7 +55,7 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(String id) throws Exception {
+	public String getGastosPaciente(String id) throws Exception {
 		return comite.getGastosPaciente(id);
 	}
 

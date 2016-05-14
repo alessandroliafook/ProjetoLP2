@@ -1,6 +1,7 @@
 package departamentos;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -47,9 +48,10 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(String id) throws Exception {
+	public String getGastosPaciente(String id) throws Exception {
 		Prontuario prontuario = buscaProntuario(id);
-		return prontuario.getGastos();
+		String gastosPaciente = String.format("%.2f", prontuario.getGastos()).replace(",", ".");
+		return gastosPaciente;
 	}
 
 	/**

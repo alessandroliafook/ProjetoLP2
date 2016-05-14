@@ -77,7 +77,7 @@ public final class ComiteGestor {
 	 * @throws Exception
 	 *             Caso nao exista paciente com o ID repassado
 	 */
-	public double getGastosPaciente(String id) throws Exception {
+	public String getGastosPaciente(String id) throws Exception {
 		return clinica.getGastosPaciente(id);
 	}
 
