@@ -70,8 +70,8 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		return nomeDoProcedimento;
 
 	}
-	
 
+	
 	public int getTotalProcedimento() {
 		return procedimentos.size();
 	}

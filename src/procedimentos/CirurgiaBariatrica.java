@@ -11,7 +11,7 @@ public class CirurgiaBariatrica implements ProcedimentoIF{
 	public double realizaProcedimento(Paciente paciente,
 			double gastosComMedicamento) {
 		
-		double novoPeso = paciente.getPeso() * 0.85;
+		double novoPeso = paciente.getPeso() * 0.90;
 		paciente.setPeso(novoPeso);
 		
 		return this.PRECO;
