@@ -1,9 +1,6 @@
 package clinica;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import exceptions.BancoDeOrgaosException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDeOrgao;

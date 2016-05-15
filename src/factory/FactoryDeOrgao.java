@@ -1,7 +1,6 @@
 package factory;
 
 import clinica.Orgao;
-import exceptions.BancoDeOrgaosException;
 import util.VerificaOrgao;
 
 public class FactoryDeOrgao {

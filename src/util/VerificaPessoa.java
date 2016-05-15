@@ -21,7 +21,7 @@ public class VerificaPessoa {
 		DateTimeFormatter formatoAceito = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		try {
-			LocalDate dataNascimento = LocalDate.parse(data, formatoAceito);
+			LocalDate.parse(data, formatoAceito);
 		} catch (DateTimeParseException e) {
 			throw new DataInvalidaException();
 		}

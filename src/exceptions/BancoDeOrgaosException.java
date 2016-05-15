@@ -3,6 +3,11 @@ package exceptions;
 public class BancoDeOrgaosException extends Exception{
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5671444525364624111L;
+
+	/**
 	 * Lanca Exception personalizada com a mensagem "O banco de orgaos apresentou um erro. " + motivo.
 	 * 
 	 * @param motivo

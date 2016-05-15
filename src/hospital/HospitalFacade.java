@@ -1,9 +1,5 @@
 package hospital;
 
-import medicamento.Medicamento;
-
-import java.util.List;
-
 import controller.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;

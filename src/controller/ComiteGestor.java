@@ -2,11 +2,8 @@ package controller;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import medicamento.Medicamento;
 import departamentos.Clinica;
 import departamentos.Farmacia;
 import util.VerificaAutorizacaoClinica;
@@ -21,14 +18,12 @@ import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
-import exceptions.ConsultaPacienteException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
-import exceptions.NomePacienteVazioException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;

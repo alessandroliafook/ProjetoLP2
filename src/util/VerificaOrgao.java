@@ -3,8 +3,6 @@ package util;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import exceptions.BancoDeOrgaosException;
-
 public class VerificaOrgao {
 
 	private static final ArrayList<String> tiposSanguineos = new ArrayList<String>(
