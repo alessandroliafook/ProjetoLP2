@@ -10,6 +10,11 @@ public class CartaoFidelidade {
 		this.pontosFidelidade = 0;
 	}
 
+	/**
+	 * Verifica a quantidade de pontos fidelidade atualmente no cartao
+	 * 
+	 * @return Um inteiro, a quantidade de pontos no cartao fidelidade
+	 */
 	public int getPontosFidelidade() {
 		return this.pontosFidelidade;
 	}
@@ -39,7 +44,11 @@ public class CartaoFidelidade {
 	}
 
 	/**
-	 * Verifica se o tipo de fidelidade do cartao pode ser atualizado
+	 * Verifica se o tipo de fidelidade do cartao pode ser atualizado.
+	 * Os tipos de cartao sao definidos pela quantidade de pontos.
+	 * Entre 0 e 149 pontos - Padrao
+	 * Entre 150 e 350 - Master
+	 * Mais do que 350 - VIP
 	 */
 	private void realizaUpgradeCartao() {
 
@@ -47,7 +56,8 @@ public class CartaoFidelidade {
 
 			this.tipoCartao = new Vip();
 
-		} else if (getPontosFidelidade() > MaxPontosPorFidelidade.PADRAO.getValue()) {
+		} else if (getPontosFidelidade() > MaxPontosPorFidelidade.PADRAO
+				.getValue()) {
 
 			this.tipoCartao = new Master();
 
