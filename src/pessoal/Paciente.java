@@ -130,6 +130,13 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 		this.saldo = valor;
 	}
 	
+	/**
+	 * Adiciona os pontos de fidelidade ganhos mais os pontos extras que cada
+	 * tipo de fidelidade fornecem
+	 * 
+	 * @param pontosGanhos
+	 *            Pontos ganhos de fidelidade ganhos por procedimentos
+	 */
 	public void adicionaPontosFidelidade(int pontosGanhos) {
 		this.cartaoFidelidade.adicionaPontosFidelidade(pontosGanhos);
 	}

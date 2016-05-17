@@ -33,6 +33,11 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		this.procedimentos = new ArrayList<String>();
 	}
 
+	/**
+	 * Retorna o paciente pelo qual o prontuario eh responsavel
+	 * 
+	 * @return Um objeto do tipo paciente
+	 */
 	public Paciente getPaciente() {
 		return this.paciente;
 	}
@@ -52,32 +57,45 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * @throws CadastroFuncionarioException
 	 * @throws ConsultaMedicamentoException
 	 */
-	public String realizaProcedimento(String nomeDoProcedimento, double gastosComMedicamento) throws Exception {
+	public String realizaProcedimento(String nomeDoProcedimento,
+			double gastosComMedicamento) throws Exception {
 
-		ProcedimentoIF procedimento = tabelaDeProcedimentos.selecionaProcedimento(nomeDoProcedimento);
-		double custoProcedimento = procedimento.realizaProcedimento(this.paciente, gastosComMedicamento);
+		ProcedimentoIF procedimento = tabelaDeProcedimentos
+				.selecionaProcedimento(nomeDoProcedimento);
+		double custoProcedimento = procedimento.realizaProcedimento(
+				this.paciente, gastosComMedicamento);
 		double totalGasto = custoProcedimento + gastosComMedicamento;
-		
+
 		totalGasto -= this.paciente.getDesconto(totalGasto);
 		double novoSaldo = this.paciente.getSaldo() + totalGasto;
 
 		int pontosFidelidadeGanhos = procedimento.getPontosBonus();
 		this.paciente.adicionaPontosFidelidade(pontosFidelidadeGanhos);
-		
+
 		this.paciente.setSaldo(novoSaldo);
 
 		return nomeDoProcedimento;
 
 	}
 
-	
-	public void adicionaProcedimento(String nomeDoProcedimento){
+	/**
+	 * Adiciona no prontuario um procedimento que foi realizado no paciente
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento que foi realizado
+	 */
+	public void adicionaProcedimento(String nomeDoProcedimento) {
 
 		this.procedimentos.add(nomeDoProcedimento);
 
-		
 	}
-	
+
+	/**
+	 * Retorna o total de procedimentos realizados no paciente pelo qual o
+	 * prontuario eh responsavel
+	 * 
+	 * @return Um inteiro, a quantidade de procedimentos realizados
+	 */
 	public int getTotalProcedimento() {
 		return procedimentos.size();
 	}
@@ -102,10 +120,10 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		paciente.setData(data);
 	}
 
-	public List<String> getProcedimentos(){
+	public List<String> getProcedimentos() {
 		return procedimentos;
 	}
-	
+
 	public String getID() {
 		return paciente.getID();
 	}
@@ -180,7 +198,8 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((paciente == null) ? 0 : paciente.hashCode());
+		result = prime * result
+				+ ((paciente == null) ? 0 : paciente.hashCode());
 		return result;
 	}
 

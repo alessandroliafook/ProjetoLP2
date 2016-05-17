@@ -442,6 +442,16 @@ public class HospitalFacade {
 		return comite.getProntuario(posicao);
 	}
 
+	/**
+	 * Verifica o numero de procedimentos realizados pelo paciente com a ID
+	 * especificada
+	 * 
+	 * @param id
+	 *            ID do paciente a ser consultado
+	 * @return O total de procidementos a qual o paciente foi submetido
+	 * @throws Exception
+	 *             Caso nao exista paciente com o ID especificado
+	 */
 	public int getTotalProcedimento(String id) throws Exception {
 		return comite.getTotalProcedimento(id);
 	}
