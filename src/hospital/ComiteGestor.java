@@ -1,11 +1,11 @@
-package controller;
+package hospital;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import departamentos.Clinica;
-import departamentos.Farmacia;
+
+import clinica.Clinica;
 import util.VerificaAutorizacaoClinica;
 import util.VerificaPessoa;
 import util.VerificacaoLiberaSistema;
@@ -28,6 +28,7 @@ import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
+import farmacia.Farmacia;
 import pessoal.Funcionario;
 
 public final class ComiteGestor {

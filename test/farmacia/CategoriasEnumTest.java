@@ -1,8 +1,10 @@
-package medicamento;
+package farmacia;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import farmacia.CategoriasEnum;
 
 public class CategoriasEnumTest {
 

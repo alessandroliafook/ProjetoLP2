@@ -1,12 +1,14 @@
-package medicamento;
+package farmacia;
 
 import static org.junit.Assert.*;
 
 import java.util.Set;
 import java.util.TreeSet;
 
-import medicamento.Medicamento;
 import org.junit.Test;
+
+import farmacia.CategoriasEnum;
+import farmacia.Medicamento;
 
 public class MedicamentoTest {
 

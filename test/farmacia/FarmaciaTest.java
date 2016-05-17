@@ -1,8 +1,10 @@
-package departamentos;
+package farmacia;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import farmacia.Farmacia;
 
 public class FarmaciaTest {
 

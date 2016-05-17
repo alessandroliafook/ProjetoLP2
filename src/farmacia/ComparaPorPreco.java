@@ -1,8 +1,8 @@
-package medicamento;
+package farmacia;
 
 import java.util.Comparator;
 
-import medicamento.Medicamento;
+import farmacia.Medicamento;
 
 public class ComparaPorPreco implements Comparator<Medicamento> {
 

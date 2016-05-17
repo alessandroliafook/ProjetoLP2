@@ -1,11 +1,10 @@
-package controller;
+package hospital;
 
 import static org.junit.Assert.*;
+import hospital.ComiteGestor;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import controller.ComiteGestor;
 
 public class ComiteGestorTest {
 

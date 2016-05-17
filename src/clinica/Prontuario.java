@@ -1,4 +1,4 @@
-package prontuario;
+package clinica;
 
 import java.io.Serializable;
 import java.util.ArrayList;

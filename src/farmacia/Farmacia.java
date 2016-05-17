@@ -1,4 +1,4 @@
-package departamentos;
+package farmacia;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,10 +14,7 @@ import exceptions.CadastroMedicamentoException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.VerificaEstoqueException;
 import factory.FactoryDeMedicamentos;
-import medicamento.CategoriasEnum;
-import medicamento.Medicamento;
 import util.VerificaCadastroMedicamento;
-import medicamento.ComparaPorPreco;
 
 public class Farmacia implements Serializable {
 

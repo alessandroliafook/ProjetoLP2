@@ -1,4 +1,4 @@
-package medicamento;
+package farmacia;
 
 public enum CategoriasEnum {
 

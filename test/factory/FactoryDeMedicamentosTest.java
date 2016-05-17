@@ -7,8 +7,8 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 
-import medicamento.CategoriasEnum;
-import medicamento.Medicamento;
+import farmacia.CategoriasEnum;
+import farmacia.Medicamento;
 
 public class FactoryDeMedicamentosTest {
 

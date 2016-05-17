@@ -1,10 +1,9 @@
-package departamentos;
+package clinica;
 
 import java.io.Serializable;
 import java.util.Set;
 import java.util.TreeSet;
 
-import clinica.BancoDeOrgaos;
 import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
@@ -13,7 +12,6 @@ import exceptions.ConsultaProntuarioException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
 import pessoal.Paciente;
-import prontuario.Prontuario;
 import util.VerificaPessoa;
 
 public class Clinica implements Serializable {

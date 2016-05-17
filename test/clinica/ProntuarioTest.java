@@ -1,4 +1,4 @@
-package prontuario;
+package clinica;
 
 import static org.junit.Assert.*;
 
@@ -8,6 +8,7 @@ import java.util.Collections;
 
 import org.junit.Test;
 
+import clinica.Prontuario;
 import pessoal.Paciente;
 
 public class ProntuarioTest {

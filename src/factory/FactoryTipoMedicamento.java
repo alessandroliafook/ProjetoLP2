@@ -1,9 +1,9 @@
 package factory;
 
 import exceptions.TipoMedicamentoException;
-import medicamento.MedicamentoGenerico;
-import medicamento.MedicamentoReferencia;
-import medicamento.TipoMedicamentoIF;
+import farmacia.MedicamentoGenerico;
+import farmacia.MedicamentoReferencia;
+import farmacia.TipoMedicamentoIF;
 
 public class FactoryTipoMedicamento {
 

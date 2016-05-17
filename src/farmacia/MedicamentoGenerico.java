@@ -1,4 +1,4 @@
-package medicamento;
+package farmacia;
 
 import java.io.Serializable;
 

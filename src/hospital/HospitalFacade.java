@@ -1,6 +1,5 @@
 package hospital;
 
-import controller.ComiteGestor;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;

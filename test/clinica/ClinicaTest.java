@@ -1,8 +1,10 @@
-package departamentos;
+package clinica;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import clinica.Clinica;
 
 public class ClinicaTest {
 

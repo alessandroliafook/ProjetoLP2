@@ -4,7 +4,7 @@ import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.TipoMedicamentoException;
-import medicamento.Medicamento;
+import farmacia.Medicamento;
 
 public class FactoryDeMedicamentos {
 
