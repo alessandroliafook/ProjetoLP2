@@ -12,7 +12,8 @@ public class Master implements Fidelidade {
 
 	@Override
 	public int getPontosBonus(int creditoGanho) {
-		return (int)(PORCENTAGEM_CREDITO_BONUS * creditoGanho);
+		return 0; // Essa funcionalidade foi retirada dos testes
+		//return (int)(PORCENTAGEM_CREDITO_BONUS * creditoGanho);
 	}
 
 }
