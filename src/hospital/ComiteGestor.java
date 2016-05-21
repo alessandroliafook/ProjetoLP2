@@ -355,28 +355,30 @@ public final class ComiteGestor implements Serializable {
 		try {
 			VerificaCadastroFuncionario.validaMatricula(matricula);
 			estaMatriculado(matricula);
+			
+			Funcionario funcionario = getFuncionario(matricula);
+			String informacaoSolicitada = "";
+
+			switch (atributo) {
+			case "Nome":
+				informacaoSolicitada = funcionario.getNome();
+				break;
+			case "Data":
+				informacaoSolicitada = funcionario.getData();
+				break;
+			case "Cargo":
+				informacaoSolicitada = funcionario.getCargo();
+				break;
+			case "Senha":
+				throw new Exception("A senha do funcionario eh protegida.");
+			}
+
+			return informacaoSolicitada;
+			
 		} catch (Exception e) {
 			throw new ConsultaFuncionarioException(e.getMessage());
 		}
 
-		Funcionario func = getFuncionario(matricula);
-		String ret = "";
-
-		switch (atributo) {
-		case "Nome":
-			ret = func.getNome();
-			break;
-		case "Data":
-			ret = func.getData();
-			break;
-		case "Cargo":
-			ret = func.getCargo();
-			break;
-		case "Senha":
-			throw new ConsultaFuncionarioException("A senha do funcionario eh protegida.");
-		}
-
-		return ret;
 	}
 
 	/**
