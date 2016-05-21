@@ -2,7 +2,7 @@ package util;
 
 import pessoal.Funcionario;
 import exceptions.CadastroFuncionarioException;
-import exceptions.RealizaProcedimentoException;
+import exceptions.NaoAutorizadoException;
 
 public class VerificaAutorizacaoClinica {
 
@@ -12,10 +12,9 @@ public class VerificaAutorizacaoClinica {
 	 * @throws CadastroFuncionarioException
 	 *             Caso nao tenha permissao
 	 */
-	public static void validaPermissao(Funcionario funcLogado) throws RealizaProcedimentoException {
+	public static void validaPermissao(Funcionario funcLogado, String acaoRealizada) throws NaoAutorizadoException {
 		if (funcLogado != null && !isMedico(funcLogado)) {
-			throw new RealizaProcedimentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para realizar procedimentos.");
+			throw new NaoAutorizadoException(funcLogado.getNome(), acaoRealizada);
 		}
 	}
 

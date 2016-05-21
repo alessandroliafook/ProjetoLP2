@@ -18,15 +18,13 @@ import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
-import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
-import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
-import exceptions.NomeFuncionarioVazioException;
+import exceptions.NaoAutorizadoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
@@ -34,11 +32,9 @@ import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import farmacia.Farmacia;
 import pessoal.Funcionario;
-import util.VerificaAutorizacaoClinica;
-import util.VerificaPessoa;
-import util.VerificacaoLiberaSistema;
+import util.*;
 
-public final class ComiteGestor implements Serializable{
+public final class ComiteGestor implements Serializable {
 
 	/**
 	 * 
@@ -69,7 +65,7 @@ public final class ComiteGestor implements Serializable{
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
-	
+
 	/**
 	 * Verifica o numero de procedimentos realizados pelo paciente com a ID
 	 * especificada
@@ -112,36 +108,33 @@ public final class ComiteGestor implements Serializable{
 	}
 
 	public void iniciaSistema() throws Exception {
-		
+
 		File file = new File("system_data");
 		File arquivo = new File(file, "soos.dat");
 
-		if(file.exists()){
-			
-			if(arquivo.exists()){
-				
+		if (file.exists()) {
+
+			if (arquivo.exists()) {
+
 				ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
 				reader.close();
-				
+
 			} else {
 				file.createNewFile();
-				
+
 			}
-			
+
 		} else {
-		
+
 			file.mkdir();
 			arquivo.createNewFile();
 
-			
 			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
 			writer.close();
-			
+
 		}
 
-		
 	}
-
 
 	/**
 	 * Metodo que sera executado apenas uma vez no programa, liberando o sistema
@@ -160,7 +153,7 @@ public final class ComiteGestor implements Serializable{
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
 
 		this.primeiroAcesso = true;
-		
+
 		return cadastraFuncionario(nome, "diretor geral", dataNascimento);
 	}
 
@@ -196,34 +189,6 @@ public final class ComiteGestor implements Serializable{
 	}
 
 	/**
-	 * Metodo que verifica se a matrimedicamentocula do funcionario esta
-	 * seguindo o padrao adotado e se este esta realmente matriculado
-	 * 
-	 * @param matricula
-	 *            Matricula a ser verificada
-	 * @throws ConsultaFuncionarioException
-	 *             Caso nao esteja seguiundo o padrao, lanca excecao
-	 */
-	private void validaMatricula(String matricula) throws Exception {
-
-		boolean apenasNumeros = true;
-		boolean tamanhoCorreto = true;
-
-		for (Character c : matricula.toCharArray()) {
-			if (!Character.isDigit(c))
-				apenasNumeros = false;
-		}
-
-		// if (matricula.length() != 8) {
-		// tamanhoCorreto = false;
-		// }
-
-		if (!(tamanhoCorreto && apenasNumeros)) {
-			throw new Exception("A matricula nao segue o padrao.");
-		}
-	}
-
-	/**
 	 * Metodo que verifica se existe um cadastro correspondente a matricula e
 	 * senha informadas.
 	 * 
@@ -237,32 +202,32 @@ public final class ComiteGestor implements Serializable{
 	 */
 	private void validaLogin(String matricula, String senha) throws LoginException {
 
-		String motivo = "";
+		try {
+			estaMatriculado(matricula);
+			existeFuncionarioLogado();
+			verificaSenhaCorreta(matricula, senha);
+		} catch (Exception e) {
+			throw new LoginException(e.getMessage());
+		}
 
+	}
+
+	private void existeFuncionarioLogado() throws Exception {
 		if (funcLogado != null) {
-			motivo = "Um funcionario ainda esta logado: " + funcLogado.getNome() + ".";
-			throw new LoginException(motivo);
-		}
-
-		// testa se a matricula esta cadastrada
-		else if (!isMatriculado(matricula)) {
-			motivo = "Funcionario nao cadastrado.";
-			throw new LoginException(motivo);
-		}
-
-		// teste se a senha corresponde a matricula cadastrada
-		else if (!isSenhaCorreta(matricula, senha)) {
-			motivo = "Senha incorreta.";
-			throw new LoginException(motivo);
+			throw new Exception("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
-	private boolean isSenhaCorreta(String matricula, String senha) {
-		return cadastros.get(matricula).equals(senha);
+	private void verificaSenhaCorreta(String matricula, String senha) throws Exception {
+		if (!cadastros.get(matricula).equals(senha)) {
+			throw new Exception("Senha incorreta.");
+		}
 	}
 
-	private boolean isMatriculado(String matricula) {
-		return cadastros.containsKey(matricula);
+	private void estaMatriculado(String matricula) throws Exception {
+		if (!cadastros.containsKey(matricula)) {
+			throw new Exception("Funcionario nao cadastrado.");
+		}
 	}
 
 	/**
@@ -334,51 +299,40 @@ public final class ComiteGestor implements Serializable{
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
-	 * @throws MaisDeUmDiretorException
-	 *             - Caso tente-se criar mais de um diretor
-	 * @throws NomeFuncionarioVazioException
-	 *             - Caso o nome do funcionario a ser criado esteja vazio
-	 * @throws DataInvalidaException
-	 *             - Caso a data de nascimento do funcionario a ser criado
-	 *             esteja fora do padrao adotado
-	 * @throws CargoInvalidoException
-	 *             - Caso o cargo do funcionario a ser criada esteja vazio ou
-	 *             nao exista
+	 * @throws CadastroFuncionarioException
+	 *             Caso o cadastro de funcionario nao seja bem sucedido
 	 */
-	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
+	public String cadastraFuncionario(String nome, String cargo, String dataNascimento)
+			throws CadastroFuncionarioException {
 
 		cargo = cargo.toLowerCase();
 
-		validaPermissao();
-		validaDiretor(cargo);
-
 		try {
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "cadastrar funcionarios.");
+			VerificaPrivilegiosDeDiretor.verificaExistenciaDeDiretor(cargo, this.diretorGeral);
 
-			Funcionario func = facFuncionario.criaFuncionario(nome, dataNascimento, cargo, this.numeroMatriculas);
-			String mat = func.getMatricula();
+			Funcionario funcionario = facFuncionario.criaFuncionario(nome, dataNascimento, cargo,
+					this.numeroMatriculas);
+			String matricula = funcionario.getMatricula();
 
 			switch (cargo) {
 			case "diretor geral":
-				diretorGeral = func;
+				diretorGeral = funcionario;
 				break;
 			case "medico":
-				corpoClinico.add(func);
+				corpoClinico.add(funcionario);
 				break;
 			case "tecnico administrativo":
-				corpoProfissional.add(func);
+				corpoProfissional.add(funcionario);
 				break;
 			}
 
-			adicionaLogin(func.getMatricula(), func.getSenha());
+			adicionaLogin(funcionario.getMatricula(), funcionario.getSenha());
 			this.numeroMatriculas += 1;
 
-			return mat;
+			return matricula;
 
-		} catch (NomeFuncionarioVazioException e) {
-			throw new CadastroFuncionarioException(e.getMessage());
-		} catch (DataInvalidaException e) {
-			throw new CadastroFuncionarioException(e.getMessage());
-		} catch (CargoInvalidoException e) {
+		} catch (Exception e) {
 			throw new CadastroFuncionarioException(e.getMessage());
 		}
 	}
@@ -399,13 +353,10 @@ public final class ComiteGestor implements Serializable{
 	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 
 		try {
-			validaMatricula(matricula);
+			VerificaCadastroFuncionario.validaMatricula(matricula);
+			estaMatriculado(matricula);
 		} catch (Exception e) {
 			throw new ConsultaFuncionarioException(e.getMessage());
-		}
-
-		if (!isMatriculado(matricula)) {
-			throw new ConsultaFuncionarioException("Funcionario nao cadastrado.");
 		}
 
 		Funcionario func = getFuncionario(matricula);
@@ -439,56 +390,37 @@ public final class ComiteGestor implements Serializable{
 	 * @param novoValor
 	 *            Novo valor do atributo selecionado para ser atualizado
 	 * @throws AtualizaFuncionarioException
-	 *             Caso o funcionario que esteja tentando realizar a operacao
-	 *             nao tenha permissao.
-	 * @throws AtualizaFuncionarioException
-	 *             Caso a matricula esteja em um formato invalido
-	 * @throws AtualizaFuncionarioException
-	 *             Caso nao exista nenhum funcionario cadastrado com tal
-	 *             matricula
-	 * @throws AtualizaFuncionarioException
-	 *             Caso o novo valor a ser inserido esteja invalido
+	 *             Caso o funcionario tentando realizar a operacao nao esteja
+	 *             cadastro ou nao tenha permissoes suficientes. Ou se algum dos
+	 *             dados informados seja invalido
 	 */
 	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
 			throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
-		// verifica se eh o diretor que esta tentando atualizar alguem
-		if (!isAutorizado()) {
-			throw new AtualizaFuncionarioException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
-		}
-
-		// verifica se essa matricula eh valida
 		try {
-			validaMatricula(matricula);
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "excluir funcionarios.");
+			VerificaCadastroFuncionario.validaMatricula(matricula);
+			estaMatriculado(matricula);
+
+			Funcionario funcionario = getFuncionario(matricula);
+
+			switch (atributo) {
+			case "nome":
+				funcionario.setNome(novoValor);
+				break;
+			case "data":
+				funcionario.setData(novoValor);
+				break;
+			default:
+				throw new Exception("Atributo invalido.");
+			}
+
 		} catch (Exception e) {
 			throw new AtualizaFuncionarioException(e.getMessage());
 		}
 
-		// sendo valida a matricula, verifica se ela realmente existe no sistema
-		if (!isMatriculado(matricula)) {
-			throw new AtualizaFuncionarioException("Funcionario nao cadastrado.");
-		}
-
-		Funcionario func = getFuncionario(matricula);
-
-		switch (atributo) {
-		case "nome":
-			try {
-				func.setNome(novoValor);
-			} catch (Exception e) {
-				throw new AtualizaFuncionarioException(e.getMessage());
-			}
-			break;
-		case "data":
-			try {
-				func.setData(novoValor);
-			} catch (Exception e) {
-				throw new AtualizaFuncionarioException(e.getMessage());
-			}
-		}
 	}
 
 	/**
@@ -500,28 +432,28 @@ public final class ComiteGestor implements Serializable{
 	 *            Novo valor a ser atribuido
 	 * @throws AtualizaFuncionarioException
 	 *             Caso nao exista nenhum funcionario cadastrado com tal
-	 *             matricula
-	 * @throws AtualizaFuncionarioException
-	 *             Caso o novo valor a ser inserido esteja invalido
+	 *             matricula, ou o novo valor a ser inserido seja invalido
 	 */
 	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
-		switch (atributo) {
-		case "nome":
-			try {
+		try {
+
+			switch (atributo) {
+			case "nome":
 				funcLogado.setNome(novoValor);
-			} catch (Exception e) {
-				throw new AtualizaFuncionarioException(e.getMessage());
-			}
-			break;
-		case "data":
-			try {
+				break;
+
+			case "data":
 				funcLogado.setData(novoValor);
-			} catch (Exception e) {
-				throw new AtualizaFuncionarioException(e.getMessage());
+				break;
+			default:
+				throw new Exception("Atributo invalido.");
 			}
+
+		} catch (Exception e) {
+			throw new AtualizaFuncionarioException(e.getMessage());
 		}
 	}
 
@@ -541,31 +473,31 @@ public final class ComiteGestor implements Serializable{
 	 */
 	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 
-		if (!isAutorizado()) {
-			throw new ExclusaoFuncionarioException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para excluir funcionarios.");
-		}
-
-		if (!confirmaDiretor(senha)) {
-			throw new ExclusaoFuncionarioException("Senha invalida.");
-		}
-
 		try {
-			validaMatricula(matricula);
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "excluir funcionarios.");
+			VerificaCadastroFuncionario.validaMatricula(matricula);
+			estaMatriculado(matricula);
+			confirmaSenhaDiretor(senha);
 		} catch (Exception e) {
 			throw new ExclusaoFuncionarioException(e.getMessage());
-		}
-
-		if (!isMatriculado(matricula)) {
-			throw new ExclusaoFuncionarioException("Funcionario nao cadastrado.");
 		}
 
 		excluiFuncionarioUtil(getFuncionario(matricula));
 		removeLogin(matricula, senha);
 	}
 
-	private boolean confirmaDiretor(String senha) {
-		return (senha.equals(diretorGeral.getSenha()));
+	/**
+	 * Confirma se a senha passada eh igual a senha do diretor
+	 * 
+	 * @param senha
+	 *            Suposta senha do diretor
+	 * @throws Exception
+	 *             Caso a senha passada nao seja a senha do diretor
+	 */
+	private void confirmaSenhaDiretor(String senha) throws Exception {
+		if (!senha.equals(diretorGeral.getSenha())) {
+			throw new Exception("Senha invalida.");
+		}
 	}
 
 	/**
@@ -595,86 +527,16 @@ public final class ComiteGestor implements Serializable{
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
 	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
-		confirmaSenha(senhaAntiga);
-		validaSenha(novaSenha);
+
+		try {
+			VerificaCadastroFuncionario.confirmaSenha(cadastros.get(funcLogado.getMatricula()), senhaAntiga);
+			VerificaCadastroFuncionario.validaSenha(novaSenha);
+		} catch (Exception e) {
+			throw new AtualizaFuncionarioException(e.getMessage());
+		}
+
 		funcLogado.setSenha(novaSenha);
 		cadastros.put(funcLogado.getMatricula(), novaSenha);
-	}
-
-	/**
-	 * Metodo que valida a senha a ser atualizada
-	 * 
-	 * @param novaSenha
-	 *            Senha a ser verificada
-	 * @throws AtualizaFuncionarioException
-	 *             Caso a senha nao siga o padrao estabelecido
-	 */
-	private void validaSenha(String novaSenha) throws AtualizaFuncionarioException {
-		// A nova senha deve ter entre 8 - 12 caracteres alfanumericos.
-		boolean tamanho = (novaSenha.length() >= 8 && novaSenha.length() <= 12);
-		boolean alfanum = true;
-
-		for (Character caractere : novaSenha.toCharArray()) {
-			if (!Character.isAlphabetic(caractere) && !Character.isDigit(caractere)) {
-				alfanum = false;
-			}
-		}
-
-		if (!(tamanho && alfanum)) {
-			throw new AtualizaFuncionarioException("A nova senha deve ter entre 8 - 12 caracteres alfanumericos.");
-		}
-	}
-
-	/**
-	 * Metodo que confirma a senha de um funcionario para futura troca de senha
-	 * 
-	 * @param senhaAntiga
-	 *            Senha a ser confirmada
-	 * @throws AtualizaFuncionarioException
-	 *             Caso a senha nao seja confirmada
-	 */
-	private void confirmaSenha(String senhaAntiga) throws AtualizaFuncionarioException {
-		if (!cadastros.get(funcLogado.getMatricula()).equals(senhaAntiga)) {
-			throw new AtualizaFuncionarioException("Senha invalida.");
-		}
-	}
-
-	/**
-	 * Metodo que valida a existencia de um diretor para evitar a criacao de
-	 * outro
-	 * 
-	 * @param cargo
-	 *            Cargo a ser validado
-	 * @throws MaisDeUmDiretorException
-	 *             Caso haja um diretor ja criado
-	 */
-	private void validaDiretor(String cargo) throws CadastroFuncionarioException {
-		if (diretorGeral != null && cargo.equals("diretor geral")) {
-			throw new CadastroFuncionarioException("Nao eh possivel criar mais de um Diretor Geral.");
-		}
-	}
-
-	/**
-	 * Metodo que verifica se o usuario que esta logado tem permissao para
-	 * realizar a tarefa
-	 * 
-	 * @throws CadastroFuncionarioException
-	 *             Caso nao tenha permissao
-	 */
-	private void validaPermissao() throws CadastroFuncionarioException {
-		if (diretorGeral != null && !isAutorizado()) {
-			throw new CadastroFuncionarioException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar funcionarios.");
-		}
-	}
-
-	/**
-	 * Metodo que verifica se eh o diretor que esta logado
-	 * 
-	 * @return - True se for o diretor que esta logado, False do contrario
-	 */
-	private boolean isAutorizado() {
-		return (funcLogado.getMatricula().charAt(0) == '1');
 	}
 
 	/**
@@ -724,9 +586,10 @@ public final class ComiteGestor implements Serializable{
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new CadastroMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new CadastroMedicamentoException(e.getMessage());
 		}
 
 		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
@@ -752,9 +615,10 @@ public final class ComiteGestor implements Serializable{
 	public void atualizaMedicamento(String nome, String atributo, String novoValor)
 			throws AtualizaMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new AtualizaMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para atualizar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "atualizar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new AtualizaMedicamentoException(e.getMessage());
 		}
 
 		farmacia.atualizaMedicamento(nome, atributo, novoValor);
@@ -772,9 +636,10 @@ public final class ComiteGestor implements Serializable{
 	 */
 	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 
-		if (!isDiretorOuTecnico()) {
-			throw new Exception(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para fornecer medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "fornecer medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new Exception(e.getMessage());
 		}
 
 		return farmacia.forneceMedicamento(nomeMedicamento);
@@ -795,9 +660,10 @@ public final class ComiteGestor implements Serializable{
 	 */
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new ConsultaMedicamentoException(e.getMessage());
 		}
 
 		return farmacia.consultaMedCategoria(categoria);
@@ -816,9 +682,10 @@ public final class ComiteGestor implements Serializable{
 	 */
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new ConsultaMedicamentoException(e.getMessage());
 		}
 
 		return farmacia.consultaMedNome(nomeDoRemedio);
@@ -838,9 +705,10 @@ public final class ComiteGestor implements Serializable{
 	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new ConsultaMedicamentoException(e.getMessage());
 		}
 
 		return farmacia.getEstoqueFarmacia(ordenacao);
@@ -860,9 +728,10 @@ public final class ComiteGestor implements Serializable{
 	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
 			throws ConsultaMedicamentoException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new ConsultaMedicamentoException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para consultar medicamentos.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+		} catch (NaoAutorizadoException e) {
+			throw new ConsultaMedicamentoException(e.getMessage());
 		}
 
 		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
@@ -892,19 +761,13 @@ public final class ComiteGestor implements Serializable{
 	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
 			String tipoSanguineo) throws CadastroPacienteException {
 
-		if (!isDiretorOuTecnico()) {
-			throw new CadastroPacienteException(
-					"O funcionario " + funcLogado.getNome() + " nao tem permissao para cadastrar pacientes.");
+		try {
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar pacientes.");
+		} catch (NaoAutorizadoException e) {
+			throw new CadastroPacienteException(e.getMessage());
 		}
 
 		return clinica.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
-	}
-
-	private boolean isDiretorOuTecnico() {
-
-		char caractere = funcLogado.getMatricula().charAt(0);
-		return (caractere == '1' || caractere == '3');
-
 	}
 
 	/**
@@ -957,10 +820,8 @@ public final class ComiteGestor implements Serializable{
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
 			throws Exception {
 
-		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
-
 		try {
-
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
@@ -995,10 +856,8 @@ public final class ComiteGestor implements Serializable{
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
 			String listaDeMedicamentos) throws Exception {
 
-		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
-
 		try {
-
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
@@ -1017,10 +876,8 @@ public final class ComiteGestor implements Serializable{
 
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 
-		VerificaAutorizacaoClinica.validaPermissao(this.funcLogado);
-
 		try {
-
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
 			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
