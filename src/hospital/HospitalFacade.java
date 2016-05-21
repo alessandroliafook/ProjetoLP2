@@ -1,5 +1,11 @@
 package hospital;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
@@ -22,13 +28,39 @@ import exceptions.SistemaException;
 public class HospitalFacade {
 
 	ComiteGestor comite;
-	
-	public HospitalFacade(){
-		this.comite = new ComiteGestor();
+
+	public HospitalFacade() {
+		comite = ComiteGestor.getInstance();
 	}
 
+	/**
+	 * Metodo que verifica se existe um arquivo .dat com a instancia do objeto
+	 * comiteGestor, caso contrario realiza a criacao do referido caminho.
+	 * 
+	 * @throws Exception
+	 *             Relanca as excecoes de erro de leitura ou de de escrita do
+	 *             objeto;
+	 */
 	public void iniciaSistema() throws Exception {
-		comite.iniciaSistema();
+
+		File file = new File("system_data");
+		File arquivo = new File(file, "soos.dat");
+
+		if (file.exists()) {
+
+			ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
+			ComiteGestor obj = (ComiteGestor) reader.readObject();
+			comite.iniciaSistema(obj);
+			reader.close();
+
+		} else {
+
+			file.mkdir();
+			arquivo.createNewFile();
+			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
+			writer.writeObject(this.comite);
+			writer.close();
+		}
 	}
 
 	/**
@@ -82,12 +114,11 @@ public class HospitalFacade {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao, String listaDeMedicamentos)
-			throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
+			String listaDeMedicamentos) throws Exception {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
 	}
 
-	
 	/**
 	 * Metodo que retorna como String o atributo especificado do funcionario
 	 * 
@@ -244,8 +275,17 @@ public class HospitalFacade {
 	 * @throws SistemaException
 	 *             Caso ainda exista um usuario logado
 	 */
-	public void fechaSistema() throws SistemaException {
+	public void fechaSistema() throws Exception {
+		
 		comite.fechaSistema();
+
+		File file = new File("system_data");
+		File arquivo = new File(file, "soos.dat");
+		ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
+
+		writer.writeObject(this.comite);
+		writer.close();
+
 	}
 
 	// metodos da farmacia

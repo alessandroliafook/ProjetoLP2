@@ -1,10 +1,5 @@
 package hospital;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,12 +17,14 @@ import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.ExclusaoFuncionarioException;
+import exceptions.FuncionarioInexistenteException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NaoAutorizadoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
+import exceptions.SenhaIncorretaException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import farmacia.Farmacia;
@@ -41,31 +38,40 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private static final long serialVersionUID = 8379224367585964465L;
 
+	private static ComiteGestor INSTANCIA;
+	
 	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
 	private int numeroMatriculas = 1;
 	private Funcionario diretorGeral;
 	private final String CHAVE = "c041ebf8";
 
-	private Set<Funcionario> corpoClinico;
+	private Set<Funcionario> recursosHumanos;
 	private Map<String, String> cadastros;
-	private Set<Funcionario> corpoProfissional;
 	private FactoryDePessoa facFuncionario;
 
 	private Farmacia farmacia;
 	private Clinica clinica;
 
-	public ComiteGestor() {
+	private ComiteGestor() {
 
 		this.primeiroAcesso = false;
-		this.corpoClinico = new HashSet<Funcionario>();
+		this.recursosHumanos = new HashSet<Funcionario>();
 		this.cadastros = new HashMap<String, String>();
 		this.facFuncionario = new FactoryDePessoa();
-		this.corpoProfissional = new HashSet<Funcionario>();
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
 
+	public static synchronized ComiteGestor getInstance(){
+		
+		if(INSTANCIA == null){
+			INSTANCIA = new ComiteGestor();
+		}
+	
+		return INSTANCIA;
+	}
+	
 	/**
 	 * Verifica o numero de procedimentos realizados pelo paciente com a ID
 	 * especificada
@@ -107,33 +113,10 @@ public final class ComiteGestor implements Serializable {
 		return clinica.getPontosFidelidade(id);
 	}
 
-	public void iniciaSistema() throws Exception {
+	public void iniciaSistema(ComiteGestor comite) throws Exception {
 
-		File file = new File("system_data");
-		File arquivo = new File(file, "soos.dat");
-
-		if (file.exists()) {
-
-			if (arquivo.exists()) {
-
-				ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
-				reader.close();
-
-			} else {
-				file.createNewFile();
-
-			}
-
-		} else {
-
-			file.mkdir();
-			arquivo.createNewFile();
-
-			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
-			writer.close();
-
-		}
-
+		INSTANCIA = comite;
+		
 	}
 
 	/**
@@ -173,13 +156,7 @@ public final class ComiteGestor implements Serializable {
 		if (this.diretorGeral.getMatricula().equals(matricula))
 			funcionario = diretorGeral;
 
-		for (Funcionario func : corpoClinico) {
-			if (func.getMatricula().equals(matricula)) {
-				funcionario = func;
-			}
-		}
-
-		for (Funcionario func : corpoProfissional) {
+		for (Funcionario func : recursosHumanos) {
 			if (func.getMatricula().equals(matricula)) {
 				funcionario = func;
 			}
@@ -220,13 +197,13 @@ public final class ComiteGestor implements Serializable {
 
 	private void verificaSenhaCorreta(String matricula, String senha) throws Exception {
 		if (!cadastros.get(matricula).equals(senha)) {
-			throw new Exception("Senha incorreta.");
+			throw new SenhaIncorretaException();
 		}
 	}
 
 	private void estaMatriculado(String matricula) throws Exception {
 		if (!cadastros.containsKey(matricula)) {
-			throw new Exception("Funcionario nao cadastrado.");
+			throw new FuncionarioInexistenteException();
 		}
 	}
 
@@ -315,16 +292,11 @@ public final class ComiteGestor implements Serializable {
 					this.numeroMatriculas);
 			String matricula = funcionario.getMatricula();
 
-			switch (cargo) {
-			case "diretor geral":
-				diretorGeral = funcionario;
-				break;
-			case "medico":
-				corpoClinico.add(funcionario);
-				break;
-			case "tecnico administrativo":
-				corpoProfissional.add(funcionario);
-				break;
+			if(cargo.equalsIgnoreCase("diretor geral")){
+				this.diretorGeral = funcionario;
+				
+			} else {
+				recursosHumanos.add(funcionario);
 			}
 
 			adicionaLogin(funcionario.getMatricula(), funcionario.getSenha());
@@ -355,7 +327,7 @@ public final class ComiteGestor implements Serializable {
 		try {
 			VerificaCadastroFuncionario.validaMatricula(matricula);
 			estaMatriculado(matricula);
-			
+
 			Funcionario funcionario = getFuncionario(matricula);
 			String informacaoSolicitada = "";
 
@@ -374,7 +346,7 @@ public final class ComiteGestor implements Serializable {
 			}
 
 			return informacaoSolicitada;
-			
+
 		} catch (Exception e) {
 			throw new ConsultaFuncionarioException(e.getMessage());
 		}
@@ -510,11 +482,7 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private void excluiFuncionarioUtil(Funcionario funcionario) {
 
-		if (funcionario.getCargo().equals("Medico")) {
-			corpoClinico.remove(funcionario);
-		} else if (funcionario.getCargo().equals("Tecnico Administrativo")) {
-			corpoProfissional.remove(funcionario);
-		}
+		recursosHumanos.remove(funcionario);
 	}
 
 	/**

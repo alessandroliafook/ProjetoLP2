@@ -10,12 +10,11 @@ import util.VerificaPessoa;
 
 public class FactoryDePessoa implements Serializable{
 
+
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8091067423897999143L;
-	
-	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private static final long serialVersionUID = -8372271403886047818L;
 
 	/**
 	 * Cria um objeto do tipo Funcionario
@@ -137,10 +136,14 @@ public class FactoryDePessoa implements Serializable{
 	 *             Caso a data nao esteja no formato especificado
 	 */
 	private String geraSenha(String dataString, String matricula) throws DateTimeParseException {
+
+		DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate dataNascimento = LocalDate.parse(dataString, FORMATO_DE_DATA);
+		
 		String senha = "";
 		senha += dataNascimento.getYear();
 		senha += matricula.substring(0, 4);
+		
 		return senha;
 	}
 

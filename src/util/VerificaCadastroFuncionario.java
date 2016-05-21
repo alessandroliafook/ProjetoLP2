@@ -3,6 +3,7 @@ package util;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.ConsultaFuncionarioException;
+import exceptions.SenhaInvalidaException;
 
 public class VerificaCadastroFuncionario {
 
@@ -109,7 +110,7 @@ public class VerificaCadastroFuncionario {
 	 */
 	public static void confirmaSenha(String senhaDoFuncionario, String supostaSenha) throws Exception {
 		if (!senhaDoFuncionario.equals(supostaSenha)) {
-			throw new Exception("Senha invalida.");
+			throw new SenhaInvalidaException();
 		}
 	}
 
