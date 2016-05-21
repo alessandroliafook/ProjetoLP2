@@ -38,7 +38,6 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private static final long serialVersionUID = 8379224367585964465L;
 
-	private static ComiteGestor INSTANCIA;
 	
 	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
@@ -53,7 +52,7 @@ public final class ComiteGestor implements Serializable {
 	private Farmacia farmacia;
 	private Clinica clinica;
 
-	private ComiteGestor() {
+	public ComiteGestor() {
 
 		this.primeiroAcesso = false;
 		this.recursosHumanos = new HashSet<Funcionario>();
@@ -61,15 +60,6 @@ public final class ComiteGestor implements Serializable {
 		this.facFuncionario = new FactoryDePessoa();
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
-	}
-
-	public static synchronized ComiteGestor getInstance(){
-		
-		if(INSTANCIA == null){
-			INSTANCIA = new ComiteGestor();
-		}
-	
-		return INSTANCIA;
 	}
 	
 	/**
@@ -111,12 +101,6 @@ public final class ComiteGestor implements Serializable {
 	 */
 	public int getPontosFidelidade(String id) throws Exception {
 		return clinica.getPontosFidelidade(id);
-	}
-
-	public void iniciaSistema(ComiteGestor comite) throws Exception {
-
-		INSTANCIA = comite;
-		
 	}
 
 	/**

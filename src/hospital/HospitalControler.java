@@ -1,5 +1,11 @@
 package hospital;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
@@ -19,12 +25,12 @@ import exceptions.NumeroInvalidoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 
-public class HospitalFacade {
+public class HospitalControler {
 
-	HospitalControler controller;
+	ComiteGestor comite;
 
-	public HospitalFacade() {
-		controller = new HospitalControler();
+	public HospitalControler() {
+		comite = null;
 	}
 
 	/**
@@ -36,7 +42,26 @@ public class HospitalFacade {
 	 *             objeto;
 	 */
 	public void iniciaSistema() throws Exception {
-		controller.iniciaSistema();
+
+		File file = new File("system_data");
+		File arquivo = new File(file, "soos.dat");
+
+		if (arquivo.exists()) {
+
+			ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
+			ComiteGestor obj = (ComiteGestor) reader.readObject();
+			this.comite = obj;
+			reader.close();
+
+		} else {
+			
+			file.mkdir();
+			arquivo.createNewFile();
+			this.comite = new ComiteGestor();
+			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
+			writer.writeObject(this.comite);
+			writer.close();
+		}
 	}
 
 	/**
@@ -51,7 +76,7 @@ public class HospitalFacade {
 	 *             caso a chave seja invalida
 	 */
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
-		return controller.liberaSistema(chave, nome, dataNascimento);
+		return comite.liberaSistema(chave, nome, dataNascimento);
 	}
 
 	/**
@@ -64,7 +89,7 @@ public class HospitalFacade {
 	 *             Caso nao exista paciente com o ID repassado
 	 */
 	public String getGastosPaciente(String id) throws Exception {
-		return controller.getGastosPaciente(id);
+		return comite.getGastosPaciente(id);
 	}
 
 	/**
@@ -78,21 +103,21 @@ public class HospitalFacade {
 	 *             Caso nao exista o paciente com o ID repassado
 	 */
 	public int getPontosFidelidade(String id) throws Exception {
-		return controller.getPontosFidelidade(id);
+		return comite.getPontosFidelidade(id);
 	}
 
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
-		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
 	}
 
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
 			throws Exception {
-		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
 			String listaDeMedicamentos) throws Exception {
-		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
 	}
 
 	/**
@@ -109,7 +134,7 @@ public class HospitalFacade {
 	 *             Caso o atributo a ser recuperado seja a senha
 	 */
 	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
-		return controller.getInfoFuncionario(matricula, atributo);
+		return comite.getInfoFuncionario(matricula, atributo);
 	}
 
 	/**
@@ -125,7 +150,7 @@ public class HospitalFacade {
 	 *             correspondam
 	 */
 	public void login(String matricula, String senha) throws LoginException {
-		controller.login(matricula, senha);
+		comite.login(matricula, senha);
 	}
 
 	/**
@@ -136,7 +161,7 @@ public class HospitalFacade {
 	 *             Caso nao haja nenhum funcionario logado, lanca excecao
 	 */
 	public void logout() throws LogoutException {
-		controller.logout();
+		comite.logout();
 	}
 
 	/**
@@ -160,7 +185,7 @@ public class HospitalFacade {
 	 *             nao exista
 	 */
 	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
-		return controller.cadastraFuncionario(nome, cargo, dataNascimento);
+		return comite.cadastraFuncionario(nome, cargo, dataNascimento);
 	}
 
 	/**
@@ -186,7 +211,7 @@ public class HospitalFacade {
 	 */
 	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
 			throws AtualizaFuncionarioException {
-		controller.atualizaInfoFuncionario(matricula, atributo, novoValor);
+		comite.atualizaInfoFuncionario(matricula, atributo, novoValor);
 	}
 
 	/**
@@ -209,7 +234,7 @@ public class HospitalFacade {
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
 	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
-		controller.atualizaInfoFuncionario(atributo, novoValor);
+		comite.atualizaInfoFuncionario(atributo, novoValor);
 	}
 
 	/**
@@ -227,7 +252,7 @@ public class HospitalFacade {
 	 *             Caso o funcionario logado nao tenha permissao para exlcuir
 	 */
 	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
-		controller.excluiFuncionario(matricula, senha);
+		comite.excluiFuncionario(matricula, senha);
 	}
 
 	/**
@@ -242,7 +267,7 @@ public class HospitalFacade {
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
 	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
-		controller.atualizaSenha(senhaAntiga, novaSenha);
+		comite.atualizaSenha(senhaAntiga, novaSenha);
 	}
 
 	/**
@@ -252,7 +277,16 @@ public class HospitalFacade {
 	 *             Caso ainda exista um usuario logado
 	 */
 	public void fechaSistema() throws Exception {
-		controller.fechaSistema();
+		
+		comite.fechaSistema();
+
+		File file = new File("system_data");
+		File arquivo = new File(file, "soos.dat");
+		ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
+
+		writer.writeObject(this.comite);
+		writer.close();
+
 	}
 
 	// metodos da farmacia
@@ -289,7 +323,7 @@ public class HospitalFacade {
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
-		return controller.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
+		return comite.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
 	/**
@@ -311,7 +345,7 @@ public class HospitalFacade {
 	 */
 	public void atualizaMedicamento(String nome, String atributo, String novoValor)
 			throws AtualizaMedicamentoException {
-		controller.atualizaMedicamento(nome, atributo, novoValor);
+		comite.atualizaMedicamento(nome, atributo, novoValor);
 	}
 
 	/**
@@ -325,7 +359,7 @@ public class HospitalFacade {
 	 *             estoque.
 	 */
 	public double forneceMedicamento(String nomeMedicamento) throws Exception {
-		return controller.forneceMedicamento(nomeMedicamento);
+		return comite.forneceMedicamento(nomeMedicamento);
 	}
 
 	/**
@@ -342,7 +376,7 @@ public class HospitalFacade {
 	 *             nenhum medicamento associado a mesma.
 	 */
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
-		return controller.consultaMedCategoria(categoria);
+		return comite.consultaMedCategoria(categoria);
 	}
 
 	/**
@@ -357,7 +391,7 @@ public class HospitalFacade {
 	 *             vazio.
 	 */
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
-		return controller.consultaMedNome(nomeDoRemedio);
+		return comite.consultaMedNome(nomeDoRemedio);
 	}
 
 	/**
@@ -373,7 +407,7 @@ public class HospitalFacade {
 	 *             preco ou ordem alfabética.
 	 */
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
-		return controller.getEstoqueFarmacia(ordenacao);
+		return comite.getEstoqueFarmacia(ordenacao);
 	}
 
 	/**
@@ -389,7 +423,7 @@ public class HospitalFacade {
 	 */
 	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
 			throws ConsultaMedicamentoException {
-		return controller.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
+		return comite.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	// metodos da clinica
@@ -415,7 +449,7 @@ public class HospitalFacade {
 	 */
 	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
 			String tipoSanguineo) throws CadastroPacienteException {
-		return controller.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
+		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
 	/**
@@ -424,7 +458,7 @@ public class HospitalFacade {
 	 * @return O numero de pacientes ja cadastrados
 	 */
 	public int getNumeroCadastros() {
-		return controller.getNumeroCadastros();
+		return comite.getNumeroCadastros();
 	}
 
 	/**
@@ -438,7 +472,7 @@ public class HospitalFacade {
 	 * @return Uma String com a informacao solicitada
 	 */
 	public String getInfoPaciente(String id, String atributo) throws Exception {
-		return controller.getInfoPaciente(id, atributo);
+		return comite.getInfoPaciente(id, atributo);
 	}
 
 	/**
@@ -451,7 +485,7 @@ public class HospitalFacade {
 	 *             Caso a posicao seja invalida
 	 */
 	public String getProntuario(int posicao) throws ConsultaProntuarioException {
-		return controller.getProntuario(posicao);
+		return comite.getProntuario(posicao);
 	}
 
 	/**
@@ -465,7 +499,7 @@ public class HospitalFacade {
 	 *             Caso nao exista paciente com o ID especificado
 	 */
 	public int getTotalProcedimento(String id) throws Exception {
-		return controller.getTotalProcedimento(id);
+		return comite.getTotalProcedimento(id);
 	}
 
 	/**
@@ -479,7 +513,7 @@ public class HospitalFacade {
 	 *             cadastrado no sistema
 	 */
 	public String getPacienteID(String nome) throws Exception {
-		return controller.getPacienteID(nome);
+		return comite.getPacienteID(nome);
 	}
 
 	// METODOS DO BANCO DE ORGAOS
@@ -496,7 +530,7 @@ public class HospitalFacade {
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
 	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
-		controller.cadastraOrgao(nome, tipoSanguineo);
+		comite.cadastraOrgao(nome, tipoSanguineo);
 	}
 
 	/**
@@ -511,7 +545,7 @@ public class HospitalFacade {
 	 *             Caso o tipo sanguineo seja invalido
 	 */
 	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
-		return controller.buscaOrgPorSangue(tipoSanguineo);
+		return comite.buscaOrgPorSangue(tipoSanguineo);
 	}
 
 	/**
@@ -527,7 +561,7 @@ public class HospitalFacade {
 	 *             cadastrados com o nome especificados
 	 */
 	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
-		return controller.buscaOrgPorNome(nomeOrgao);
+		return comite.buscaOrgPorNome(nomeOrgao);
 	}
 
 	/**
@@ -542,7 +576,7 @@ public class HospitalFacade {
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
 	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
-		return controller.buscaOrgao(nomeOrgao, tipoSanguineo);
+		return comite.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
 	/**
@@ -557,7 +591,7 @@ public class HospitalFacade {
 	 *             orgaos desse tipo no banco de orgaos
 	 */
 	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
-		controller.retiraOrgao(nome, tipoSanguineo);
+		comite.retiraOrgao(nome, tipoSanguineo);
 	}
 
 	/**
@@ -570,7 +604,7 @@ public class HospitalFacade {
 	 *             Caso nao exista algum orgao com o nome especificado
 	 */
 	public int qtdOrgaos(String nome) throws BancoDeOrgaosException {
-		return controller.qtdOrgaos(nome);
+		return comite.qtdOrgaos(nome);
 	}
 
 	/**
@@ -579,7 +613,8 @@ public class HospitalFacade {
 	 * @return A quantidade total de orgaos no banco de orgaos
 	 */
 	public int totalOrgaosDisponiveis() {
-		return controller.totalOrgaosDisponiveis();
+		return comite.totalOrgaosDisponiveis();
 	}
 
 }
+
