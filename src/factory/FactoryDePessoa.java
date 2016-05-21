@@ -1,5 +1,6 @@
 package factory;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -7,8 +8,13 @@ import pessoal.Funcionario;
 import pessoal.Paciente;
 import util.VerificaPessoa;
 
-public class FactoryDePessoa {
+public class FactoryDePessoa implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8091067423897999143L;
+	
 	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	/**

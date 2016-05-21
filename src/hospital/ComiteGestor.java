@@ -1,14 +1,19 @@
 package hospital;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import clinica.Clinica;
-import util.VerificaAutorizacaoClinica;
-import util.VerificaPessoa;
-import util.VerificacaoLiberaSistema;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
@@ -24,16 +29,23 @@ import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.NumeroInvalidoException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 import factory.FactoryDePessoa;
 import farmacia.Farmacia;
 import pessoal.Funcionario;
+import util.VerificaAutorizacaoClinica;
+import util.VerificaPessoa;
+import util.VerificacaoLiberaSistema;
 
-public final class ComiteGestor {
+public final class ComiteGestor implements Serializable{
 
-	private static ComiteGestor instancia;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8379224367585964465L;
 
 	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
@@ -49,7 +61,7 @@ public final class ComiteGestor {
 	private Farmacia farmacia;
 	private Clinica clinica;
 
-	private ComiteGestor() {
+	public ComiteGestor() {
 
 		this.primeiroAcesso = false;
 		this.corpoClinico = new HashSet<Funcionario>();
@@ -101,23 +113,37 @@ public final class ComiteGestor {
 		return clinica.getPontosFidelidade(id);
 	}
 
-	public void iniciaSistema() {
-	}
+	public void iniciaSistema() throws Exception {
+		
+		File file = new File("system_data");
+		File arquivo = new File(file, "soos.dat");
 
-	/**
-	 * Metodo que garante que havera apenas uma instancia dessa classe. Caso ja
-	 * tennha sido instanciada uma vez, retorna a instancia, do contrario
-	 * instancia e retorna.
-	 * 
-	 * @return A unica instancia da classe
-	 */
-	public static synchronized ComiteGestor getInstancia() {
-		if (instancia == null) {
-			instancia = new ComiteGestor();
+		if(file.exists()){
+			
+			if(arquivo.exists()){
+				
+				ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
+				reader.close();
+				
+			} else {
+				file.createNewFile();
+				
+			}
+			
+		} else {
+		
+			file.mkdir();
+			arquivo.createNewFile();
+
+			
+			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
+			writer.close();
+			
 		}
 
-		return instancia;
+		
 	}
+
 
 	/**
 	 * Metodo que sera executado apenas uma vez no programa, liberando o sistema
@@ -136,6 +162,7 @@ public final class ComiteGestor {
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
 
 		this.primeiroAcesso = true;
+		
 		return cadastraFuncionario(nome, "diretor geral", dataNascimento);
 	}
 

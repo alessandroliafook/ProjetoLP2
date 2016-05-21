@@ -21,6 +21,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3829508154930744712L;
+	
 	private String nome;
 	private double preco;
 	private int quantidade;

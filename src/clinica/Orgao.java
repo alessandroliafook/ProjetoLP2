@@ -1,7 +1,14 @@
 package clinica;
 
-public class Orgao {
+import java.io.Serializable;
 
+public class Orgao implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -9103783912206092853L;
+	
 	private String nome;
 	private String tipoSanguineo;
 

@@ -20,6 +20,7 @@ public class Clinica implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1274054963107375989L;
+	
 	private Set<Prontuario> prontuarios;
 	private FactoryDePessoa pacienteFactory;
 	private BancoDeOrgaos bancoDeOrgaos;

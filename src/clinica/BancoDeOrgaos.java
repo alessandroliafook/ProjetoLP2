@@ -1,13 +1,19 @@
 package clinica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import exceptions.BancoDeOrgaosException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDeOrgao;
 import util.VerificaOrgao;
 
-public class BancoDeOrgaos {
+public class BancoDeOrgaos implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1251791363335311254L;
+	
 	private FactoryDeOrgao facOrgao;
 	private ArrayList<Orgao> bancoDeOrgaos;
 

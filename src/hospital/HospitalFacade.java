@@ -15,14 +15,19 @@ import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NomeFuncionarioVazioException;
+import exceptions.NumeroInvalidoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 
 public class HospitalFacade {
 
-	ComiteGestor comite = ComiteGestor.getInstancia();
+	ComiteGestor comite;
+	
+	public HospitalFacade(){
+		this.comite = new ComiteGestor();
+	}
 
-	public void iniciaSistema() {
+	public void iniciaSistema() throws Exception {
 		comite.iniciaSistema();
 	}
 

@@ -22,6 +22,7 @@ public class Farmacia implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1325300249760149147L;
+	
 	Set<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 

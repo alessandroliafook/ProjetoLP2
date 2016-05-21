@@ -1,13 +1,20 @@
 package factory;
 
+import java.io.Serializable;
+
 import procedimentos.CirurgiaBariatrica;
 import procedimentos.ConsultaClinica;
 import procedimentos.ProcedimentoIF;
 import procedimentos.RedesignacaoSexual;
 import procedimentos.TransplanteDeOrgaos;
 
-public class factoryDeProcedimentos {
+public class factoryDeProcedimentos implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2446489558634138858L;
+	
 	/**
 	 * Cria um novo objeto ProcedimentoIF cujo nome seja igual a string
 	 * fornecida

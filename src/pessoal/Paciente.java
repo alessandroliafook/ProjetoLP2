@@ -11,6 +11,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	 * 
 	 */
 	private static final long serialVersionUID = -1296421988284829321L;
+	
 	private double peso;
 	private String tipoSanguineo;
 	private String sexo;

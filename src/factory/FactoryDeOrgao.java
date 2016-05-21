@@ -1,9 +1,16 @@
 package factory;
 
+import java.io.Serializable;
+
 import clinica.Orgao;
 import util.VerificaOrgao;
 
-public class FactoryDeOrgao {
+public class FactoryDeOrgao implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8743151192410537231L;
 
 	/**
 	 * Metodo que cria um orgao com os parametros especificados

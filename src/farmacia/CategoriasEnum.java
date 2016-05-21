@@ -1,6 +1,8 @@
 package farmacia;
 
-public enum CategoriasEnum {
+import java.io.Serializable;
+
+public enum CategoriasEnum implements Serializable{
 
 	ANALGESICO, ANTIBIOTICO, ANTIINFLAMATORIO, ANTIEMETICO, ANTITERMICO, HORMONAL;
 

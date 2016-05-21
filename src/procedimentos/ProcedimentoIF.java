@@ -1,8 +1,10 @@
 package procedimentos;
 
+import java.io.Serializable;
+
 import pessoal.Paciente;
 
-public interface ProcedimentoIF {
+public interface ProcedimentoIF extends Serializable {
 
 	/**
 	 * Metodo que realiza as modificacoes no paciente conforme o tipo de

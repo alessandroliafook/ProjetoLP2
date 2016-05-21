@@ -1,7 +1,14 @@
 package cartao;
 
-public class Vip implements Fidelidade {
+import java.io.Serializable;
 
+public class Vip implements Fidelidade, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1774167085653509437L;
+	
 	private final double PORCENTAGEM_DESCONTO_SERVICO = 0.30;
 	private final double PORCENTAGEM_CREDITO_BONUS = 0.10;
 

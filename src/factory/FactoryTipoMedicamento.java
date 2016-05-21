@@ -1,11 +1,18 @@
 package factory;
 
+import java.io.Serializable;
+
 import exceptions.TipoMedicamentoException;
 import farmacia.MedicamentoGenerico;
 import farmacia.MedicamentoReferencia;
 import farmacia.TipoMedicamentoIF;
 
-public class FactoryTipoMedicamento {
+public class FactoryTipoMedicamento implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -414390373459225678L;
 
 	/**
 	 * Metodo que escolhe qual objeto de TipoMedicamentoIF sera associado a

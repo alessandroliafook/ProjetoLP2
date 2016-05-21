@@ -1,5 +1,6 @@
 package pessoal;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -7,8 +8,13 @@ import java.time.temporal.ChronoUnit;
 import exceptions.DataInvalidaException;
 import util.*;
 
-public abstract class Pessoa {
+public abstract class Pessoa implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4892186631163406594L;
+	
 	private String nome;
 	private LocalDate dataNascimento;
 	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");

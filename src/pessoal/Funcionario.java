@@ -8,6 +8,7 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>, Seri
 	 * 
 	 */
 	private static final long serialVersionUID = 2456859660892263148L;
+	
 	private String matricula;
 	private String senha;
 

@@ -1,6 +1,8 @@
 package cartao;
 
-public enum MaxPontosPorFidelidade {
+import java.io.Serializable;
+
+public enum MaxPontosPorFidelidade implements Serializable{
 	
 	/**
 	 * Os tipos de cartao sao definidos pela quantidade de pontos.

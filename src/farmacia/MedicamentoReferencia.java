@@ -8,6 +8,7 @@ public class MedicamentoReferencia implements TipoMedicamentoIF, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 368050718251307242L;
+	
 	public final double DESCONTO = 1;
 
 	/**

@@ -1,12 +1,19 @@
 package factory;
 
+import java.io.Serializable;
+
 import exceptions.CategoriaMedicamentoInvalidaException;
 import exceptions.NomeMedicamentoException;
 import exceptions.NumeroInvalidoException;
 import exceptions.TipoMedicamentoException;
 import farmacia.Medicamento;
 
-public class FactoryDeMedicamentos {
+public class FactoryDeMedicamentos implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4501769558440421808L;
 
 	public FactoryDeMedicamentos() {
 	}

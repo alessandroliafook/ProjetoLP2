@@ -1,10 +1,16 @@
 package farmacia;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import farmacia.Medicamento;
 
-public class ComparaPorPreco implements Comparator<Medicamento> {
+public class ComparaPorPreco implements Comparator<Medicamento>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4900232050622435188L;
 
 	@Override
 	/**

@@ -1,6 +1,8 @@
 package cartao;
 
-public interface Fidelidade {
+import java.io.Serializable;
+
+public interface Fidelidade extends Serializable{
 	/**
 	 * Dado um valor real gasto o metodo retorna o desconto sobre esse valor de
 	 * acordo com o tipo do cartao 0/15/30 por cento de desconto para os cartoes

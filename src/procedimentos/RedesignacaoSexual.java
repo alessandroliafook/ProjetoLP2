@@ -1,9 +1,16 @@
 package procedimentos;
 
+import java.io.Serializable;
+
 import pessoal.Paciente;
 
-public class RedesignacaoSexual implements ProcedimentoIF {
+public class RedesignacaoSexual implements ProcedimentoIF, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3127060742079774171L;
+	
 	public final double PRECO = 9300.00;
 	private final int PONTOS_BONUS = 130;
 	

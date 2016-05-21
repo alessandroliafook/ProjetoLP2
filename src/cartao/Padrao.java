@@ -1,7 +1,14 @@
 package cartao;
 
-public class Padrao implements Fidelidade {
+import java.io.Serializable;
 
+public class Padrao implements Fidelidade, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2714053487756937464L;
+	
 	private final double PORCENTAGEM_DESCONTO_SERVICO = 0;
 	private final double PORCENTAGEM_CREDITO_BONUS = 0;
 

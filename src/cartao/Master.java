@@ -1,6 +1,13 @@
 package cartao;
 
-public class Master implements Fidelidade {
+import java.io.Serializable;
+
+public class Master implements Fidelidade, Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1574421479837543855L;
 	
 	private final double PORCENTAGEM_DESCONTO_SERVICO = 0.15;
 	private final double PORCENTAGEM_CREDITO_BONUS = 0.05;

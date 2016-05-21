@@ -1,9 +1,16 @@
 package procedimentos;
 
+import java.io.Serializable;
+
 import pessoal.Paciente;
 
-public class CirurgiaBariatrica implements ProcedimentoIF{
+public class CirurgiaBariatrica implements ProcedimentoIF, Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8257864581809634549L;
+	
 	public final double PRECO = 7600.00;
 	private final int PONTOS_BONUS = 100;
 	
