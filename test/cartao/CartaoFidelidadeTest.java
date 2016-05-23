@@ -8,8 +8,8 @@ public class CartaoFidelidadeTest {
 	
 	private final double MAX_ERROR = 0.01;
 	
-	
-	@Test
+	/* Funcionalidade removida doa especificacao do projeto */
+	//@Test
 	public void testGetPontosFidelidade(){
 		try {
 			CartaoFidelidade cartao = new CartaoFidelidade();

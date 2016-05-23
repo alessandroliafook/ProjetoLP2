@@ -7,6 +7,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class ComiteGestorTest {
+	
+	private ComiteGestor comite;
+	
+	public ComiteGestorTest(){
+		this.comite = new ComiteGestor();
+	}
 
 	@Test
 	public void testLiberaSistema() {
@@ -14,7 +20,7 @@ public class ComiteGestorTest {
 		String matriculaDiretor = "";
 
 		try {
-			ComiteGestor comite = ComiteGestor.getInstance();
+			
 			matriculaDiretor = comite.liberaSistema("c041ebf8", "paulo", "01/01/2001");
 
 			assertEquals("12016001", matriculaDiretor);
@@ -23,7 +29,6 @@ public class ComiteGestorTest {
 		}
 
 		try {
-			ComiteGestor comite = ComiteGestor.getInstance();
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Nome"), "paulo");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Data"), "2001-01-01");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Cargo"), "Diretor Geral");
@@ -34,8 +39,7 @@ public class ComiteGestorTest {
 		}
 
 		try {
-			ComiteGestor comiteGestor = ComiteGestor.getInstance();
-			comiteGestor.liberaSistema("chaveErrada", "pedro", "15/07/1998");
+			comite.liberaSistema("chaveErrada", "pedro", "15/07/1998");
 			fail("Nao deve lancar excecao");
 		} catch (Exception e) {
 			assertEquals("Erro ao liberar o sistema. Sistema liberado anteriormente.", e.getMessage());
@@ -43,8 +47,6 @@ public class ComiteGestorTest {
 	}
 
 	public void testLogin() {
-
-		ComiteGestor comite = ComiteGestor.getInstance();
 
 		try {
 			comite.login("10000666", "20011201");
@@ -73,8 +75,6 @@ public class ComiteGestorTest {
 
 	public void testLogout() {
 
-		ComiteGestor comite = ComiteGestor.getInstance();
-
 		try {
 			comite.logout();
 
@@ -92,8 +92,6 @@ public class ComiteGestorTest {
 	}
 
 	public void testCadastraFuncionario() {
-
-		ComiteGestor comite = ComiteGestor.getInstance();
 
 		try {
 			comite.login("12016001", "20011201");
@@ -123,8 +121,6 @@ public class ComiteGestorTest {
 	}
 	
 	public void fechaSistema() {
-		
-		ComiteGestor comite = ComiteGestor.getInstance();
 		
 		try {
 			comite.fechaSistema();
