@@ -18,12 +18,14 @@ responsabilidades conforme o GRASP (Construtor, Acoplamento, Expert, Coesão).
 Caso 0 - Design do Sistema
 	
 	Antes de adentrar os casos de uso solitados, é importanto relatar que de forma mais geral o sistema foi implementado
-seguindo o padrão MVC (Model View Controller), que tem por objetivo modularizar as atribuições do sistema.
+seguindo o padrão MVC (Model View Controller), que tem por objetivo modularizar as atribuições do sistema, fato que separa os 
+especialistas na informação, garante uma alta coesão, e assegurando um baixo acoplamento.
 	
-	No sistema desenvolvido a parte titulada de Model, que conterá a lógica do sistema relacionando-se com as partes mais
-baixas da arquitetura, é implementado pela classe "ComiteGestor". 
+	No sistema desenvolvido, a parte titulada de Model, que conterá a lógica do sistema relacionando-se com as partes mais
+baixas da arquitetura, é implementado pela classe "ComiteGestor". O construtor da classe mencionada instancia todas as classes
+da parte mais baixa do sistema necessárias a sua lógica, conforme será explicado mais adiante, nos casos de uso. 
 
-	Enquanto o View, que tem a responsabilidade de exibir os resultados e coletar as informações fornecidas pelo usuário
+	Enquanto o View, que tem a responsabilidade de exibir os resultados e coletar as informações fornecidas pelo usuário 
 externo ao sistema, é implementado na classe HospitalFacade, que utiliza o padrão de fachada para torná-la o equivalente a uma
 saída e entrada do sistema, haja vista que não é executada nenhuma interface gráfica no projeto. 
 
@@ -32,13 +34,10 @@ além de intermediar a comunicação é responsável por garantir a permanência
 	
 Caso 1 - Primeiro cadastro, login do diretor geral e cadastro de novos colaboradores:
 
-	Neste caso de uso foram usadas variáveis de controle para determinar se o primeiro cadastro já havia sido executado, 
-assim como para determinar a existência do diretor geral cadastrado no sistema.
+	O caso de uso foi definido como "Descrição principal: Como diretor geral desejo iniciar e realizar o cadastro de novos
+colaboradores para que possam posteriormente usar o sistema."
+
 	
-	Aquele por sua vez é um objeto criado a partir da fábrica da classe Funcionário, utilizando o padrão de projeto factor,
-para assim aperfeiçoar o Creator das classes, melhorando o GRASP.
-	
-	Assim, foi criada uma classe Funcionário,  
 
 Caso 2 - Atualizar informações de usuários e Excluir usuários do sistema:
 Caso 3 - Cadastrar e atualizar prontuários dos pacientes:
