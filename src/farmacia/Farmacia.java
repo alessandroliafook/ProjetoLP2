@@ -22,7 +22,7 @@ public class Farmacia implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1325300249760149147L;
-	
+
 	Set<Medicamento> estoqueDeMedicamentos;
 	FactoryDeMedicamentos farmaceutico;
 
@@ -61,11 +61,7 @@ public class Farmacia implements Serializable {
 	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha
 	 *         sido realizada com sucesso.
 	 * @throws StringInvalidaException
-	 *             Lanca excecao personalizada acaso qualques das String
-	 *             informadas seja vazia ou igual a null.
-	 * @throws NumeroInvalidoException
-	 *             Lanca excecao acaso qualquer dos valores informados sejam
-	 *             menores que zero.
+	 *             Caso algum dos parametros fornecidos seja invalido
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
@@ -168,11 +164,11 @@ public class Farmacia implements Serializable {
 	 *             fornecimento ou acaso o medicamento nao exista no estoque.
 	 */
 	public double verificaEstoque(String nomeMedicamentos) throws Exception {
-		
+
 		VerificaCadastroMedicamento.validaNomeMedicamento(nomeMedicamentos);
 
 		String[] listaDeMedicamentos = nomeMedicamentos.split(",");
-		
+
 		Map<String, Integer> medicamentos = new TreeMap<String, Integer>();
 
 		for (String nomeDoMedicamento : listaDeMedicamentos) {

@@ -38,7 +38,6 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private static final long serialVersionUID = 8379224367585964465L;
 
-	
 	private Funcionario funcLogado;
 	private boolean primeiroAcesso;
 	private int numeroMatriculas = 1;
@@ -61,7 +60,7 @@ public final class ComiteGestor implements Serializable {
 		this.farmacia = new Farmacia();
 		this.clinica = new Clinica();
 	}
-	
+
 	/**
 	 * Verifica o numero de procedimentos realizados pelo paciente com a ID
 	 * especificada
@@ -110,9 +109,14 @@ public final class ComiteGestor implements Serializable {
 	 * 
 	 * @param chave
 	 *            string que libera o sistema
+	 * @param nome
+	 *            Nome do novo diretor geral
+	 * @param dataNascimento
+	 *            Data de nascimento do novo diretor geral
 	 * @return uma nova matricula com privilegios de um diretor geral
-	 * @throws StringInvalidaException
-	 *             caso a chave seja invalida
+	 * @throws Exception
+	 *             Caso o sistema ja tenha sido liberado ou se a chave fornecida
+	 *             for invalida
 	 */
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 
@@ -128,10 +132,10 @@ public final class ComiteGestor implements Serializable {
 	 * Metodo que busca um funcionario cadastrado pela matricula.
 	 * 
 	 * @param matricula
-	 *            - Matricula pela qual sera pesquisado o funcionario.
+	 *            Matricula pela qual sera pesquisado o funcionario.
 	 * @throws ObjetoNaoEncontrado
-	 *             - Caso o funcionario nao possa ser encontrado.
-	 * @return - Retorna o funcionario que possuir a matricula especificada.
+	 *             Caso o funcionario nao possa ser encontrado.
+	 * @return Retorna o funcionario que possuir a matricula especificada.
 	 */
 	private Funcionario getFuncionario(String matricula) {
 
@@ -154,11 +158,11 @@ public final class ComiteGestor implements Serializable {
 	 * senha informadas.
 	 * 
 	 * @param matricula
-	 *            - Matricula a ser verificada
+	 *            Matricula a ser verificada
 	 * @param senha
-	 *            - Senha correspondente a matricula
+	 *            Senha correspondente a matricula
 	 * @throws LoginException
-	 *             - Caso a matricula nao exista. Se existir e a senha estiver
+	 *             Caso a matricula nao exista. Se existir e a senha estiver
 	 *             errada, tambem lancara excecao.
 	 */
 	private void validaLogin(String matricula, String senha) throws LoginException {
@@ -173,18 +177,44 @@ public final class ComiteGestor implements Serializable {
 
 	}
 
+	/**
+	 * Verifica se existe um funcionario logado no sistema
+	 * 
+	 * @throws Exception
+	 *             Caso exista um funcionario logado
+	 */
 	private void existeFuncionarioLogado() throws Exception {
 		if (funcLogado != null) {
 			throw new Exception("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
+	/**
+	 * Verifica se a senha do funcionario com a matricula fornecida corresponde
+	 * a senha passada ao metodo
+	 * 
+	 * @param matricula
+	 *            Matricula do funcionario a ser consultado
+	 * @param senha
+	 *            Suposta senha do funcionario
+	 * @throws Exception
+	 *             Caso a senha fornecida nao seja de fato a senha do
+	 *             funcionario
+	 */
 	private void verificaSenhaCorreta(String matricula, String senha) throws Exception {
 		if (!cadastros.get(matricula).equals(senha)) {
 			throw new SenhaIncorretaException();
 		}
 	}
 
+	/**
+	 * Verifica se existe no sistema um funcionario com a matricula fornecida
+	 * 
+	 * @param matricula
+	 *            Matricula a ser verificada
+	 * @throws Exception
+	 *             Caso nao exista um funcionario com a matricula fornecida
+	 */
 	private void estaMatriculado(String matricula) throws Exception {
 		if (!cadastros.containsKey(matricula)) {
 			throw new FuncionarioInexistenteException();
@@ -276,9 +306,9 @@ public final class ComiteGestor implements Serializable {
 					this.numeroMatriculas);
 			String matricula = funcionario.getMatricula();
 
-			if(cargo.equalsIgnoreCase("diretor geral")){
+			if (cargo.equalsIgnoreCase("diretor geral")) {
 				this.diretorGeral = funcionario;
-				
+
 			} else {
 				recursosHumanos.add(funcionario);
 			}
@@ -349,8 +379,8 @@ public final class ComiteGestor implements Serializable {
 	 *            Novo valor do atributo selecionado para ser atualizado
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o funcionario tentando realizar a operacao nao esteja
-	 *             cadastro ou nao tenha permissoes suficientes. Ou se algum dos
-	 *             dados informados seja invalido
+	 *             cadastrado ou nao tenha permissoes suficientes. Ou se algum
+	 *             dos dados informados seja invalido
 	 */
 	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
 			throws AtualizaFuncionarioException {
@@ -530,12 +560,10 @@ public final class ComiteGestor implements Serializable {
 	 *            medicamento.
 	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha
 	 *         sido realizada com sucesso.
-	 * @throws StringInvalidaException
-	 *             Lanca excecao personalizada acaso qualques das String
-	 *             informadas seja vazia ou igual a null.
-	 * @throws NumeroInvalidoException
-	 *             Lanca excecao acaso qualquer dos valores informados sejam
-	 *             menores que zero.
+	 * @throws CadastroMedicamentoException
+	 *             Caso o funcionario logado nao tenha permissao de cadastrar
+	 *             medicamentos, ou se algum dos parametros fornecidos for
+	 *             invalido
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
@@ -583,7 +611,7 @@ public final class ComiteGestor implements Serializable {
 	 * 
 	 * @param nomeMedicamento
 	 *            String contendo o nome do medicamento a ser entregue.
-	 * @return Objeto do tipo Medicamento.
+	 * @return O preco do medicamento solicitado.
 	 * @throws ConsultaMedicamentoException
 	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
 	 *             estoque.
@@ -604,8 +632,8 @@ public final class ComiteGestor implements Serializable {
 	 * informada.
 	 * 
 	 * @param categoria
-	 *            - String com o nome da categoria associada aos medicamentos
-	 *            que se pretende listar.
+	 *            String com o nome da categoria associada aos medicamentos que
+	 *            se pretende listar.
 	 * @return String com a lista de medicamentos que contenham a categoria
 	 *         pesquisada.
 	 * @throws ConsultaMedicamentoException
@@ -759,7 +787,7 @@ public final class ComiteGestor implements Serializable {
 	}
 
 	/**
-	 * Metodo que registra um procedimento medito no prontuario do paciente.
+	 * Metodo que registra um procedimento medico no prontuario do paciente.
 	 * 
 	 * @param nomeDoProcedimento
 	 *            Nome do procedimento a ser registrado
@@ -793,7 +821,7 @@ public final class ComiteGestor implements Serializable {
 	}
 
 	/**
-	 * Metodo que registra um procedimento medito no prontuario do paciente,
+	 * Metodo que registra um procedimento medico no prontuario do paciente,
 	 * onde eh necessario realizar a disponibilizacao de um orgao existente no
 	 * banco do hospital.
 	 * 
@@ -802,6 +830,8 @@ public final class ComiteGestor implements Serializable {
 	 * @param idDoPaciente
 	 *            Id do paciente titular do prontuario onde sera registrado o
 	 *            procedimento.
+	 * @param nomeDoOrgao
+	 *            Nome do orgao que sera utilizado no procedimento
 	 * @param listaDeMedicamentos
 	 *            String com nomes dos medicamentos necessarios ao procedimento
 	 * @throws Exception
@@ -828,6 +858,17 @@ public final class ComiteGestor implements Serializable {
 
 	}
 
+	/**
+	 * Registra um procimento medico no prontuario do paciente
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
+	 */
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 
 		try {
@@ -866,7 +907,7 @@ public final class ComiteGestor implements Serializable {
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao ser adicionado
 	 * 
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
 	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
@@ -926,7 +967,7 @@ public final class ComiteGestor implements Serializable {
 	 *            Nome do orgao a ser removido
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser removido
-	 * @throws Exception
+	 * @throws RemoveOrgaoException
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */

@@ -3,6 +3,7 @@ package hospital;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
+import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
 import exceptions.CargoInvalidoException;
@@ -46,9 +47,14 @@ public class HospitalFacade {
 	 * 
 	 * @param chave
 	 *            string que libera o sistema
+	 * @param nome
+	 *            Nome do novo diretor geral
+	 * @param dataNascimento
+	 *            Data de nascimento do novo diretor geral
 	 * @return uma nova matricula com privilegios de um diretor geral
-	 * @throws StringInvalidaException
-	 *             caso a chave seja invalida
+	 * @throws Exception
+	 *             Caso o sistema ja tenha sido liberado ou se a chave fornecida
+	 *             for invalida
 	 */
 	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 		return controller.liberaSistema(chave, nome, dataNascimento);
@@ -81,15 +87,56 @@ public class HospitalFacade {
 		return controller.getPontosFidelidade(id);
 	}
 
+	/**
+	 * Registra um procimento medico no prontuario do paciente
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
+	 */
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
 	}
 
+	/**
+	 * Metodo que registra um procedimento medico no prontuario do paciente.
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @param listaDeMedicamentos
+	 *            String com nomes dos medicamentos necessarios ao procedimento
+	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
+	 */
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
 			throws Exception {
 		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
+	/**
+	 * Metodo que registra um procedimento medico no prontuario do paciente,
+	 * onde eh necessario realizar a disponibilizacao de um orgao existente no
+	 * banco do hospital.
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento a ser registrado
+	 * @param idDoPaciente
+	 *            Id do paciente titular do prontuario onde sera registrado o
+	 *            procedimento.
+	 * @param nomeDoOrgao
+	 *            Nome do orgao que sera utilizado no procedimento
+	 * @param listaDeMedicamentos
+	 *            String com nomes dos medicamentos necessarios ao procedimento
+	 * @throws Exception
+	 *             Caso o procedimento nao seja realizado com sucesso
+	 */
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
 			String listaDeMedicamentos) throws Exception {
 		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
@@ -139,6 +186,7 @@ public class HospitalFacade {
 		controller.logout();
 	}
 
+	
 	/**
 	 * Metodo que cadastra um novo funcionario no sistema
 	 * 
@@ -148,16 +196,8 @@ public class HospitalFacade {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
-	 * @throws MaisDeUmDiretorException
-	 *             - Caso tente-se criar mais de um diretor
-	 * @throws NomeFuncionarioVazioException
-	 *             - Caso o nome do funcionario a ser criado esteja vazio
-	 * @throws DataInvalidaException
-	 *             - Caso a data de nascimento do funcionario a ser criado
-	 *             esteja fora do padrao adotado
-	 * @throws CargoInvalidoException
-	 *             - Caso o cargo do funcionario a ser criada esteja vazio ou
-	 *             nao exista
+	 * @throws CadastroFuncionarioException
+	 *             Caso o cadastro de funcionario nao seja bem sucedido
 	 */
 	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 		return controller.cadastraFuncionario(nome, cargo, dataNascimento);
@@ -280,12 +320,10 @@ public class HospitalFacade {
 	 *            medicamento.
 	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha
 	 *         sido realizada com sucesso.
-	 * @throws StringInvalidaException
-	 *             Lanca excecao personalizada acaso qualques das String
-	 *             informadas seja vazia ou igual a null.
-	 * @throws NumeroInvalidoException
-	 *             Lanca excecao acaso qualquer dos valores informados sejam
-	 *             menores que zero.
+	 * @throws CadastroMedicamentoException
+	 *             Caso o funcionario logado nao tenha permissao de cadastrar
+	 *             medicamentos, ou se algum dos parametros fornecidos for
+	 *             invalido
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
@@ -319,7 +357,7 @@ public class HospitalFacade {
 	 * 
 	 * @param nomeMedicamento
 	 *            String contendo o nome do medicamento a ser entregue.
-	 * @return Objeto do tipo Medicamento.
+	 * @return O preco do medicamento solicitado.
 	 * @throws ConsultaMedicamentoException
 	 *             Lanca excecao acaso o medicamento pesquisado nao exista no
 	 *             estoque.
@@ -333,8 +371,8 @@ public class HospitalFacade {
 	 * informada.
 	 * 
 	 * @param categoria
-	 *            - String com o nome da categoria associada aos medicamentos
-	 *            que se pretende listar.
+	 *            String com o nome da categoria associada aos medicamentos que
+	 *            se pretende listar.
 	 * @return String com a lista de medicamentos que contenham a categoria
 	 *         pesquisada.
 	 * @throws ConsultaMedicamentoException
@@ -492,7 +530,7 @@ public class HospitalFacade {
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao ser adicionado
 	 * 
-	 * @throws Exception
+	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
 	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
@@ -552,7 +590,7 @@ public class HospitalFacade {
 	 *            Nome do orgao a ser removido
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser removido
-	 * @throws Exception
+	 * @throws RemoveOrgaoException
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
