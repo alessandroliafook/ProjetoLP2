@@ -60,8 +60,9 @@ public class Farmacia implements Serializable {
 	 *            medicamento.
 	 * @return Retorna o nome do medicamento cadastrado, acaso a operacao tenha
 	 *         sido realizada com sucesso.
-	 * @throws StringInvalidaException
-	 *             Caso algum dos parametros fornecidos seja invalido
+	 * @throws CadastroMedicamentoException
+	 *             Caso os dados sejam invalidos e nao seja possivel realizar o
+	 *             cadastro
 	 */
 	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
@@ -294,9 +295,8 @@ public class Farmacia implements Serializable {
 	 *            String relacionada ao nome do medicamento que se pretende
 	 *            obter as informacoes.
 	 * @return String com as informacoes do medicamento solicitado.
-	 * @throws StringInvalidaException
-	 *             Lanca excecao acaso o nome informado seja igual a null ou
-	 *             vazio.
+	 * @throws ConsultaMedicamentoException
+	 *             Caso o medicamento nao esteja cadastrado no sistema
 	 */
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
@@ -366,7 +366,8 @@ public class Farmacia implements Serializable {
 	 * @param atributoDoMedicamento
 	 *            String com o atributo que se deseja informacao.
 	 * @param nomeMedicamento
-	 *            Nome do medicamento que se deseja a informacao de seu atributo.
+	 *            Nome do medicamento que se deseja a informacao de seu
+	 *            atributo.
 	 * @return String contendo a informacao solicitada
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.

@@ -8,7 +8,7 @@ import exceptions.NumeroInvalidoException;
 import exceptions.TipoMedicamentoException;
 import farmacia.Medicamento;
 
-public class FactoryDeMedicamentos implements Serializable{
+public class FactoryDeMedicamentos implements Serializable {
 
 	/**
 	 * 
@@ -35,6 +35,7 @@ public class FactoryDeMedicamentos implements Serializable{
 	 * @param tipo
 	 *            String que indica o tipo de medicamento (referencia ou
 	 *            generico).
+	 * @return O objeto medicamento que foi criado
 	 * @throws TipoMedicamentoException
 	 *             Lanca excecao acaso o tipo informado nao exista.
 	 * @throws CategoriaMedicamentoInvalidaException

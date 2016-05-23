@@ -118,8 +118,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso o sistema ja tenha sido liberado ou se a chave fornecida
 	 *             for invalida
 	 */
-	public String liberaSistema(String chave, String nome, String dataNascimento)
-			throws Exception {
+	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 
 		VerificacaoLiberaSistema.validaAcesso(this.primeiroAcesso);
 		VerificacaoLiberaSistema.validaChave(chave, CHAVE);
@@ -134,8 +133,6 @@ public final class ComiteGestor implements Serializable {
 	 * 
 	 * @param matricula
 	 *            Matricula pela qual sera pesquisado o funcionario.
-	 * @throws ObjetoNaoEncontrado
-	 *             Caso o funcionario nao possa ser encontrado.
 	 * @return Retorna o funcionario que possuir a matricula especificada.
 	 */
 	private Funcionario getFuncionario(String matricula) {
@@ -166,8 +163,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso a matricula nao exista. Se existir e a senha estiver
 	 *             errada, tambem lancara excecao.
 	 */
-	private void validaLogin(String matricula, String senha)
-			throws LoginException {
+	private void validaLogin(String matricula, String senha) throws LoginException {
 
 		try {
 			estaMatriculado(matricula);
@@ -187,8 +183,7 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private void existeFuncionarioLogado() throws Exception {
 		if (funcLogado != null) {
-			throw new Exception("Um funcionario ainda esta logado: "
-					+ funcLogado.getNome() + ".");
+			throw new Exception("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
@@ -204,8 +199,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso a senha fornecida nao seja de fato a senha do
 	 *             funcionario
 	 */
-	private void verificaSenhaCorreta(String matricula, String senha)
-			throws Exception {
+	private void verificaSenhaCorreta(String matricula, String senha) throws Exception {
 		if (!cadastros.get(matricula).equals(senha)) {
 			throw new SenhaIncorretaException();
 		}
@@ -294,22 +288,21 @@ public final class ComiteGestor implements Serializable {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
+	 * @return A matricula do funcionario cadastrado
 	 * @throws CadastroFuncionarioException
 	 *             Caso o cadastro de funcionario nao seja bem sucedido
 	 */
-	public String cadastraFuncionario(String nome, String cargo,
-			String dataNascimento) throws CadastroFuncionarioException {
+	public String cadastraFuncionario(String nome, String cargo, String dataNascimento)
+			throws CadastroFuncionarioException {
 
 		cargo = cargo.toLowerCase();
 
 		try {
-			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado,
-					"cadastrar funcionarios.");
-			VerificaPrivilegiosDeDiretor.verificaExistenciaDeDiretor(cargo,
-					this.diretorGeral);
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "cadastrar funcionarios.");
+			VerificaPrivilegiosDeDiretor.verificaExistenciaDeDiretor(cargo, this.diretorGeral);
 
-			Funcionario funcionario = facFuncionario.criaFuncionario(nome,
-					dataNascimento, cargo, this.numeroMatriculas);
+			Funcionario funcionario = facFuncionario.criaFuncionario(nome, dataNascimento, cargo,
+					this.numeroMatriculas);
 			String matricula = funcionario.getMatricula();
 
 			if (cargo.equalsIgnoreCase("diretor geral")) {
@@ -342,8 +335,7 @@ public final class ComiteGestor implements Serializable {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso o atributo a ser recuperado seja a senha
 	 */
-	public String getInfoFuncionario(String matricula, String atributo)
-			throws Exception {
+	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 
 		try {
 			VerificaCadastroFuncionario.validaMatricula(matricula);
@@ -389,14 +381,13 @@ public final class ComiteGestor implements Serializable {
 	 *             cadastrado ou nao tenha permissoes suficientes. Ou se algum
 	 *             dos dados informados seja invalido
 	 */
-	public void atualizaInfoFuncionario(String matricula, String atributo,
-			String novoValor) throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
+			throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
 		try {
-			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado,
-					"excluir funcionarios.");
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "excluir funcionarios.");
 			VerificaCadastroFuncionario.validaMatricula(matricula);
 			estaMatriculado(matricula);
 
@@ -430,8 +421,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso nao exista nenhum funcionario cadastrado com tal
 	 *             matricula, ou o novo valor a ser inserido seja invalido
 	 */
-	public void atualizaInfoFuncionario(String atributo, String novoValor)
-			throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
 
 		atributo = atributo.toLowerCase();
 
@@ -468,12 +458,10 @@ public final class ComiteGestor implements Serializable {
 	 * @throws ExclusaoFuncionarioException
 	 *             Caso o funcionario logado nao tenha permissao para exlcuir
 	 */
-	public void excluiFuncionario(String matricula, String senha)
-			throws ExclusaoFuncionarioException {
+	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 
 		try {
-			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado,
-					"excluir funcionarios.");
+			VerificaPrivilegiosDeDiretor.validaPermissao(funcLogado, "excluir funcionarios.");
 			VerificaCadastroFuncionario.validaMatricula(matricula);
 			estaMatriculado(matricula);
 			confirmaSenhaDiretor(senha);
@@ -521,12 +509,10 @@ public final class ComiteGestor implements Serializable {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
-	public void atualizaSenha(String senhaAntiga, String novaSenha)
-			throws AtualizaFuncionarioException {
+	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
 
 		try {
-			VerificaCadastroFuncionario.confirmaSenha(
-					cadastros.get(funcLogado.getMatricula()), senhaAntiga);
+			VerificaCadastroFuncionario.confirmaSenha(cadastros.get(funcLogado.getMatricula()), senhaAntiga);
 			VerificaCadastroFuncionario.validaSenha(novaSenha);
 		} catch (Exception e) {
 			throw new AtualizaFuncionarioException(e.getMessage());
@@ -544,8 +530,7 @@ public final class ComiteGestor implements Serializable {
 	 */
 	public void fechaSistema() throws SistemaException {
 		if (funcLogado != null) {
-			throw new SistemaException("Um funcionario ainda esta logado: "
-					+ funcLogado.getNome() + ".");
+			throw new SistemaException("Um funcionario ainda esta logado: " + funcLogado.getNome() + ".");
 		}
 	}
 
@@ -579,19 +564,16 @@ public final class ComiteGestor implements Serializable {
 	 *             medicamentos, ou se algum dos parametros fornecidos for
 	 *             invalido
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco,
-			int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"cadastrar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new CadastroMedicamentoException(e.getMessage());
 		}
 
-		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade,
-				categorias);
+		return farmacia.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
 	/**
@@ -611,12 +593,11 @@ public final class ComiteGestor implements Serializable {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo,
-			String novoValor) throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
+			throws AtualizaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"atualizar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "atualizar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new AtualizaMedicamentoException(e.getMessage());
 		}
@@ -637,8 +618,7 @@ public final class ComiteGestor implements Serializable {
 	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"fornecer medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "fornecer medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new Exception(e.getMessage());
 		}
@@ -659,12 +639,10 @@ public final class ComiteGestor implements Serializable {
 	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
 	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria)
-			throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"consultar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -683,12 +661,10 @@ public final class ComiteGestor implements Serializable {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaMedNome(String nomeDoRemedio)
-			throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"consultar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -708,12 +684,10 @@ public final class ComiteGestor implements Serializable {
 	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
 	 *             preco ou ordem alfabética.
 	 */
-	public String getEstoqueFarmacia(String ordenacao)
-			throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"consultar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -734,18 +708,16 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso o funcionario logado nao tenha permissao ou o atributo
 	 *             solicitado seja invalido
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento,
-			String nomeMedicamento) throws ConsultaMedicamentoException {
+	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
+			throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"consultar medicamentos.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
 
-		return farmacia.getInfoMedicamento(atributoDoMedicamento,
-				nomeMedicamento);
+		return farmacia.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	// metodos da clinica
@@ -769,19 +741,16 @@ public final class ComiteGestor implements Serializable {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso,
-			String sexo, String genero, String tipoSanguineo)
-			throws CadastroPacienteException {
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
+			String tipoSanguineo) throws CadastroPacienteException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado,
-					"cadastrar pacientes.");
+			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar pacientes.");
 		} catch (NaoAutorizadoException e) {
 			throw new CadastroPacienteException(e.getMessage());
 		}
 
-		return clinica.cadastraPaciente(nome, data, peso, sexo, genero,
-				tipoSanguineo);
+		return clinica.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
 	/**
@@ -802,6 +771,8 @@ public final class ComiteGestor implements Serializable {
 	 *            Descricao da informacao
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
+	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID especificado
 	 */
 	public String getInfoPaciente(String id, String atributo) throws Exception {
 		return clinica.getInfoPaciente(id, atributo);
@@ -813,8 +784,9 @@ public final class ComiteGestor implements Serializable {
 	 * @param posicao
 	 *            Posicao em que o prontuario esta armazenado no sistema
 	 * @return String com o ID do paciente referente ao prontuario solicitado
-	 * @throws ConsultaProntuarioException Caso a posicao fornecida seja negativa
-	 *        ou maior do que a quantidade de prontuarios nos sistema
+	 * @throws ConsultaProntuarioException
+	 *             Caso a posicao fornecida seja negativa ou maior do que a
+	 *             quantidade de prontuarios nos sistema
 	 */
 	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		return clinica.getProntuario(posicao);
@@ -833,19 +805,16 @@ public final class ComiteGestor implements Serializable {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente, String listaDeMedicamentos) throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
+			throws Exception {
 
 		try {
-			VerificaAutorizacaoClinica.validaPermissao(funcLogado,
-					"realizar procedimentos.");
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
-			double gastosComMedicamento = farmacia
-					.verificaEstoque(listaDeMedicamentos);
+			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
-					gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -874,20 +843,16 @@ public final class ComiteGestor implements Serializable {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente, String nomeDoOrgao, String listaDeMedicamentos)
-			throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
+			String listaDeMedicamentos) throws Exception {
 
 		try {
-			VerificaAutorizacaoClinica.validaPermissao(funcLogado,
-					"realizar procedimentos.");
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
-			double gastosComMedicamento = farmacia
-					.verificaEstoque(listaDeMedicamentos);
+			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
-					nomeDoOrgao, gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, gastosComMedicamento);
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -910,12 +875,10 @@ public final class ComiteGestor implements Serializable {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente) throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 
 		try {
-			VerificaAutorizacaoClinica.validaPermissao(funcLogado,
-					"realizar procedimentos.");
+			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
 			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
@@ -953,8 +916,7 @@ public final class ComiteGestor implements Serializable {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 		clinica.cadastraOrgao(nome, tipoSanguineo);
 	}
 
@@ -969,8 +931,7 @@ public final class ComiteGestor implements Serializable {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
 		return clinica.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -986,8 +947,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao)
-			throws BancoDeOrgaosException {
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
 		return clinica.buscaOrgPorNome(nomeOrgao);
 	}
 
@@ -1002,8 +962,7 @@ public final class ComiteGestor implements Serializable {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
 		return clinica.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
@@ -1018,8 +977,7 @@ public final class ComiteGestor implements Serializable {
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
-	public void retiraOrgao(String nome, String tipoSanguineo)
-			throws RemoveOrgaoException {
+	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
 		clinica.retiraOrgao(nome, tipoSanguineo);
 	}
 

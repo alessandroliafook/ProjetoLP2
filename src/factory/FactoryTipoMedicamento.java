@@ -7,7 +7,7 @@ import farmacia.MedicamentoGenerico;
 import farmacia.MedicamentoReferencia;
 import farmacia.TipoMedicamentoIF;
 
-public class FactoryTipoMedicamento implements Serializable{
+public class FactoryTipoMedicamento implements Serializable {
 
 	/**
 	 * 
@@ -21,6 +21,7 @@ public class FactoryTipoMedicamento implements Serializable{
 	 * @param tipo
 	 *            String com o nome do tipo a ser escolhido dentre as
 	 *            opcoes(referencia, generico).
+	 * @return Retorna o tipo de medicamento solicitado
 	 * @throws TipoMedicamentoException
 	 *             Lanca excecao acaso o tipo nao seja valido.
 	 */

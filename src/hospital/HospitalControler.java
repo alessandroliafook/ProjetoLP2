@@ -49,8 +49,7 @@ public class HospitalControler {
 
 		if (arquivo.exists()) {
 
-			ObjectInputStream reader = new ObjectInputStream(
-					new FileInputStream(arquivo));
+			ObjectInputStream reader = new ObjectInputStream(new FileInputStream(arquivo));
 			ComiteGestor obj = (ComiteGestor) reader.readObject();
 			this.comite = obj;
 			reader.close();
@@ -60,8 +59,7 @@ public class HospitalControler {
 			file.mkdir();
 			arquivo.createNewFile();
 			this.comite = new ComiteGestor();
-			ObjectOutputStream writer = new ObjectOutputStream(
-					new FileOutputStream(arquivo));
+			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
 			writer.writeObject(this.comite);
 			writer.close();
 		}
@@ -83,8 +81,7 @@ public class HospitalControler {
 	 *             Caso o sistema ja tenha sido liberado ou se a chave fornecida
 	 *             for invalida
 	 */
-	public String liberaSistema(String chave, String nome, String dataNascimento)
-			throws Exception {
+	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
 		return comite.liberaSistema(chave, nome, dataNascimento);
 	}
 
@@ -126,8 +123,7 @@ public class HospitalControler {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente) throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
 		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
 	}
 
@@ -144,10 +140,9 @@ public class HospitalControler {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente, String listaDeMedicamentos) throws Exception {
-		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
-				listaDeMedicamentos);
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
+			throws Exception {
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
 	}
 
 	/**
@@ -167,11 +162,9 @@ public class HospitalControler {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento,
-			String idDoPaciente, String nomeDoOrgao, String listaDeMedicamentos)
-			throws Exception {
-		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
-				nomeDoOrgao, listaDeMedicamentos);
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
+			String listaDeMedicamentos) throws Exception {
+		comite.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
 	}
 
 	/**
@@ -187,8 +180,7 @@ public class HospitalControler {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso o atributo a ser recuperado seja a senha
 	 */
-	public String getInfoFuncionario(String matricula, String atributo)
-			throws Exception {
+	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
 		return comite.getInfoFuncionario(matricula, atributo);
 	}
 
@@ -228,11 +220,11 @@ public class HospitalControler {
 	 *            Cargo que ele ocupa
 	 * @param dataNascimento
 	 *            Data de seu nascimento
+	 * @return A matricula do funcionario cadastrado
 	 * @throws CadastroFuncionarioException
 	 *             Caso o cadastro de funcionario nao seja bem sucedido
 	 */
-	public String cadastraFuncionario(String nome, String cargo,
-			String dataNascimento) throws Exception {
+	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
 		return comite.cadastraFuncionario(nome, cargo, dataNascimento);
 	}
 
@@ -257,8 +249,8 @@ public class HospitalControler {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String matricula, String atributo,
-			String novoValor) throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
+			throws AtualizaFuncionarioException {
 		comite.atualizaInfoFuncionario(matricula, atributo, novoValor);
 	}
 
@@ -281,8 +273,7 @@ public class HospitalControler {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String atributo, String novoValor)
-			throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
 		comite.atualizaInfoFuncionario(atributo, novoValor);
 	}
 
@@ -300,8 +291,7 @@ public class HospitalControler {
 	 * @throws ExclusaoFuncionarioException
 	 *             Caso o funcionario logado nao tenha permissao para exlcuir
 	 */
-	public void excluiFuncionario(String matricula, String senha)
-			throws ExclusaoFuncionarioException {
+	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
 		comite.excluiFuncionario(matricula, senha);
 	}
 
@@ -316,8 +306,7 @@ public class HospitalControler {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
-	public void atualizaSenha(String senhaAntiga, String novaSenha)
-			throws AtualizaFuncionarioException {
+	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
 		comite.atualizaSenha(senhaAntiga, novaSenha);
 	}
 
@@ -333,8 +322,7 @@ public class HospitalControler {
 
 		File file = new File("system_data");
 		File arquivo = new File(file, "soos.dat");
-		ObjectOutputStream writer = new ObjectOutputStream(
-				new FileOutputStream(arquivo));
+		ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
 
 		writer.writeObject(this.comite);
 		writer.close();
@@ -371,11 +359,9 @@ public class HospitalControler {
 	 *             medicamentos, ou se algum dos parametros fornecidos for
 	 *             invalido
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco,
-			int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
 			throws CadastroMedicamentoException {
-		return comite.cadastraMedicamento(nome, tipo, preco, quantidade,
-				categorias);
+		return comite.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
 	}
 
 	/**
@@ -395,8 +381,8 @@ public class HospitalControler {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo,
-			String novoValor) throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo, String novoValor)
+			throws AtualizaMedicamentoException {
 		comite.atualizaMedicamento(nome, atributo, novoValor);
 	}
 
@@ -427,8 +413,7 @@ public class HospitalControler {
 	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
 	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria)
-			throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 		return comite.consultaMedCategoria(categoria);
 	}
 
@@ -443,8 +428,7 @@ public class HospitalControler {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaMedNome(String nomeDoRemedio)
-			throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 		return comite.consultaMedNome(nomeDoRemedio);
 	}
 
@@ -460,8 +444,7 @@ public class HospitalControler {
 	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
 	 *             preco ou ordem alfabética.
 	 */
-	public String getEstoqueFarmacia(String ordenacao)
-			throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 		return comite.getEstoqueFarmacia(ordenacao);
 	}
 
@@ -477,10 +460,9 @@ public class HospitalControler {
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento,
-			String nomeMedicamento) throws ConsultaMedicamentoException {
-		return comite
-				.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
+	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
+			throws ConsultaMedicamentoException {
+		return comite.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
 	}
 
 	// metodos da clinica
@@ -504,11 +486,9 @@ public class HospitalControler {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso,
-			String sexo, String genero, String tipoSanguineo)
-			throws CadastroPacienteException {
-		return comite.cadastraPaciente(nome, data, peso, sexo, genero,
-				tipoSanguineo);
+	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
+			String tipoSanguineo) throws CadastroPacienteException {
+		return comite.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
 	}
 
 	/**
@@ -529,6 +509,8 @@ public class HospitalControler {
 	 *            Descricao da informacao
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
 	 * @return Uma String com a informacao solicitada
+	 * @throws Exception
+	 *             Caso nao exista o paciente com o ID especificado
 	 */
 	public String getInfoPaciente(String id, String atributo) throws Exception {
 		return comite.getInfoPaciente(id, atributo);
@@ -588,8 +570,7 @@ public class HospitalControler {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 		comite.cadastraOrgao(nome, tipoSanguineo);
 	}
 
@@ -604,8 +585,7 @@ public class HospitalControler {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
 		return comite.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -621,8 +601,7 @@ public class HospitalControler {
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao)
-			throws BancoDeOrgaosException {
+	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
 		return comite.buscaOrgPorNome(nomeOrgao);
 	}
 
@@ -637,8 +616,7 @@ public class HospitalControler {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo)
-			throws BancoDeOrgaosException {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
 		return comite.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
@@ -653,8 +631,7 @@ public class HospitalControler {
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
-	public void retiraOrgao(String nome, String tipoSanguineo)
-			throws RemoveOrgaoException {
+	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
 		comite.retiraOrgao(nome, tipoSanguineo);
 	}
 

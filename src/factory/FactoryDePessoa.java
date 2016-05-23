@@ -4,12 +4,18 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+
+import exceptions.CargoInvalidoException;
+import exceptions.DataInvalidaException;
+import exceptions.NomeFuncionarioVazioException;
+import exceptions.NomePacienteVazioException;
+import exceptions.PesoInvalidoException;
+import exceptions.TipoSanguineoInvalidoException;
 import pessoal.Funcionario;
 import pessoal.Paciente;
 import util.VerificaPessoa;
 
-public class FactoryDePessoa implements Serializable{
-
+public class FactoryDePessoa implements Serializable {
 
 	/**
 	 * 
@@ -34,9 +40,12 @@ public class FactoryDePessoa implements Serializable{
 	 *             Caso o nome fornecido seja vazio
 	 * @throws CargoInvalidoException
 	 *             Caso o cargo seja vazio ou invalido
+	 * @throws NomePacienteVazioException
+	 *             Nunca eh lancada
 	 */
 	public Funcionario criaFuncionario(String nome, String dataNascimento, String cargo, int quantidadeMatriculas)
-			throws Exception {
+			throws NomeFuncionarioVazioException, NomePacienteVazioException, CargoInvalidoException,
+			DataInvalidaException {
 
 		VerificaPessoa.validaNome(nome, false);
 		VerificaPessoa.validaCargo(cargo);
@@ -74,10 +83,13 @@ public class FactoryDePessoa implements Serializable{
 	 *             Caso o peso fornecido seja negativo
 	 * @throws TipoSanguineoInvalidoException
 	 *             Caso o tipo sanguineo informado seja vazio ou invalido
+	 * @throws NomeFuncionarioVazioException
+	 *             Nunca eh lancada
 	 * 
 	 */
 	public Paciente criaPaciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo,
-			String genero, int numeroCadastros) throws Exception {
+			String genero, int numeroCadastros) throws DataInvalidaException, NomePacienteVazioException,
+			PesoInvalidoException, TipoSanguineoInvalidoException, NomeFuncionarioVazioException {
 
 		VerificaPessoa.validaNome(nome, true);
 		VerificaPessoa.validaData(dataNascimento);
@@ -139,11 +151,11 @@ public class FactoryDePessoa implements Serializable{
 
 		DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 		LocalDate dataNascimento = LocalDate.parse(dataString, FORMATO_DE_DATA);
-		
+
 		String senha = "";
 		senha += dataNascimento.getYear();
 		senha += matricula.substring(0, 4);
-		
+
 		return senha;
 	}
 

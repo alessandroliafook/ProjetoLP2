@@ -3,6 +3,11 @@ package pessoal;
 import java.io.Serializable;
 
 import cartao.CartaoFidelidade;
+import exceptions.DataInvalidaException;
+import exceptions.NomeFuncionarioVazioException;
+import exceptions.NomePacienteVazioException;
+import exceptions.PesoInvalidoException;
+import exceptions.TipoSanguineoInvalidoException;
 import util.VerificaPessoa;
 
 public class Paciente extends Pessoa implements Comparable<Paciente>, Serializable {
@@ -11,7 +16,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	 * 
 	 */
 	private static final long serialVersionUID = -1296421988284829321L;
-	
+
 	private double peso;
 	private String tipoSanguineo;
 	private String sexo;
@@ -24,28 +29,34 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	 * Cria um novo objeto Funcionario com os parametros especificados
 	 * 
 	 * @param nome
-	 *            - Nome do paciente
+	 *            Nome do paciente
 	 * @param dataNascimento
-	 *            - Data de nascimento no formato "dd/mm/aaaa"
+	 *            Data de nascimento no formato "dd/mm/aaaa"
 	 * @param peso
-	 *            - Peso do paciente
+	 *            Peso do paciente
 	 * @param tipoSanguineo
-	 *            - Tipo sanguineo do paciente
+	 *            Tipo sanguineo do paciente
 	 * @param sexo
-	 *            - Sexo do paciente(M/F)
+	 *            Sexo do paciente(M/F)
 	 * @param genero
-	 *            - Genero do paciente
+	 *            Genero do paciente
 	 * @param id
-	 *            - Id gerada para o paciente
-	 * @throws DateTimeParseException
-	 *             - Caso a data nao esteja no formato especificado
-	 * @throws StringInvalidaException
-	 *             - Caso quaisquer string fornecida seja vazia ou nula
-	 * @throws NumeroInvalidoException
-	 *             - Caso o peso do paciente seja negativo
+	 *            Id gerada para o paciente
+	 * @throws DataInvalidaException
+	 *             Caso a data esteja em um formato invalido
+	 * @throws NomeFuncionarioVazioException
+	 *             Nunca eh lancado
+	 * @throws NomePacienteVazioException
+	 *             Caso o nome esteja em um formato invalido
+	 * @throws TipoSanguineoInvalidoException
+	 *             Caso o tipo sanguineo seja invalido
+	 * @throws PesoInvalidoException
+	 * 			   Caso o peso seja negativo
+	 * 			    
 	 */
 	public Paciente(String nome, String dataNascimento, double peso, String tipoSanguineo, String sexo, String genero,
-			int id) throws Exception {
+			int id) throws PesoInvalidoException, TipoSanguineoInvalidoException, NomePacienteVazioException,
+			NomeFuncionarioVazioException, DataInvalidaException {
 
 		super(nome, dataNascimento);
 
@@ -130,7 +141,7 @@ public class Paciente extends Pessoa implements Comparable<Paciente>, Serializab
 	public void setSaldo(double valor) {
 		this.saldo = valor;
 	}
-	
+
 	/**
 	 * Adiciona os pontos de fidelidade ganhos mais os pontos extras que cada
 	 * tipo de fidelidade fornecem

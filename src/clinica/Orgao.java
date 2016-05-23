@@ -19,8 +19,6 @@ public class Orgao implements Serializable{
 	 *            Nome do orgao a ser criado
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser criado
-	 * @throws Exception
-	 *             Caso o nome do orgao ou do tipo sanguineo esteja vazio
 	 */
 	public Orgao(String nome, String tipoSanguineo) {
 		setNome(nome);

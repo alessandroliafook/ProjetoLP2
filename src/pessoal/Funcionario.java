@@ -2,13 +2,17 @@ package pessoal;
 
 import java.io.Serializable;
 
+import exceptions.DataInvalidaException;
+import exceptions.NomeFuncionarioVazioException;
+import exceptions.NomePacienteVazioException;
+
 public class Funcionario extends Pessoa implements Comparable<Funcionario>, Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 2456859660892263148L;
-	
+
 	private String matricula;
 	private String senha;
 
@@ -27,8 +31,11 @@ public class Funcionario extends Pessoa implements Comparable<Funcionario>, Seri
 	 *             Caso a data nao esteja no formato especificado
 	 * @throws NomeFuncionarioVazioException
 	 *             Caso nome seja vazio
+	 * @throws NomePacienteVazioException
+	 *             Nunca eh lancada
 	 */
-	public Funcionario(String nome, String dataNascimento, String matricula, String senha) throws Exception {
+	public Funcionario(String nome, String dataNascimento, String matricula, String senha)
+			throws NomePacienteVazioException, NomeFuncionarioVazioException, DataInvalidaException {
 
 		super(nome, dataNascimento);
 		setMatricula(matricula);

@@ -21,7 +21,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 3829508154930744712L;
-	
+
 	private String nome;
 	private double preco;
 	private int quantidade;
@@ -46,17 +46,17 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 *            String que indica o tipo de medicamento (referencia ou
 	 *            generico).
 	 * @throws CategoriaMedicamentoInvalidaException
-	 * @throws StringInvalidaException
-	 *             Lanca excecao acaso seja inserida alguma String(nome,
-	 *             categoria, tipo) igual a null ou vazia.
+	 * 			   Caso a categoria seja invalida
 	 * @throws NumeroInvalidoException
 	 *             Lanca excecao acaso seja inserido algum numero, seja real ou
 	 *             inteiro, menor que zero.
 	 * @throws TipoMedicamentoException
+	 *             Caso o tipo seja invalido
+	 * @throws NomeMedicamentoException
+	 *             Caso o nome seja invalido
 	 */
-	public Medicamento(String nome, String tipo, double preco, int quantidade,
-			String categorias) throws NomeMedicamentoException,
-			CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
+	public Medicamento(String nome, String tipo, double preco, int quantidade, String categorias)
+			throws NomeMedicamentoException, CategoriaMedicamentoInvalidaException, NumeroInvalidoException,
 			TipoMedicamentoException {
 
 		VerificaCadastroMedicamento.validaNomeMedicamento(nome);
@@ -88,7 +88,8 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 
 	@Override
 	/**
-	 * Metodo que implementa a comparacao entre dois objetos retornando de acordo com a ordem alfabetica.
+	 * Metodo que implementa a comparacao entre dois objetos retornando de
+	 * acordo com a ordem alfabetica.
 	 */
 	public int compareTo(Medicamento outroMedicamento) {
 
@@ -98,15 +99,16 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	/**
 	 * Metodo que retorna uma String com as informacoes principais do
 	 * medicamento.
+	 * 
+	 * @return String com as informacoes
 	 */
 	public String informacoes() {
 
 		String preco = String.format("%.2f", getPreco());
 		String precoFormatado = preco.replace(".", ",");
 
-		String string = "Medicamento " + getTipo() + ": " + getNome()
-				+ " - Preco: R$ " + precoFormatado + " - Disponivel: "
-				+ getQuantidade() + " - Categorias: ";
+		String string = "Medicamento " + getTipo() + ": " + getNome() + " - Preco: R$ " + precoFormatado
+				+ " - Disponivel: " + getQuantidade() + " - Categorias: ";
 
 		StringBuilder builder = new StringBuilder(string);
 

@@ -6,15 +6,17 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import exceptions.DataInvalidaException;
+import exceptions.NomeFuncionarioVazioException;
+import exceptions.NomePacienteVazioException;
 import util.*;
 
-public abstract class Pessoa implements Serializable{
+public abstract class Pessoa implements Serializable {
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -4892186631163406594L;
-	
+
 	private String nome;
 	private String dataNascimento;
 
@@ -31,7 +33,8 @@ public abstract class Pessoa implements Serializable{
 	 * @throws NomePacienteVazioException
 	 *             Caso a subclasse do objeto seja Paciente e nome seja vazio
 	 */
-	public Pessoa(String nome, String data) throws Exception {
+	public Pessoa(String nome, String data)
+			throws NomePacienteVazioException, NomeFuncionarioVazioException, DataInvalidaException {
 		setNome(nome);
 		setData(data);
 	}
@@ -60,9 +63,8 @@ public abstract class Pessoa implements Serializable{
 		LocalDate data = LocalDate.parse(this.dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 		return data.toString();
 	}
-	
 
-	public void setNome(String nome) throws Exception {
+	public void setNome(String nome) throws NomePacienteVazioException, NomeFuncionarioVazioException {
 		boolean isPaciente = (this instanceof Paciente);
 		VerificaPessoa.validaNome(nome, isPaciente);
 		this.nome = nome;
