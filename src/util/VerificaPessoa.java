@@ -2,7 +2,6 @@ package util;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 import exceptions.*;
 
@@ -18,11 +17,10 @@ public class VerificaPessoa {
 	}
 
 	public static void validaData(String data) throws DataInvalidaException {
-		DateTimeFormatter formatoAceito = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 		try {
-			LocalDate.parse(data, formatoAceito);
-		} catch (DateTimeParseException e) {
+			LocalDate.parse(data, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		} catch (Exception e) {
 			throw new DataInvalidaException();
 		}
 

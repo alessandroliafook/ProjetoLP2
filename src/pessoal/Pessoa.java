@@ -16,8 +16,7 @@ public abstract class Pessoa implements Serializable{
 	private static final long serialVersionUID = -4892186631163406594L;
 	
 	private String nome;
-	private LocalDate dataNascimento;
-	private final DateTimeFormatter FORMATO_DE_DATA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private String dataNascimento;
 
 	/**
 	 * 
@@ -43,7 +42,8 @@ public abstract class Pessoa implements Serializable{
 	 * @return A idade da Pessoa
 	 */
 	public int getIdade() {
-		int diferenca = (int) ChronoUnit.YEARS.between(this.dataNascimento, LocalDate.now());
+		LocalDate data = LocalDate.parse(this.dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		int diferenca = (int) ChronoUnit.YEARS.between(data, LocalDate.now());
 		return diferenca;
 	}
 
@@ -57,8 +57,10 @@ public abstract class Pessoa implements Serializable{
 	 * @return Uma String com data de nascimento da pessoa
 	 */
 	public String getData() {
-		return this.dataNascimento.toString();
+		LocalDate data = LocalDate.parse(this.dataNascimento, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+		return data.toString();
 	}
+	
 
 	public void setNome(String nome) throws Exception {
 		boolean isPaciente = (this instanceof Paciente);
@@ -68,6 +70,6 @@ public abstract class Pessoa implements Serializable{
 
 	public void setData(String data) throws DataInvalidaException {
 		VerificaPessoa.validaData(data);
-		this.dataNascimento = LocalDate.parse(data, FORMATO_DE_DATA);
+		this.dataNascimento = data;
 	}
 }
