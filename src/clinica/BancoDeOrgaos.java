@@ -157,8 +157,7 @@ public class BancoDeOrgaos implements Serializable{
 	 *            Nome do orgao a ser removido
 	 * @param tipoSanguineo
 	 *            Tipo sanguineo do orgao a ser removido
-	 * @throws  
-	 * @throws Exception
+	 * @throws RemoveOrgaoException
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */

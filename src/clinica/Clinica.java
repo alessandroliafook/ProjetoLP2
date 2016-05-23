@@ -20,7 +20,7 @@ public class Clinica implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -1274054963107375989L;
-	
+
 	private Set<Prontuario> prontuarios;
 	private FactoryDePessoa pacienteFactory;
 	private BancoDeOrgaos bancoDeOrgaos;
@@ -60,7 +60,8 @@ public class Clinica implements Serializable {
 	 */
 	public String getGastosPaciente(String id) throws Exception {
 		Prontuario prontuario = buscaProntuario(id);
-		String gastosPaciente = String.format("%.2f", prontuario.getGastos()).replace(",", ".");
+		String gastosPaciente = String.format("%.2f", prontuario.getGastos())
+				.replace(",", ".");
 		return gastosPaciente;
 	}
 
@@ -98,12 +99,14 @@ public class Clinica implements Serializable {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
-			String tipoSanguineo) throws CadastroPacienteException {
+	public String cadastraPaciente(String nome, String data, double peso,
+			String sexo, String genero, String tipoSanguineo)
+			throws CadastroPacienteException {
 
 		try {
-			Paciente novoPaciente = pacienteFactory.criaPaciente(nome, data, peso, tipoSanguineo, sexo, genero,
-					getNumeroCadastros() + 1);
+			Paciente novoPaciente = pacienteFactory
+					.criaPaciente(nome, data, peso, tipoSanguineo, sexo,
+							genero, getNumeroCadastros() + 1);
 			Prontuario novoProntuario = new Prontuario(novoPaciente);
 
 			if (existeProntuario(novoProntuario)) {
@@ -232,10 +235,12 @@ public class Clinica implements Serializable {
 	 */
 	public String getProntuario(int posicao) throws ConsultaProntuarioException {
 		if (posicao < 0) {
-			throw new ConsultaProntuarioException("Indice do prontuario nao pode ser negativo.");
+			throw new ConsultaProntuarioException(
+					"Indice do prontuario nao pode ser negativo.");
 		} else if (posicao >= prontuarios.size()) {
 			throw new ConsultaProntuarioException(
-					"Nao ha prontuarios suficientes (max = " + getNumeroCadastros() + ").");
+					"Nao ha prontuarios suficientes (max = "
+							+ getNumeroCadastros() + ").");
 		}
 
 		Prontuario prontuarioSolicitado = (Prontuario) prontuarios.toArray()[posicao];
@@ -246,20 +251,17 @@ public class Clinica implements Serializable {
 	/**
 	 * Metodo que registra um procedimento medico no prontuario do paciente.
 	 * 
-	 * @param nomeDoPaciente
-	 *            Nome do pacimente titular do prontuario onde sera registrado o
-	 *            procedimento.
 	 * @param nomeDoProcedimento
 	 *            Nome do procedimento a ser registrado
-	 * @param listaDeMedicamentos
+	 * @param idDoPaciente
+	 *            Id do paciente no qual sera realizado o procedimento
+	 * @param gastosComMedimentos
 	 *            Lista com nomes dos medicamentos necessarios ao procedimento
-	 * @return O nome do procedimento registrado com sucesso.
 	 * @throws Exception
-	 * @throws CadastroFuncionarioException
-	 * @throws ConsultaMedicamentoException
+	 *             Caso nao seja possivel realizar o procedimento
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, double gastosComMedimentos)
-			throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento,
+			String idDoPaciente, double gastosComMedimentos) throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
@@ -270,20 +272,18 @@ public class Clinica implements Serializable {
 	/**
 	 * Metodo que registra um procedimento medico no prontuario do paciente.
 	 * 
-	 * @param nomeDoPaciente
-	 *            Nome do pacimente titular do prontuario onde sera registrado o
-	 *            procedimento.
 	 * @param nomeDoProcedimento
-	 *            Nome do procedimento a ser registrado
-	 * @param listaDeMedicamentos
-	 *            Lista com nomes dos medicamentos necessarios ao procedimento
-	 * @return O nome do procedimento registrado com sucesso.
+	 *            nomeDoProcedimento
+	 * @param idDoPaciente
+	 *            Id do paciente no qual o procedimento sera realizado
+	 * @param gastosComMedimentos
+	 *            Total gasto com os medicamentos necessarios ao procedimento
 	 * @throws Exception
-	 * @throws CadastroFuncionarioException
-	 * @throws ConsultaMedicamentoException
+	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
-			double gastosComMedimentos) throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento,
+			String idDoPaciente, String nomeDoOrgao, double gastosComMedimentos)
+			throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		String tipoSanguineo = prontuario.getTipoSanguineo();
@@ -293,7 +293,8 @@ public class Clinica implements Serializable {
 			existeOrgao = bancoDeOrgaos.buscaOrgao(nomeDoOrgao, tipoSanguineo);
 
 		} catch (Exception e) {
-			throw new Exception(e.getMessage().replace("O banco de orgaos apresentou um erro. ", ""));
+			throw new Exception(e.getMessage().replace(
+					"O banco de orgaos apresentou um erro. ", ""));
 		}
 
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
@@ -321,7 +322,8 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+	public void cadastraOrgao(String nome, String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		bancoDeOrgaos.cadastraOrgao(nome, tipoSanguineo);
 	}
 
@@ -336,7 +338,8 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+	public String buscaOrgPorSangue(String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -352,7 +355,8 @@ public class Clinica implements Serializable {
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+	public String buscaOrgPorNome(String nomeOrgao)
+			throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgPorNome(nomeOrgao);
 	}
 
@@ -367,7 +371,8 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		return bancoDeOrgaos.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
@@ -382,7 +387,8 @@ public class Clinica implements Serializable {
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
-	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+	public void retiraOrgao(String nome, String tipoSanguineo)
+			throws RemoveOrgaoException {
 		bancoDeOrgaos.retiraOrgao(nome, tipoSanguineo);
 	}
 

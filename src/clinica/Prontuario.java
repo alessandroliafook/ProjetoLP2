@@ -45,17 +45,13 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	/**
 	 * Metodo que registra um procedimento medito no prontuario do paciente.
 	 * 
-	 * @param nomeDoPaciente
-	 *            Nome do pacimente titular do prontuario onde sera registrado o
-	 *            procedimento.
 	 * @param nomeDoProcedimento
 	 *            Nome do procedimento a ser registrado
 	 * @param gastosComMedicamento
 	 *            double com o total gasto no fornecimento de medicamentos
 	 * @return O nome do procedimento registrado com sucesso.
 	 * @throws Exception
-	 * @throws CadastroFuncionarioException
-	 * @throws ConsultaMedicamentoException
+	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
 	public String realizaProcedimento(String nomeDoProcedimento,
 			double gastosComMedicamento) throws Exception {

@@ -56,7 +56,8 @@ public class HospitalFacade {
 	 *             Caso o sistema ja tenha sido liberado ou se a chave fornecida
 	 *             for invalida
 	 */
-	public String liberaSistema(String chave, String nome, String dataNascimento) throws Exception {
+	public String liberaSistema(String chave, String nome, String dataNascimento)
+			throws Exception {
 		return controller.liberaSistema(chave, nome, dataNascimento);
 	}
 
@@ -98,7 +99,8 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente) throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento,
+			String idDoPaciente) throws Exception {
 		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente);
 	}
 
@@ -115,9 +117,10 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String listaDeMedicamentos)
-			throws Exception {
-		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, listaDeMedicamentos);
+	public void realizaProcedimento(String nomeDoProcedimento,
+			String idDoPaciente, String listaDeMedicamentos) throws Exception {
+		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
+				listaDeMedicamentos);
 	}
 
 	/**
@@ -137,9 +140,11 @@ public class HospitalFacade {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
-			String listaDeMedicamentos) throws Exception {
-		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, listaDeMedicamentos);
+	public void realizaProcedimento(String nomeDoProcedimento,
+			String idDoPaciente, String nomeDoOrgao, String listaDeMedicamentos)
+			throws Exception {
+		controller.realizaProcedimento(nomeDoProcedimento, idDoPaciente,
+				nomeDoOrgao, listaDeMedicamentos);
 	}
 
 	/**
@@ -155,7 +160,8 @@ public class HospitalFacade {
 	 * @throws ConsultaFuncionarioException
 	 *             Caso o atributo a ser recuperado seja a senha
 	 */
-	public String getInfoFuncionario(String matricula, String atributo) throws Exception {
+	public String getInfoFuncionario(String matricula, String atributo)
+			throws Exception {
 		return controller.getInfoFuncionario(matricula, atributo);
 	}
 
@@ -186,7 +192,6 @@ public class HospitalFacade {
 		controller.logout();
 	}
 
-	
 	/**
 	 * Metodo que cadastra um novo funcionario no sistema
 	 * 
@@ -199,7 +204,8 @@ public class HospitalFacade {
 	 * @throws CadastroFuncionarioException
 	 *             Caso o cadastro de funcionario nao seja bem sucedido
 	 */
-	public String cadastraFuncionario(String nome, String cargo, String dataNascimento) throws Exception {
+	public String cadastraFuncionario(String nome, String cargo,
+			String dataNascimento) throws Exception {
 		return controller.cadastraFuncionario(nome, cargo, dataNascimento);
 	}
 
@@ -224,8 +230,8 @@ public class HospitalFacade {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String matricula, String atributo, String novoValor)
-			throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String matricula, String atributo,
+			String novoValor) throws AtualizaFuncionarioException {
 		controller.atualizaInfoFuncionario(matricula, atributo, novoValor);
 	}
 
@@ -248,7 +254,8 @@ public class HospitalFacade {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso o novo valor a ser inserido esteja invalido
 	 */
-	public void atualizaInfoFuncionario(String atributo, String novoValor) throws AtualizaFuncionarioException {
+	public void atualizaInfoFuncionario(String atributo, String novoValor)
+			throws AtualizaFuncionarioException {
 		controller.atualizaInfoFuncionario(atributo, novoValor);
 	}
 
@@ -266,7 +273,8 @@ public class HospitalFacade {
 	 * @throws ExclusaoFuncionarioException
 	 *             Caso o funcionario logado nao tenha permissao para exlcuir
 	 */
-	public void excluiFuncionario(String matricula, String senha) throws ExclusaoFuncionarioException {
+	public void excluiFuncionario(String matricula, String senha)
+			throws ExclusaoFuncionarioException {
 		controller.excluiFuncionario(matricula, senha);
 	}
 
@@ -281,7 +289,8 @@ public class HospitalFacade {
 	 * @throws AtualizaFuncionarioException
 	 *             Caso nao seja possivel confirmar a senha do funcionario
 	 */
-	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
+	public void atualizaSenha(String senhaAntiga, String novaSenha)
+			throws AtualizaFuncionarioException {
 		controller.atualizaSenha(senhaAntiga, novaSenha);
 	}
 
@@ -325,9 +334,11 @@ public class HospitalFacade {
 	 *             medicamentos, ou se algum dos parametros fornecidos for
 	 *             invalido
 	 */
-	public String cadastraMedicamento(String nome, String tipo, double preco, int quantidade, String categorias)
+	public String cadastraMedicamento(String nome, String tipo, double preco,
+			int quantidade, String categorias)
 			throws CadastroMedicamentoException {
-		return controller.cadastraMedicamento(nome, tipo, preco, quantidade, categorias);
+		return controller.cadastraMedicamento(nome, tipo, preco, quantidade,
+				categorias);
 	}
 
 	/**
@@ -347,8 +358,8 @@ public class HospitalFacade {
 	 *             tipo, um atributo que nao exista, ou um medicamento nao
 	 *             cadastrado no sistema.
 	 */
-	public void atualizaMedicamento(String nome, String atributo, String novoValor)
-			throws AtualizaMedicamentoException {
+	public void atualizaMedicamento(String nome, String atributo,
+			String novoValor) throws AtualizaMedicamentoException {
 		controller.atualizaMedicamento(nome, atributo, novoValor);
 	}
 
@@ -379,7 +390,8 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso a categoria nao exista, ou nao tenha
 	 *             nenhum medicamento associado a mesma.
 	 */
-	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
+	public String consultaMedCategoria(String categoria)
+			throws ConsultaMedicamentoException {
 		return controller.consultaMedCategoria(categoria);
 	}
 
@@ -394,7 +406,8 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o nome informado seja igual a null ou
 	 *             vazio.
 	 */
-	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
+	public String consultaMedNome(String nomeDoRemedio)
+			throws ConsultaMedicamentoException {
 		return controller.consultaMedNome(nomeDoRemedio);
 	}
 
@@ -410,7 +423,8 @@ public class HospitalFacade {
 	 *             Lanca excecao acaso o criterio de ordenacao nao seja por
 	 *             preco ou ordem alfabética.
 	 */
-	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
+	public String getEstoqueFarmacia(String ordenacao)
+			throws ConsultaMedicamentoException {
 		return controller.getEstoqueFarmacia(ordenacao);
 	}
 
@@ -419,15 +433,17 @@ public class HospitalFacade {
 	 * 
 	 * @param atributoDoMedicamento
 	 *            String com o atributo que se deseja informacao.
-	 * @param medicamento
-	 *            Objeto que se deseja a informacao de seu atributo.
+	 * @param nomeMedicamento
+	 *            Nome do medicamento que se deseja a informacao de seu
+	 *            atributo.
 	 * @return String contendo a informacao solicitada
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.
 	 */
-	public String getInfoMedicamento(String atributoDoMedicamento, String nomeMedicamento)
-			throws ConsultaMedicamentoException {
-		return controller.getInfoMedicamento(atributoDoMedicamento, nomeMedicamento);
+	public String getInfoMedicamento(String atributoDoMedicamento,
+			String nomeMedicamento) throws ConsultaMedicamentoException {
+		return controller.getInfoMedicamento(atributoDoMedicamento,
+				nomeMedicamento);
 	}
 
 	// metodos da clinica
@@ -451,9 +467,11 @@ public class HospitalFacade {
 	 * @throws CadastroPacienteException
 	 *             Caso o cadastro nao seja bem sucedido
 	 */
-	public String cadastraPaciente(String nome, String data, double peso, String sexo, String genero,
-			String tipoSanguineo) throws CadastroPacienteException {
-		return controller.cadastraPaciente(nome, data, peso, sexo, genero, tipoSanguineo);
+	public String cadastraPaciente(String nome, String data, double peso,
+			String sexo, String genero, String tipoSanguineo)
+			throws CadastroPacienteException {
+		return controller.cadastraPaciente(nome, data, peso, sexo, genero,
+				tipoSanguineo);
 	}
 
 	/**
@@ -468,8 +486,8 @@ public class HospitalFacade {
 	/**
 	 * Retorna a informacao solicitada do paciente especificado
 	 * 
-	 * @param paciente
-	 *            Objeto Paciente do qual sera retirada a informacao solicitada
+	 * @param id
+	 *            Id do Paciente do qual sera retirada a informacao solicitada
 	 * @param atributo
 	 *            Descricao da informacao
 	 *            solicitada(Nome/Data/Sexo/Genero/TipoSanguineo/Peso/Idade
@@ -533,7 +551,8 @@ public class HospitalFacade {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+	public void cadastraOrgao(String nome, String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		controller.cadastraOrgao(nome, tipoSanguineo);
 	}
 
@@ -548,7 +567,8 @@ public class HospitalFacade {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+	public String buscaOrgPorSangue(String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		return controller.buscaOrgPorSangue(tipoSanguineo);
 	}
 
@@ -564,7 +584,8 @@ public class HospitalFacade {
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+	public String buscaOrgPorNome(String nomeOrgao)
+			throws BancoDeOrgaosException {
 		return controller.buscaOrgPorNome(nomeOrgao);
 	}
 
@@ -579,7 +600,8 @@ public class HospitalFacade {
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo)
+			throws BancoDeOrgaosException {
 		return controller.buscaOrgao(nomeOrgao, tipoSanguineo);
 	}
 
@@ -594,7 +616,8 @@ public class HospitalFacade {
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
-	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+	public void retiraOrgao(String nome, String tipoSanguineo)
+			throws RemoveOrgaoException {
 		controller.retiraOrgao(nome, tipoSanguineo);
 	}
 

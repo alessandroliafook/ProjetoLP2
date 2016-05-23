@@ -365,8 +365,8 @@ public class Farmacia implements Serializable {
 	 * 
 	 * @param atributoDoMedicamento
 	 *            String com o atributo que se deseja informacao.
-	 * @param medicamento
-	 *            Objeto que se deseja a informacao de seu atributo.
+	 * @param nomeMedicamento
+	 *            Nome do medicamento que se deseja a informacao de seu atributo.
 	 * @return String contendo a informacao solicitada
 	 * @throws ConsultaMedicamentoException
 	 *             retorna excecao acaso o atributo nao exista.
