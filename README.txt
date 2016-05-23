@@ -9,13 +9,35 @@ Alunos: Alessandro Lia Fook Santos
 	Lucas Diniz dos Santos
 	Filipe Teutônio Mendonça Ramalho
 
-Relatório do Projeto de "Laborário Sistema Orientado a Objeto de Saúde"
+Relatório do Projeto intitulado "Laborário Sistema Orientado a Objeto de Saúde"
+	
+	Inicialmente cabe falar que o projeto será relatado conforme especificação onde deve ser mencionado o uso de Polimor- 
+fismo (Herança, Inferface), Padrões de Projeto(Composição, Strategy), Coleções(Lista, Mapa, Conjunto), e as distribuilções de
+responsabilidades conforme o GRASP (Construtor, Acoplamento, Expert, Coesão). 
 
+Caso 0 - Design do Sistema
+	
+	Antes de adentrar os casos de uso solitados, é importanto relatar que de forma mais geral o sistema foi implementado
+seguindo o padrão MVC (Model View Controller), que tem por objetivo modularizar as atribuições do sistema.
+	
+	No sistema desenvolvido a parte titulada de Model, que conterá a lógica do sistema relacionando-se com as partes mais
+baixas da arquitetura, é implementado pela classe "ComiteGestor". 
 
+	Enquanto o View, que tem a responsabilidade de exibir os resultados e coletar as informações fornecidas pelo usuário
+externo ao sistema, é implementado na classe HospitalFacade, que utiliza o padrão de fachada para torná-la o equivalente a uma
+saída e entrada do sistema, haja vista que não é executada nenhuma interface gráfica no projeto. 
+
+	Por fim, o Controller, que tem por objetivo intermediar os outros dois, é implementado na classe HospitalController e 
+além de intermediar a comunicação é responsável por garantir a permanência dos dados de execução.
+	
 Caso 1 - Primeiro cadastro, login do diretor geral e cadastro de novos colaboradores:
 
-	Neste caso de uso foram usadas variáveis de controle para determinar se o primeiro cadastro já havia sido executado, assim como para determinar a existência do diretor geral cadastrado no sistema.
-	Aquele por sua vez é um objeto criado a partir da fábrica da classe Funcionário, utilizando o padrão de projeto factory, para assim aperfeiçoar o Creator das classes, melhorando o GRASP.
+	Neste caso de uso foram usadas variáveis de controle para determinar se o primeiro cadastro já havia sido executado, 
+assim como para determinar a existência do diretor geral cadastrado no sistema.
+	
+	Aquele por sua vez é um objeto criado a partir da fábrica da classe Funcionário, utilizando o padrão de projeto factor,
+para assim aperfeiçoar o Creator das classes, melhorando o GRASP.
+	
 	Assim, foi criada uma classe Funcionário,  
 
 Caso 2 - Atualizar informações de usuários e Excluir usuários do sistema:
