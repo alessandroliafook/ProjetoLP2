@@ -33,7 +33,7 @@ public class BancoDeOrgaos implements Serializable{
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome ou o tipo sanguineo do orgao sejam vazios
 	 */
-	public void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
+	protected void cadastraOrgao(String nome, String tipoSanguineo) throws BancoDeOrgaosException {
 
 		try {
 			Orgao orgao = facOrgao.criaOrgao(nome, tipoSanguineo);
@@ -54,7 +54,7 @@ public class BancoDeOrgaos implements Serializable{
 	 * @throws BancoDeOrgaosException
 	 *             Caso o tipo sanguineo seja invalido
 	 */
-	public String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
+	protected String buscaOrgPorSangue(String tipoSanguineo) throws BancoDeOrgaosException {
 
 		String saida = "";
 
@@ -95,7 +95,7 @@ public class BancoDeOrgaos implements Serializable{
 	 *             Caso o tipo o nome seja invalido ou nao haja orgaos
 	 *             cadastrados com o nome especificados
 	 */
-	public String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
+	protected String buscaOrgPorNome(String nomeOrgao) throws BancoDeOrgaosException {
 
 		String saida = "";
 
@@ -135,7 +135,7 @@ public class BancoDeOrgaos implements Serializable{
 	 * @throws BancoDeOrgaosException
 	 *             Caso o nome do orgao esteja invalido ou o tipo sanguineo
 	 */
-	public boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
+	protected boolean buscaOrgao(String nomeOrgao, String tipoSanguineo) throws BancoDeOrgaosException {
 
 		try {
 			VerificaOrgao.validaNome(nomeOrgao);
@@ -161,7 +161,7 @@ public class BancoDeOrgaos implements Serializable{
 	 *             Caso o nome ou o tipo sanguineo estejam vazios ou nao haja
 	 *             orgaos desse tipo no banco de orgaos
 	 */
-	public void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
+	protected void retiraOrgao(String nome, String tipoSanguineo) throws RemoveOrgaoException {
 		
 		removeOrgaoUtil(nome, tipoSanguineo);
 		
@@ -197,7 +197,7 @@ public class BancoDeOrgaos implements Serializable{
 	 * @throws BancoDeOrgaosException
 	 *             Caso nao exista algum orgao com o nome especificado
 	 */
-	public int qtdOrgaos(String nome) throws BancoDeOrgaosException {
+	protected int qtdOrgaos(String nome) throws BancoDeOrgaosException {
 		int quantidade = 0;
 		for (Orgao orgao : bancoDeOrgaos) {
 			if (orgao.getNome().equals(nome)) {
@@ -217,34 +217,8 @@ public class BancoDeOrgaos implements Serializable{
 	 * 
 	 * @return A quantidade total de orgaos no banco de orgaos
 	 */
-	public int totalOrgaosDisponiveis() {
+	protected int totalOrgaosDisponiveis() {
 		return bancoDeOrgaos.size();
 	}
-
-	// /**
-	// * Metodo que retorna o orgao que contenha os atributos especificados,
-	// * retorna null caso nao exista tal orgao
-	// *
-	// * @param nome
-	// * Nome do orgao
-	// * @param tipoSanguineo
-	// * Tipo sanguineo do orgao
-	// * @return O orgao caso exista, null do contrario
-	// * @throws Exception
-	// * Caso o nome ou o tipo sanguineo do orgap especificado estejam
-	// * vazios
-	// */
-	// public Orgao getOrgao(String nome, String tipoSanguineo) throws Exception
-	// {
-	//
-	// Orgao orgaoAObter = facOrgao.criaOrgao(nome, tipoSanguineo);
-	//
-	// if (bancoDeOrgaos.containsKey(orgaoAObter) &&
-	// bancoDeOrgaos.get(orgaoAObter) >= 1) {
-	// return orgaoAObter;
-	// }
-	//
-	// return null;
-	// }
 
 }

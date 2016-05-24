@@ -25,19 +25,19 @@ public class Orgao implements Serializable{
 		setTipoSanguineo(tipoSanguineo);
 	}
 
-	public String getNome() {
+	protected String getNome() {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	protected void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	public String getTipoSanguineo() {
+	protected String getTipoSanguineo() {
 		return tipoSanguineo;
 	}
 
-	public void setTipoSanguineo(String tipoSanguineo) {
+	protected void setTipoSanguineo(String tipoSanguineo) {
 		this.tipoSanguineo = tipoSanguineo;
 	}
 

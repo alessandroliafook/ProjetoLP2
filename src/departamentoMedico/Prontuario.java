@@ -38,7 +38,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * 
 	 * @return Um objeto do tipo paciente
 	 */
-	public Paciente getPaciente() {
+	protected Paciente getPaciente() {
 		return this.paciente;
 	}
 
@@ -53,7 +53,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	public String realizaProcedimento(String nomeDoProcedimento,
+	protected String realizaProcedimento(String nomeDoProcedimento,
 			double gastosComMedicamento) throws Exception {
 
 		ProcedimentoIF procedimento = tabelaDeProcedimentos
@@ -80,7 +80,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * @param nomeDoProcedimento
 	 *            Nome do procedimento que foi realizado
 	 */
-	public void adicionaProcedimento(String nomeDoProcedimento) {
+	protected void adicionaProcedimento(String nomeDoProcedimento) {
 
 		this.procedimentos.add(nomeDoProcedimento);
 
@@ -92,75 +92,75 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * 
 	 * @return Um inteiro, a quantidade de procedimentos realizados
 	 */
-	public int getTotalProcedimento() {
+	protected int getTotalProcedimento() {
 		return procedimentos.size();
 	}
 
-	public int getIdade() {
+	protected int getIdade() {
 		return paciente.getIdade();
 	}
 
-	public String getNome() {
+	protected String getNome() {
 		return paciente.getNome();
 	}
 
-	public String getData() {
+	protected String getData() {
 		return paciente.getData();
 	}
 
-	public void setNome(String nome) throws Exception {
+	protected void setNome(String nome) throws Exception {
 		paciente.setNome(nome);
 	}
 
-	public void setData(String data) throws DataInvalidaException {
+	protected void setData(String data) throws DataInvalidaException {
 		paciente.setData(data);
 	}
 
-	public List<String> getProcedimentos() {
+	protected List<String> getProcedimentos() {
 		return procedimentos;
 	}
 
-	public String getID() {
+	protected String getID() {
 		return paciente.getID();
 	}
 
-	public double getPeso() {
+	protected double getPeso() {
 		return paciente.getPeso();
 	}
 
-	public String getTipoSanguineo() {
+	protected String getTipoSanguineo() {
 		return paciente.getTipoSanguineo();
 	}
 
-	public String getSexo() {
+	protected String getSexo() {
 		return paciente.getSexo();
 	}
 
-	public String getGenero() {
+	protected String getGenero() {
 		return paciente.getGenero();
 	}
 
-	public double getSaldo() {
+	protected double getSaldo() {
 		return paciente.getSaldo();
 	}
 
-	public int getPontosFidelidade() {
+	protected int getPontosFidelidade() {
 		return paciente.getPontosFidelidade();
 	}
 
-	public double getGastos() {
+	protected double getGastos() {
 		return paciente.getGastos();
 	}
 
-	public void setGenero(String genero) {
+	protected void setGenero(String genero) {
 		paciente.setGenero(genero);
 	}
 
-	public void setPeso(double novoPeso) {
+	protected void setPeso(double novoPeso) {
 		paciente.setPeso(novoPeso);
 	}
 
-	public void setSaldo(double valor) {
+	protected void setSaldo(double valor) {
 		paciente.setSaldo(valor);
 	}
 
@@ -169,7 +169,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * 
 	 * @return String contendo o nome do paciente associado ao prontuario
 	 */
-	public String getNomePaciente() {
+	protected String getNomePaciente() {
 		return paciente.getNome();
 	}
 
@@ -178,7 +178,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * 
 	 * @return String contendo a ID do paciente
 	 */
-	public String getPacienteID() {
+	protected String getPacienteID() {
 		return this.paciente.getID();
 	}
 

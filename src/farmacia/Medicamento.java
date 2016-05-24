@@ -102,7 +102,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 * 
 	 * @return String com as informacoes
 	 */
-	public String informacoes() {
+	protected String informacoes() {
 
 		String preco = String.format("%.2f", getPreco());
 		String precoFormatado = preco.replace(".", ",");
@@ -184,7 +184,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 * @param quantidade
 	 *            Inteiro que passara a ser o total de medicamentos existente.
 	 */
-	public void setQuantidade(int quantidade) {
+	protected void setQuantidade(int quantidade) {
 		this.quantidade = quantidade;
 	}
 
@@ -195,7 +195,7 @@ public class Medicamento implements Comparable<Medicamento>, Serializable {
 	 * @param preco
 	 *            Double que passara a ser o total de medicamentos existente.
 	 */
-	public void setPreco(double preco) {
+	protected void setPreco(double preco) {
 		this.preco = tipo.calculaPreco(preco);
 	}
 

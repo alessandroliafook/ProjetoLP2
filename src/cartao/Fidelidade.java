@@ -12,7 +12,7 @@ public interface Fidelidade extends Serializable{
 	 *            O preco do servico prestado
 	 * @return O desconto sobre o preco fornecido
 	 */
-	public double getDescontoEmServicos(double precoServico);
+	double getDescontoEmServicos(double precoServico);
 
 	/**
 	 * Dado uma quantidade de pontos fidelidade ganhos o metodo retorna uma
@@ -24,5 +24,5 @@ public interface Fidelidade extends Serializable{
 	 *            A quantidade de pontos fidelidade recebidos
 	 * @return A quantidade bonus de pontos fidelidade
 	 */
-	public int getPontosBonus(int creditoGanho);
+	int getPontosBonus(int creditoGanho);
 }
