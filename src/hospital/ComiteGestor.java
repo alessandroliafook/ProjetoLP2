@@ -1018,71 +1018,31 @@ public final class ComiteGestor implements Serializable {
 	 * @throws Exception
 	 *             Caso o Id do paciente seja invalido
 	 */
-	public void exportaFichaPaciente(String idPaciente) throws Exception {
+	public String exportaFichaPaciente(String idPaciente) throws Exception {
 
 		VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "exportar ficha de paciente.");
-		
+
 		String ficha = getFicha(idPaciente);
-
-		String nomeArquivo = getInfoPaciente(idPaciente, "Nome");
-		nomeArquivo = nomeArquivo.replace(" ", "_");
-		nomeArquivo += LocalDate.now().getYear() + "_" + LocalDate.now().getMonth() + "_"
-				+ LocalDate.now().getDayOfMonth() + ".txt";
-
-		File file = new File("fichas_pacientes/", nomeArquivo);
-		FileWriter fw = new FileWriter(file);
-		BufferedWriter bw = new BufferedWriter(fw);
-
-		if (file.exists()) {
-			file.delete();
-			file.createNewFile();
-
-			bw.write(ficha);
-			fw.close();
-			bw.close();
-		} else {
-			
-			file.createNewFile();
-			
-			bw.write(ficha);
-			fw.close();
-			bw.close();
-			
-		}
 		
-
-	}
-
-	/**
-	 * Metodo que cria a ficha para ser exportada
-	 * 
-	 * @param idPaciente
-	 *            Id do paciente que tera a ficha criada
-	 * @return A ficha do paciente
-	 * @throws Exception
-	 *             Caso o id do paciente seja invalido
-	 */
-	public String getFicha(String idPaciente) throws Exception {
-
-		
-		
-		String[] procedimentos = (String[]) clinica.buscaProntuario(idPaciente).getProcedimentos().toArray();
-
-		String infoPaciente = "Paciente: " + getInfoPaciente(idPaciente, "Nome") + "\n";
-		infoPaciente += "Peso: " + getInfoPaciente(idPaciente, "Peso") + " kg Tipo Sanguíneo: "
-				+ getInfoPaciente(idPaciente, "TipoSanguineo") + "\n";
-		infoPaciente += "Sexo: " + getInfoPaciente(idPaciente, "Sexo") + " Genero: "
-				+ getInfoPaciente(idPaciente, "Genero") + "\n";
-		infoPaciente += "Gasto total: R$ " + getGastosPaciente(idPaciente) + " Pontos acumulados: "
-				+ getPontosFidelidade(idPaciente) + "\n";
-		infoPaciente += "Resumo de Procedimentos: " + getTotalProcedimento(idPaciente) + " procedimento(s)" + "\n";
-
-		String ficha = infoPaciente;
-
-		for (String procedimento : procedimentos) {
-			ficha += procedimento;
-		}
-
 		return ficha;
+		
+
 	}
+
+	public String getFicha(String idPaciente) throws Exception {
+		return clinica.buscaProntuario(idPaciente).getFicha();
+	}
+	
+	public String getArquivoFicha(String idPaciente, LocalDate date) throws Exception {
+		
+		String nomeArquivo = "";
+		
+		nomeArquivo += getInfoPaciente(idPaciente, "Nome");
+		nomeArquivo = nomeArquivo.replace(" ", "_");
+		nomeArquivo += String.valueOf(LocalDate.now().getYear()) + "_" + String.valueOf(LocalDate.now().getMonth())
+				+ "_" + String.valueOf(LocalDate.now().getDayOfMonth()) + ".txt";
+		
+		return nomeArquivo;
+	}
+	
 }

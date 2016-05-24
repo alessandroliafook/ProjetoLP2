@@ -1,10 +1,13 @@
 package hospital;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
@@ -345,7 +348,32 @@ public class HospitalControler {
 	 *             Caso o Id do paciente seja invalido
 	 */
 	public void exportaFichaPaciente(String idPaciente) throws Exception {
-		comite.exportaFichaPaciente(idPaciente);
+		
+		String ficha = comite.exportaFichaPaciente(idPaciente);
+		String nomeArquivo = comite.getArquivoFicha(idPaciente, LocalDate.now());
+		
+		File file = new File("fichas_pacientes/", nomeArquivo);
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		if (file.exists()) {
+			file.delete();
+			file.createNewFile();
+
+			bw.write(ficha);
+			bw.close();
+			fw.close();
+			
+		} else {
+
+			file.createNewFile();
+
+			bw.write(ficha);
+			bw.close();
+			fw.close();
+
+		}
+		
 	}
 
 

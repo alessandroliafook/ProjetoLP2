@@ -53,13 +53,10 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
-	protected String realizaProcedimento(String nomeDoProcedimento,
-			double gastosComMedicamento) throws Exception {
+	protected String realizaProcedimento(String nomeDoProcedimento, double gastosComMedicamento) throws Exception {
 
-		ProcedimentoIF procedimento = tabelaDeProcedimentos
-				.selecionaProcedimento(nomeDoProcedimento);
-		double custoProcedimento = procedimento.realizaProcedimento(
-				this.paciente, gastosComMedicamento);
+		ProcedimentoIF procedimento = tabelaDeProcedimentos.selecionaProcedimento(nomeDoProcedimento);
+		double custoProcedimento = procedimento.realizaProcedimento(this.paciente, gastosComMedicamento);
 		double totalGasto = custoProcedimento + gastosComMedicamento;
 
 		totalGasto -= this.paciente.getDesconto(totalGasto);
@@ -84,6 +81,36 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 
 		this.procedimentos.add(nomeDoProcedimento);
 
+	}
+
+	/**
+	 * Metodo que cria a ficha para ser exportada
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente que tera a ficha criada
+	 * @return A ficha do paciente
+	 * @throws Exception
+	 *             Caso o id do paciente seja invalido
+	 */
+	public String getFicha() throws Exception {
+
+		String infoPaciente = "Paciente: " + this.getNomePaciente() + "\n";
+		infoPaciente += "Peso: " + this.paciente.getPeso() + " kg Tipo Sanguíneo: " + this.paciente.getTipoSanguineo()
+				+ "\n";
+
+		infoPaciente += "Sexo: " + this.paciente.getSexo() + " Genero: " + this.paciente.getGenero() + "\n";
+
+		infoPaciente += "Gasto total: R$ " + this.paciente.getGastos() + " Pontos acumulados: "
+				+ this.paciente.getPontosFidelidade() + "\n";
+		infoPaciente += "Resumo de Procedimentos: " + this.getTotalProcedimento() + " procedimento(s)" + "\n";
+
+		String ficha = infoPaciente;
+
+		for (String procedimento : procedimentos) {
+			ficha += procedimento;
+		}
+
+		return ficha;
 	}
 
 	/**
@@ -194,8 +221,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result
-				+ ((paciente == null) ? 0 : paciente.hashCode());
+		result = prime * result + ((paciente == null) ? 0 : paciente.hashCode());
 		return result;
 	}
 

@@ -15,6 +15,7 @@ import org.junit.Test;
 public class ComiteGestorTest {
 
 	private ComiteGestor comite;
+	private BufferedReader bw;
 
 	public ComiteGestorTest() {
 		this.comite = new ComiteGestor();
@@ -104,64 +105,5 @@ public class ComiteGestorTest {
 
 	}
 	
-	@Test
-	public void testExportaFichaPaciente() {
-
-		String matricula = "12016001";
-		String senha = "20011201";
-
-		try {
-			comite.login(matricula, senha);
-			String mat = comite.cadastraFuncionario("Medico", "Medico", "01/01/1991");
-			String id = comite.cadastraPaciente("paciente1", "01/01/1991", 78, "masculino", "masculino", "A+");
-			comite.cadastraMedicamento("remedio1", "generico", 15.2, 100, "ANTIBIOTICO");
-			comite.logout();
-			comite.login(mat, "1991" + mat.substring(0, 4));
-
-			comite.realizaProcedimento("cirurgia bariatrica", id, "remedio1");
-			comite.realizaProcedimento("cirurgia bariatrica", id, "remedio1");
-			comite.realizaProcedimento("cirurgia bariatrica", id, "remedio1");
-			comite.realizaProcedimento("cirurgia bariatrica", id, "remedio1");
-
-			comite.logout();
-
-			comite.login(matricula, senha);
-			System.out.println("ta aqui1");
-			comite.exportaFichaPaciente(id);
-			System.out.println("ta aqui2");
-
-			String nomeArquivo = comite.getInfoPaciente(id, "Nome");
-			nomeArquivo = nomeArquivo.replace(" ", "_");
-			nomeArquivo += LocalDate.now().getYear() + "_" + LocalDate.now().getMonth() + "_"
-					+ LocalDate.now().getDayOfMonth() + ".txt";
-
-			String ficha = comite.getFicha(id);
-
-			File file = new File("fichas_pacientes", nomeArquivo);
-
-			if (!file.exists()) {
-				fail("falhou");
-			} else {
-
-				String compareFicha = "";
-
-				FileReader fr = new FileReader(file);
-				BufferedReader bw = new BufferedReader(fr);
-
-				while (bw.ready()) {
-					compareFicha += bw.readLine();
-				}
-
-				if (!ficha.equals(compareFicha)) {
-					fail("falhou aqui");
-				}
-
-			}
-
-		} catch (Exception e) {
-			fail(e.getMessage());
-		}
-
-	}
 
 }
