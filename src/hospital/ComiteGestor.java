@@ -1038,12 +1038,14 @@ public final class ComiteGestor implements Serializable {
 			file.createNewFile();
 
 			bw.write(ficha);
+			fw.close();
 			bw.close();
 		} else {
 			
 			file.createNewFile();
 			
 			bw.write(ficha);
+			fw.close();
 			bw.close();
 			
 		}
@@ -1060,7 +1062,7 @@ public final class ComiteGestor implements Serializable {
 	 * @throws Exception
 	 *             Caso o id do paciente seja invalido
 	 */
-	private String getFicha(String idPaciente) throws Exception {
+	public String getFicha(String idPaciente) throws Exception {
 
 		
 		

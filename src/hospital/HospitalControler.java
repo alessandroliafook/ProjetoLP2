@@ -677,5 +677,4 @@ public class HospitalControler {
 		return comite.totalOrgaosDisponiveis();
 	}
 	
-	
 }
