@@ -116,7 +116,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 		paciente.setData(data);
 	}
 
-	protected List<String> getProcedimentos() {
+	public List<String> getProcedimentos() {
 		return procedimentos;
 	}
 

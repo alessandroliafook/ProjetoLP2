@@ -261,34 +261,34 @@ public class ClinicaTest {
 			double custoMedicamentos;
 			custoMedicamentos = farmacia.verificaEstoque("Valium,Morfina");
 			clinica.realizaProcedimento("Consulta clinica", id4,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia
 					.verificaEstoque("Duraston,Morfina,Medroxyprogesterona");
 			clinica.realizaProcedimento("Redesignacao sexual", id1,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia.verificaEstoque("Nimesulida,Morfina");
 			clinica.realizaProcedimento("Transplante de orgaos", id3,
-					"Coracao", custoMedicamentos);
+					"Coracao", custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia
 					.verificaEstoque("Valium,Metamizol,Nimesulida");
 			clinica.realizaProcedimento("Consulta clinica", id1,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia.verificaEstoque("Morfina,Nimesulida");
 			clinica.realizaProcedimento("Cirurgia bariatrica", id2,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia.verificaEstoque("Penicilina,Valium");
 			clinica.realizaProcedimento("Consulta clinica", id2,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			custoMedicamentos = farmacia
 					.verificaEstoque("Metamizol,Nimesulida");
 			clinica.realizaProcedimento("Consulta clinica", id1,
-					custoMedicamentos);
+					custoMedicamentos, "NomeMedico");
 
 			// verificando as alteracoes resultantes do metodo que realiza
 			// procedimentos
@@ -315,7 +315,7 @@ public class ClinicaTest {
 			try {
 				custoMedicamentos = farmacia.verificaEstoque("Valium,Harvoni");
 				clinica.realizaProcedimento("Consulta clinica", id4,
-						custoMedicamentos);
+						custoMedicamentos, "NomeMedico");
 			} catch (Exception e) {
 
 				assertEquals(
@@ -326,7 +326,7 @@ public class ClinicaTest {
 			try {
 				custoMedicamentos = farmacia.verificaEstoque("Valium,Harvoni");
 				clinica.realizaProcedimento("Consulta clinica", "",
-						custoMedicamentos);
+						custoMedicamentos, "NomeMedico");
 			} catch (Exception e) {
 
 					assertEquals(
@@ -337,7 +337,7 @@ public class ClinicaTest {
 			try {
 				custoMedicamentos = farmacia.verificaEstoque("Valium,Harvoni");
 				clinica.realizaProcedimento("Consulta clinica", " ",
-						custoMedicamentos);
+						custoMedicamentos, "NomeMedico");
 			} catch (Exception e) {
 
 				assertEquals(
@@ -349,7 +349,7 @@ public class ClinicaTest {
 			try {
 				custoMedicamentos = farmacia.verificaEstoque("Nimesulida,Morfina");
 				clinica.realizaProcedimento("Transplante de orgaos", id2, "Coracao",
-						custoMedicamentos);
+						custoMedicamentos, "NomeMedico");
 			} catch (Exception e) {
 
 				assertEquals(
@@ -360,7 +360,7 @@ public class ClinicaTest {
 			try {
 				custoMedicamentos = farmacia.verificaEstoque("Nimesulida,Morfina");
 				clinica.realizaProcedimento("Transplante de orgaos", id2, "",
-						custoMedicamentos);
+						custoMedicamentos, "NomeMedico");
 			} catch (Exception e) {
 
 				assertEquals(

@@ -1,12 +1,18 @@
 package hospital;
 
+import java.awt.BufferCapabilities;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import departamentoMedico.Clinica;
+import departamentoMedico.Prontuario;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
@@ -814,7 +820,7 @@ public final class ComiteGestor implements Serializable {
 
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, gastosComMedicamento, funcLogado.getNome());
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -852,7 +858,8 @@ public final class ComiteGestor implements Serializable {
 
 			double gastosComMedicamento = farmacia.verificaEstoque(listaDeMedicamentos);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, gastosComMedicamento);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, nomeDoOrgao, gastosComMedicamento,
+					funcLogado.getNome());
 
 			for (String nomeMedicamento : listaDeMedicamentos.split(",")) {
 				farmacia.forneceMedicamento(nomeMedicamento);
@@ -881,7 +888,7 @@ public final class ComiteGestor implements Serializable {
 			VerificaAutorizacaoClinica.validaPermissao(funcLogado, "realizar procedimentos.");
 			VerificaPessoa.validaIdPaciente(idDoPaciente);
 
-			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0);
+			clinica.realizaProcedimento(nomeDoProcedimento, idDoPaciente, 0, funcLogado.getNome());
 
 		} catch (Exception e) {
 			throw new RealizaProcedimentoException(e.getMessage());
@@ -1003,4 +1010,65 @@ public final class ComiteGestor implements Serializable {
 		return clinica.totalOrgaosDisponiveis();
 	}
 
+	/**
+	 * Metodo que exporta o prontuario de um paciente para um arquivo
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente a ter o prontuario exportado
+	 * @throws Exception
+	 *             Caso o Id do paciente seja invalido
+	 */
+	public void exportaFichaPaciente(String idPaciente) throws Exception {
+
+		String ficha = getFicha(idPaciente);
+
+		String nomeArquivo = getInfoPaciente(idPaciente, "Nome");
+		nomeArquivo = nomeArquivo.replace(" ", "_");
+		nomeArquivo += LocalDate.now().getYear() + "_" + LocalDate.now().getMonth() + "_"
+				+ LocalDate.now().getDayOfMonth() + ".txt";
+
+		File file = new File("fichas_pacientes/" + nomeArquivo);
+		FileWriter fw = new FileWriter(file);
+		BufferedWriter bw = new BufferedWriter(fw);
+
+		if (file.exists()) {
+			file.delete();
+			file.createNewFile();
+
+			bw.write(ficha);
+			bw.close();
+		}
+
+	}
+
+	/**
+	 * Metodo que cria a ficha para ser exportada
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente que tera a ficha criada
+	 * @return A ficha do paciente
+	 * @throws Exception
+	 *             Caso o id do paciente seja invalido
+	 */
+	private String getFicha(String idPaciente) throws Exception {
+
+		String[] procedimentos = (String[]) clinica.buscaProntuario(idPaciente).getProcedimentos().toArray();
+
+		String infoPaciente = "Paciente: " + getInfoPaciente(idPaciente, "Nome") + "\n";
+		infoPaciente += "Peso: " + getInfoPaciente(idPaciente, "Peso") + " kg Tipo Sanguíneo: "
+				+ getInfoPaciente(idPaciente, "TipoSanguineo") + "\n";
+		infoPaciente += "Sexo: " + getInfoPaciente(idPaciente, "Sexo") + " Genero: "
+				+ getInfoPaciente(idPaciente, "Genero") + "\n";
+		infoPaciente += "Gasto total: R$ " + getGastosPaciente(idPaciente) + " Pontos acumulados: "
+				+ getPontosFidelidade(idPaciente) + "\n";
+		infoPaciente += "Resumo de Procedimentos: " + getTotalProcedimento(idPaciente) + " procedimento(s)" + "\n";
+
+		String ficha = infoPaciente;
+
+		for (String procedimento : procedimentos) {
+			ficha += procedimento;
+		}
+
+		return ficha;
+	}
 }

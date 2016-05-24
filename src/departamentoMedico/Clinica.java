@@ -1,6 +1,7 @@
 package departamentoMedico;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -214,7 +215,7 @@ public class Clinica implements Serializable {
 	 * @throws Exception
 	 *             Caso nao exista o paciente com o ID especificado
 	 */
-	private Prontuario buscaProntuario(String id) throws Exception {
+	public Prontuario buscaProntuario(String id) throws Exception {
 		for (Prontuario prontuario : this.prontuarios) {
 			if (prontuario.getID().equals(id)) {
 				return prontuario;
@@ -254,15 +255,19 @@ public class Clinica implements Serializable {
 	 *            Id do paciente no qual sera realizado o procedimento
 	 * @param gastosComMedimentos
 	 *            Lista com nomes dos medicamentos necessarios ao procedimento
+	 * @param nomeMedico
 	 * @throws Exception
 	 *             Caso nao seja possivel realizar o procedimento
 	 */
-	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, double gastosComMedimentos)
-			throws Exception {
+	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, double gastosComMedimentos,
+			String nomeMedico) throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		prontuario.realizaProcedimento(nomeDoProcedimento, gastosComMedimentos);
-		prontuario.adicionaProcedimento(nomeDoProcedimento);
+
+		String procedimento = formalizaProcedimento(nomeDoProcedimento, nomeMedico);
+
+		prontuario.adicionaProcedimento(procedimento);
 
 	}
 
@@ -281,7 +286,7 @@ public class Clinica implements Serializable {
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */
 	public void realizaProcedimento(String nomeDoProcedimento, String idDoPaciente, String nomeDoOrgao,
-			double gastosComMedimentos) throws Exception {
+			double gastosComMedimentos, String nomeMedico) throws Exception {
 
 		Prontuario prontuario = this.buscaProntuario(idDoPaciente);
 		String tipoSanguineo = prontuario.getTipoSanguineo();
@@ -302,8 +307,55 @@ public class Clinica implements Serializable {
 
 		bancoDeOrgaos.retiraOrgao(nomeDoOrgao, tipoSanguineo);
 
-		prontuario.adicionaProcedimento(nomeDoProcedimento);
+		String procedimento = formalizaProcedimento(nomeDoProcedimento, nomeMedico, nomeDoOrgao);
 
+		prontuario.adicionaProcedimento(procedimento);
+
+	}
+
+	/**
+	 * Metodo que formaliza uma String que conterá todas as informacoes do
+	 * procedimento
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento realizado
+	 * @param nomeMedico
+	 *            Nome do medico que realizou o procedimento
+	 * @return String que contera todos os dados do procedimento realizado
+	 */
+	private String formalizaProcedimento(String nomeDoProcedimento, String nomeMedico) {
+
+		String procedimento = "";
+
+		procedimento += "--> " + nomeDoProcedimento + ":\n";
+		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonth() + "-"
+				+ LocalDate.now().getDayOfMonth() + " Medico: " + nomeMedico + "\n";
+
+		return procedimento;
+	}
+
+	/**
+	 * Metodo que formaliza uma String que conterá todas as informacoes do
+	 * procedimento
+	 * 
+	 * @param nomeDoProcedimento
+	 *            Nome do procedimento realizado
+	 * @param nomeMedico
+	 *            Nome do medico que realizou o procedimento
+	 * @param nomeDoOrgao
+	 *            Nome do orgao transplantado
+	 * @return String que contera todos os dados do procedimento realizado
+	 */
+	private String formalizaProcedimento(String nomeDoProcedimento, String nomeMedico, String nomeDoOrgao) {
+
+		String procedimento = "";
+
+		procedimento += "--> " + nomeDoProcedimento + ":\n";
+		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonth() + "-"
+				+ LocalDate.now().getDayOfMonth() + " Medico: " + nomeMedico + "\n";
+		procedimento += "....... Orgao transplantado: " + nomeDoOrgao + "\n";
+
+		return procedimento;
 	}
 
 	// METODOS DELEGADOS AO BANCO DE ORGAOS

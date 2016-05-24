@@ -44,8 +44,9 @@ public class HospitalControler {
 	 */
 	public void iniciaSistema() throws Exception {
 
-		File file = new File("system_data");
-		File arquivo = new File(file, "soos.dat");
+		File sysFile = new File("system_data");
+		File fichasFile = new File("fichas_pacientes");
+		File arquivo = new File(sysFile, "soos.dat");
 
 		if (arquivo.exists()) {
 
@@ -56,12 +57,16 @@ public class HospitalControler {
 
 		} else {
 
-			file.mkdir();
+			sysFile.mkdir();
 			arquivo.createNewFile();
 			this.comite = new ComiteGestor();
 			ObjectOutputStream writer = new ObjectOutputStream(new FileOutputStream(arquivo));
 			writer.writeObject(this.comite);
 			writer.close();
+		}
+		
+		if(!fichasFile.exists()) {
+			fichasFile.mkdirs();
 		}
 	}
 
@@ -655,6 +660,18 @@ public class HospitalControler {
 	 */
 	public int totalOrgaosDisponiveis() {
 		return comite.totalOrgaosDisponiveis();
+	}
+	
+	/**
+	 * Metodo que exporta o prontuario de um paciente para um arquivo
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente a ter o prontuario exportado
+	 * @throws Exception
+	 *             Caso o Id do paciente seja invalido
+	 */
+	public void exportaFichaPaciente(String idPaciente) throws Exception {
+		comite.exportaFichaPaciente(idPaciente);
 	}
 
 }
