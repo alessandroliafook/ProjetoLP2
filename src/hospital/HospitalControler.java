@@ -45,7 +45,7 @@ public class HospitalControler {
 	public void iniciaSistema() throws Exception {
 
 		File sysFile = new File("system_data");
-		File fichasFile = new File("fichas_pacientes");
+		File fichasFolder = new File("fichas_pacientes");
 		File arquivo = new File(sysFile, "soos.dat");
 
 		if (arquivo.exists()) {
@@ -65,8 +65,8 @@ public class HospitalControler {
 			writer.close();
 		}
 		
-		if(!fichasFile.exists()) {
-			fichasFile.mkdirs();
+		if(!fichasFolder.exists()) {
+			fichasFolder.mkdirs();
 		}
 	}
 
@@ -314,6 +314,8 @@ public class HospitalControler {
 	public void atualizaSenha(String senhaAntiga, String novaSenha) throws AtualizaFuncionarioException {
 		comite.atualizaSenha(senhaAntiga, novaSenha);
 	}
+	
+	
 
 	/**
 	 * Metodo que fecha o sistema
@@ -333,6 +335,19 @@ public class HospitalControler {
 		writer.close();
 
 	}
+	
+	/**
+	 * Metodo que exporta o prontuario de um paciente para um arquivo
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente a ter o prontuario exportado
+	 * @throws Exception
+	 *             Caso o Id do paciente seja invalido
+	 */
+	public void exportaFichaPaciente(String idPaciente) throws Exception {
+		comite.exportaFichaPaciente(idPaciente);
+	}
+
 
 	// metodos da farmacia
 
@@ -662,16 +677,5 @@ public class HospitalControler {
 		return comite.totalOrgaosDisponiveis();
 	}
 	
-	/**
-	 * Metodo que exporta o prontuario de um paciente para um arquivo
-	 * 
-	 * @param idPaciente
-	 *            Id do paciente a ter o prontuario exportado
-	 * @throws Exception
-	 *             Caso o Id do paciente seja invalido
-	 */
-	public void exportaFichaPaciente(String idPaciente) throws Exception {
-		comite.exportaFichaPaciente(idPaciente);
-	}
-
+	
 }

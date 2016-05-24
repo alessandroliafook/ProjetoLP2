@@ -574,7 +574,7 @@ public final class ComiteGestor implements Serializable {
 			throws CadastroMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "cadastrar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new CadastroMedicamentoException(e.getMessage());
 		}
@@ -603,7 +603,7 @@ public final class ComiteGestor implements Serializable {
 			throws AtualizaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "atualizar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "atualizar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new AtualizaMedicamentoException(e.getMessage());
 		}
@@ -624,7 +624,7 @@ public final class ComiteGestor implements Serializable {
 	public double forneceMedicamento(String nomeMedicamento) throws Exception {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "fornecer medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "fornecer medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new Exception(e.getMessage());
 		}
@@ -648,7 +648,7 @@ public final class ComiteGestor implements Serializable {
 	public String consultaMedCategoria(String categoria) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -670,7 +670,7 @@ public final class ComiteGestor implements Serializable {
 	public String consultaMedNome(String nomeDoRemedio) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -693,7 +693,7 @@ public final class ComiteGestor implements Serializable {
 	public String getEstoqueFarmacia(String ordenacao) throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -718,7 +718,7 @@ public final class ComiteGestor implements Serializable {
 			throws ConsultaMedicamentoException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "consultar medicamentos.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "consultar medicamentos.");
 		} catch (NaoAutorizadoException e) {
 			throw new ConsultaMedicamentoException(e.getMessage());
 		}
@@ -751,7 +751,7 @@ public final class ComiteGestor implements Serializable {
 			String tipoSanguineo) throws CadastroPacienteException {
 
 		try {
-			VerificaAutorizacaoFarmacia.validaPermissao(funcLogado, "cadastrar pacientes.");
+			VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "cadastrar pacientes.");
 		} catch (NaoAutorizadoException e) {
 			throw new CadastroPacienteException(e.getMessage());
 		}
@@ -1020,6 +1020,8 @@ public final class ComiteGestor implements Serializable {
 	 */
 	public void exportaFichaPaciente(String idPaciente) throws Exception {
 
+		VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "exportar ficha de paciente.");
+		
 		String ficha = getFicha(idPaciente);
 
 		String nomeArquivo = getInfoPaciente(idPaciente, "Nome");
@@ -1027,7 +1029,7 @@ public final class ComiteGestor implements Serializable {
 		nomeArquivo += LocalDate.now().getYear() + "_" + LocalDate.now().getMonth() + "_"
 				+ LocalDate.now().getDayOfMonth() + ".txt";
 
-		File file = new File("fichas_pacientes/" + nomeArquivo);
+		File file = new File("fichas_pacientes/", nomeArquivo);
 		FileWriter fw = new FileWriter(file);
 		BufferedWriter bw = new BufferedWriter(fw);
 
@@ -1037,7 +1039,15 @@ public final class ComiteGestor implements Serializable {
 
 			bw.write(ficha);
 			bw.close();
+		} else {
+			
+			file.createNewFile();
+			
+			bw.write(ficha);
+			bw.close();
+			
 		}
+		
 
 	}
 
@@ -1052,6 +1062,8 @@ public final class ComiteGestor implements Serializable {
 	 */
 	private String getFicha(String idPaciente) throws Exception {
 
+		
+		
 		String[] procedimentos = (String[]) clinica.buscaProntuario(idPaciente).getProcedimentos().toArray();
 
 		String infoPaciente = "Paciente: " + getInfoPaciente(idPaciente, "Nome") + "\n";

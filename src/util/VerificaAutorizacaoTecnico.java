@@ -3,7 +3,7 @@ package util;
 import exceptions.NaoAutorizadoException;
 import pessoal.Funcionario;
 
-public class VerificaAutorizacaoFarmacia {
+public class VerificaAutorizacaoTecnico {
 
 	public static void validaPermissao(Funcionario funcLogado, String acaoRealizada) throws NaoAutorizadoException{
 		if(!isDiretorOuTecnico(funcLogado)){

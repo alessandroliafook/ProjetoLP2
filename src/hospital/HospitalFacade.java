@@ -294,6 +294,19 @@ public class HospitalFacade {
 	public void fechaSistema() throws Exception {
 		controller.fechaSistema();
 	}
+	
+	/**
+	 * Metodo que exporta o prontuario de um paciente para um arquivo
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente a ter o prontuario exportado
+	 * @throws Exception
+	 *             Caso o Id do paciente seja invalido
+	 */
+	public void exportaFichaPaciente(String idPaciente) throws Exception {
+		controller.exportaFichaPaciente(idPaciente);
+	}
+
 
 	// metodos da farmacia
 
