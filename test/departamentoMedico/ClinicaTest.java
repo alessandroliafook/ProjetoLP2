@@ -1,4 +1,4 @@
-package clinica;
+package departamentoMedico;
 
 import static org.junit.Assert.*;
 import farmacia.Farmacia;
@@ -6,7 +6,7 @@ import hospital.ComiteGestor;
 
 import org.junit.Test;
 
-import clinica.Clinica;
+import departamentoMedico.Clinica;
 
 public class ClinicaTest {
 
@@ -222,7 +222,7 @@ public class ClinicaTest {
 			String id2 = clinica.cadastraPaciente("Mitridates", "05/12/1987",
 					72.00, "feminino", "masculino", "AB+");
 			String id3 = clinica.cadastraPaciente("Plutarco", "19/01/1979",
-					85.00, "masculino", "masculino", "O+");
+					85.00, "masculino", "masculino", "O-");
 			String id4 = clinica.cadastraPaciente("Safo", "19/07/1990", 63.00,
 					"feminino", "feminino", "A+");
 
@@ -259,7 +259,6 @@ public class ClinicaTest {
 
 			// testes do metodo que realiza o procedimento
 			double custoMedicamentos;
-
 			custoMedicamentos = farmacia.verificaEstoque("Valium,Morfina");
 			clinica.realizaProcedimento("Consulta clinica", id4,
 					custoMedicamentos);
@@ -320,7 +319,7 @@ public class ClinicaTest {
 			} catch (Exception e) {
 
 				assertEquals(
-						"Erro na realizacao de procedimentos. Medicamento nao cadastrado.",
+						"Medicamento nao cadastrado.",
 						e.getMessage());
 			}
 
@@ -330,8 +329,8 @@ public class ClinicaTest {
 						custoMedicamentos);
 			} catch (Exception e) {
 
-				assertEquals(
-						"Erro na realizacao de procedimentos. ID do paciente nao pode ser vazio.",
+					assertEquals(
+						"Medicamento nao cadastrado.",
 						e.getMessage());
 			}
 
@@ -342,7 +341,7 @@ public class ClinicaTest {
 			} catch (Exception e) {
 
 				assertEquals(
-						"Erro na realizacao de procedimentos. ID do paciente nao pode ser vazio.",
+						"Medicamento nao cadastrado.",
 						e.getMessage());
 			}
 
@@ -354,7 +353,7 @@ public class ClinicaTest {
 			} catch (Exception e) {
 
 				assertEquals(
-						"Erro na realizacao de procedimentos. Banco nao possui o orgao especificado.",
+						"Banco nao possui o orgao especificado.",
 						e.getMessage());
 			}
 
@@ -365,12 +364,13 @@ public class ClinicaTest {
 			} catch (Exception e) {
 
 				assertEquals(
-						"Erro na realizacao de procedimentos. Nome do orgao nao pode ser vazio.",
+						"Nome do orgao nao pode ser vazio.",
 						e.getMessage());
 			}
 			
 			
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			fail("nao deve lancar excecao");
 		}
 

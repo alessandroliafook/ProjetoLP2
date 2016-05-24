@@ -2,7 +2,7 @@ package factory;
 
 import java.io.Serializable;
 
-import clinica.Orgao;
+import departamentoMedico.Orgao;
 import util.VerificaOrgao;
 
 public class FactoryDeOrgao implements Serializable{

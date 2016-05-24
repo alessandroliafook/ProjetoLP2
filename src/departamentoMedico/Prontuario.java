@@ -1,4 +1,4 @@
-package clinica;
+package departamentoMedico;
 
 import java.io.Serializable;
 import java.util.ArrayList;
