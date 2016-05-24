@@ -40,7 +40,7 @@ public class ComiteGestorTest {
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Data"), "2001-01-01");
 			assertEquals(comite.getInfoFuncionario(matriculaDiretor, "Cargo"), "Diretor Geral");
 			comite.liberaSistema("c041ebf8", "joao", "02/03/2011");
-			fail("Nao deve lancar excecao");
+			fail("Nao deve chegar aqui");
 		} catch (Exception e) {
 			assertEquals("Erro ao liberar o sistema. Sistema liberado anteriormente.", e.getMessage());
 		}

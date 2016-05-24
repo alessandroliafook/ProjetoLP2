@@ -1023,26 +1023,49 @@ public final class ComiteGestor implements Serializable {
 		VerificaAutorizacaoTecnico.validaPermissao(funcLogado, "exportar ficha de paciente.");
 
 		String ficha = getFicha(idPaciente);
-		
+
 		return ficha;
-		
 
 	}
 
+	/**
+	 * Metodo que busca a ficha de um paciente pelo seu id
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente
+	 * @return Ficha do paciente especificado
+	 * @throws Exception
+	 *             Caso o id do paciente esteja invalido ou caso paciente nao
+	 *             esteja cadastrado
+	 */
 	public String getFicha(String idPaciente) throws Exception {
-		return clinica.buscaProntuario(idPaciente).getFicha();
+		return clinica.getFicha(idPaciente);
 	}
-	
+
+	/**
+	 * Metodo que cria o nome do arquivo em que a ficha do paciente sera salva.
+	 * O nome do arquivo eh composto pelo seu nome e a data em que a ficha foi
+	 * criada
+	 * 
+	 * @param idPaciente
+	 *            ID do paciente a ter a ficha criada
+	 * @param date
+	 *            Data em que sera criada
+	 * @return Nome do arquivo
+	 * @throws Exception
+	 *             Caso a id do paciente esteja invalida ou nao esteja
+	 *             cadastrada
+	 */
 	public String getArquivoFicha(String idPaciente, LocalDate date) throws Exception {
-		
+
 		String nomeArquivo = "";
-		
+
 		nomeArquivo += getInfoPaciente(idPaciente, "Nome");
 		nomeArquivo = nomeArquivo.replace(" ", "_");
-		nomeArquivo += String.valueOf(LocalDate.now().getYear()) + "_" + String.valueOf(LocalDate.now().getMonth())
-				+ "_" + String.valueOf(LocalDate.now().getDayOfMonth()) + ".txt";
-		
+		nomeArquivo += LocalDate.now().getYear() + "_" + LocalDate.now().getMonthValue() + "_"
+				+ LocalDate.now().getDayOfMonth() + ".txt";
+
 		return nomeArquivo;
 	}
-	
+
 }

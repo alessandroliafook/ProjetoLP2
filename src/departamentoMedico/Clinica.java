@@ -328,10 +328,25 @@ public class Clinica implements Serializable {
 		String procedimento = "";
 
 		procedimento += "--> " + nomeDoProcedimento + ":\n";
-		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonth() + "-"
+		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-"
 				+ LocalDate.now().getDayOfMonth() + " Medico: " + nomeMedico + "\n";
 
 		return procedimento;
+	}
+
+	/**
+	 * Metodo que busca a ficha de um paciente pelo seu id
+	 * 
+	 * @param idPaciente
+	 *            Id do paciente
+	 * @return Ficha do paciente especificado
+	 * @throws Exception
+	 *             Caso o id do paciente esteja invalido ou o paciente nao
+	 *             esteja cadastrado
+	 */
+	public String getFicha(String idPaciente) throws Exception {
+		Prontuario prontuario = buscaProntuario(idPaciente);
+		return prontuario.getFicha();
 	}
 
 	/**
@@ -351,7 +366,7 @@ public class Clinica implements Serializable {
 		String procedimento = "";
 
 		procedimento += "--> " + nomeDoProcedimento + ":\n";
-		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonth() + "-"
+		procedimento += "....... Data: " + LocalDate.now().getYear() + "-" + LocalDate.now().getMonthValue() + "-"
 				+ LocalDate.now().getDayOfMonth() + " Medico: " + nomeMedico + "\n";
 		procedimento += "....... Orgao transplantado: " + nomeDoOrgao + "\n";
 

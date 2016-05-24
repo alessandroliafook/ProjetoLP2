@@ -1,6 +1,7 @@
 package departamentoMedico;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	private Paciente paciente;
 	private factoryDeProcedimentos tabelaDeProcedimentos;
 	private List<String> procedimentos;
+	private DecimalFormat df = new DecimalFormat("0.00");
 
 	/**
 	 * Cria um novo Prontuario para o Paciente especificado
@@ -84,23 +86,19 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	}
 
 	/**
-	 * Metodo que cria a ficha para ser exportada
+	 * Metodo que busca a ficha do paciente
 	 * 
-	 * @param idPaciente
-	 *            Id do paciente que tera a ficha criada
-	 * @return A ficha do paciente
-	 * @throws Exception
-	 *             Caso o id do paciente seja invalido
+	 * @return Ficha do paciente
 	 */
-	public String getFicha() throws Exception {
+	public String getFicha() {
 
 		String infoPaciente = "Paciente: " + this.getNomePaciente() + "\n";
-		infoPaciente += "Peso: " + this.paciente.getPeso() + " kg Tipo Sanguíneo: " + this.paciente.getTipoSanguineo()
-				+ "\n";
+		infoPaciente += "Peso: " + df.format(this.paciente.getPeso()) + " kg Tipo Sanguíneo: "
+				+ this.paciente.getTipoSanguineo() + "\n";
 
 		infoPaciente += "Sexo: " + this.paciente.getSexo() + " Genero: " + this.paciente.getGenero() + "\n";
 
-		infoPaciente += "Gasto total: R$ " + this.paciente.getGastos() + " Pontos acumulados: "
+		infoPaciente += "Gasto total: R$ " + df.format(this.paciente.getGastos()) + " Pontos acumulados: "
 				+ this.paciente.getPontosFidelidade() + "\n";
 		infoPaciente += "Resumo de Procedimentos: " + this.getTotalProcedimento() + " procedimento(s)" + "\n";
 
