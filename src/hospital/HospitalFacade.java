@@ -8,7 +8,6 @@ import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
-import exceptions.ConsultaPacienteException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
