@@ -254,6 +254,7 @@ public class Clinica implements Serializable {
 	 * @param gastosComMedimentos
 	 *            Lista com nomes dos medicamentos necessarios ao procedimento
 	 * @param nomeMedico
+	 *            Nome do medico que realizou o procedimento
 	 * @throws Exception
 	 *             Caso nao seja possivel realizar o procedimento
 	 */
@@ -280,6 +281,8 @@ public class Clinica implements Serializable {
 	 *            nome do orgao que sera utilizado no procedimento
 	 * @param gastosComMedimentos
 	 *            Total gasto com os medicamentos necessarios ao procedimento
+	 * @param nomeMedico
+	 *            Nome do medico que realizou o procedimento
 	 * @throws Exception
 	 *             Caso o procedimento nao seja realizado com sucesso
 	 */

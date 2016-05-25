@@ -1009,6 +1009,7 @@ public final class ComiteGestor implements Serializable {
 	 * 
 	 * @param idPaciente
 	 *            Id do paciente a ter o prontuario exportado
+	 * @return Uma string com a ficha do paciente
 	 * @throws Exception
 	 *             Caso o Id do paciente seja invalido
 	 */

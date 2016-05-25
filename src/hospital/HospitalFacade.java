@@ -523,7 +523,7 @@ public class HospitalFacade {
 	 * @param nome
 	 *            Nome do paciente
 	 * @return O ID do primeiro paciente com o nome especificado
-	 * @throws ConsultaPacienteException
+	 * @throws Exception
 	 *             Lanca excecao acaso o paciente pesquisado nao esteja
 	 *             cadastrado no sistema
 	 */
