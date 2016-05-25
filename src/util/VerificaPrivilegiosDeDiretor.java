@@ -1,6 +1,5 @@
 package util;
 
-import exceptions.CadastroFuncionarioException;
 import exceptions.NaoAutorizadoException;
 import pessoal.Funcionario;
 

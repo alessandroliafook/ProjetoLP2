@@ -6,9 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import exceptions.BancoDeOrgaosException;
-import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroPacienteException;
-import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaProntuarioException;
 import exceptions.RemoveOrgaoException;
 import factory.FactoryDePessoa;
@@ -314,7 +312,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
-	 * Metodo que formaliza uma String que conterá todas as informacoes do
+	 * Metodo que formaliza uma String que conterï¿½ todas as informacoes do
 	 * procedimento
 	 * 
 	 * @param nomeDoProcedimento
@@ -350,7 +348,7 @@ public class Clinica implements Serializable {
 	}
 
 	/**
-	 * Metodo que formaliza uma String que conterá todas as informacoes do
+	 * Metodo que formaliza uma String que conterï¿½ todas as informacoes do
 	 * procedimento
 	 * 
 	 * @param nomeDoProcedimento

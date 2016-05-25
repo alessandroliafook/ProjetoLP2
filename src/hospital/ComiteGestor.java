@@ -1,9 +1,5 @@
 package hospital;
 
-import java.awt.BufferCapabilities;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -12,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 
 import departamentoMedico.Clinica;
-import departamentoMedico.Prontuario;
 import exceptions.AtualizaFuncionarioException;
 import exceptions.AtualizaMedicamentoException;
 import exceptions.BancoDeOrgaosException;
@@ -27,7 +22,6 @@ import exceptions.FuncionarioInexistenteException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
 import exceptions.NaoAutorizadoException;
-import exceptions.NumeroInvalidoException;
 import exceptions.RealizaProcedimentoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SenhaIncorretaException;

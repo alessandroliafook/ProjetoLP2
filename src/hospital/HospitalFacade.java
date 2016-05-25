@@ -6,17 +6,13 @@ import exceptions.BancoDeOrgaosException;
 import exceptions.CadastroFuncionarioException;
 import exceptions.CadastroMedicamentoException;
 import exceptions.CadastroPacienteException;
-import exceptions.CargoInvalidoException;
 import exceptions.ConsultaFuncionarioException;
 import exceptions.ConsultaMedicamentoException;
 import exceptions.ConsultaPacienteException;
 import exceptions.ConsultaProntuarioException;
-import exceptions.DataInvalidaException;
 import exceptions.ExclusaoFuncionarioException;
 import exceptions.LoginException;
 import exceptions.LogoutException;
-import exceptions.NomeFuncionarioVazioException;
-import exceptions.NumeroInvalidoException;
 import exceptions.RemoveOrgaoException;
 import exceptions.SistemaException;
 

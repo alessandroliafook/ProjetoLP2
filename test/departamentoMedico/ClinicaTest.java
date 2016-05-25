@@ -2,7 +2,6 @@ package departamentoMedico;
 
 import static org.junit.Assert.*;
 import farmacia.Farmacia;
-import hospital.ComiteGestor;
 
 import org.junit.Test;
 

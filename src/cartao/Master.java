@@ -10,7 +10,7 @@ public class Master implements Fidelidade, Serializable {
 	private static final long serialVersionUID = 1574421479837543855L;
 	
 	private final double PORCENTAGEM_DESCONTO_SERVICO = 0.15;
-	private final double PORCENTAGEM_CREDITO_BONUS = 0.05;
+	//private final double PORCENTAGEM_CREDITO_BONUS = 0.05;
 
 	@Override
 	public double getDescontoEmServicos(double precoServico) {

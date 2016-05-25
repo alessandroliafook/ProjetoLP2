@@ -5,8 +5,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import exceptions.CadastroFuncionarioException;
-import exceptions.ConsultaMedicamentoException;
 import exceptions.DataInvalidaException;
 import factory.factoryDeProcedimentos;
 import pessoal.Paciente;
@@ -93,7 +91,7 @@ public class Prontuario implements Comparable<Prontuario>, Serializable {
 	public String getFicha() {
 
 		String infoPaciente = "Paciente: " + this.getNomePaciente() + "\n";
-		infoPaciente += "Peso: " + df.format(this.paciente.getPeso()) + " kg Tipo Sanguíneo: "
+		infoPaciente += "Peso: " + df.format(this.paciente.getPeso()) + " kg Tipo Sanguï¿½neo: "
 				+ this.paciente.getTipoSanguineo() + "\n";
 
 		infoPaciente += "Sexo: " + this.paciente.getSexo() + " Genero: " + this.paciente.getGenero() + "\n";

@@ -1,7 +1,6 @@
 package util;
 
 import pessoal.Funcionario;
-import exceptions.CadastroFuncionarioException;
 import exceptions.NaoAutorizadoException;
 
 public class VerificaAutorizacaoClinica {
